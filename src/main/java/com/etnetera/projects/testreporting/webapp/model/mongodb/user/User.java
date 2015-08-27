@@ -3,12 +3,10 @@ package com.etnetera.projects.testreporting.webapp.model.mongodb.user;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.etnetera.projects.testreporting.webapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.project.ProjectGroupPermission;
 
-@Document
 abstract public class User extends MongoAuditedModel {
 
 	@Id

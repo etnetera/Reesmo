@@ -1,26 +1,35 @@
 package com.etnetera.projects.testreporting.webapp.model.mongodb.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.joda.time.Interval;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.etnetera.projects.testreporting.webapp.model.elasticsearch.test.TestResult;
+import com.etnetera.projects.testreporting.webapp.model.elasticsearch.result.Result;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.User;
+import com.etnetera.projects.testreporting.webapp.repository.elasticsearch.QueryWrapper;
 
 /**
  * Describes stored view representing test list.
- * List can be filtered, with offset and limited.
+ * List can be filtered and sorted using modifiers 
+ * and can has offset and be limited.
  * 
  * @author zdenek
  * 
  */
 @Document
-public class View extends MongoAuditedModel {
+public class View extends MongoAuditedModel implements QueryWrapper {
 
 	@Id
 	private String id;
@@ -36,11 +45,15 @@ public class View extends MongoAuditedModel {
 	
 	private String description;
 	
-	private Long offset;
+	private int page;
 	
-	private Long limit;
+	private int size;
 	
-	private List<ViewModifier> modifiers;
+	private ViewQuery query;
+	
+	private List<ViewFilter> filters;
+	
+	private List<ViewSorter> sorters;
 	
 	/**
 	 * If true then is available for everyone in list of views.
@@ -85,28 +98,44 @@ public class View extends MongoAuditedModel {
 		this.description = description;
 	}
 
-	public Long getOffset() {
-		return offset;
+	public int getPage() {
+		return page;
 	}
 
-	public void setOffset(Long offset) {
-		this.offset = offset;
+	public void setPage(int page) {
+		this.page = page;
 	}
 
-	public Long getLimit() {
-		return limit;
+	public int getSize() {
+		return size;
 	}
 
-	public void setLimit(Long limit) {
-		this.limit = limit;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
-	public List<ViewModifier> getModifiers() {
-		return modifiers;
+	public ViewQuery getQuery() {
+		return query;
 	}
 
-	public void setModifiers(List<ViewModifier> modifiers) {
-		this.modifiers = modifiers;
+	public void setQuery(ViewQuery query) {
+		this.query = query;
+	}
+
+	public List<ViewFilter> getFilters() {
+		return filters;
+	}
+
+	public void setFilters(List<ViewFilter> filters) {
+		this.filters = filters;
+	}
+
+	public List<ViewSorter> getSorters() {
+		return sorters;
+	}
+
+	public void setSorters(List<ViewSorter> sorters) {
+		this.sorters = sorters;
 	}
 
 	public boolean isShared() {
@@ -125,14 +154,44 @@ public class View extends MongoAuditedModel {
 		this.users = users;
 	}
 
-	public List<TestResult> getResults() {
+	public List<Result> getResults() {
 		// TODO apply all modifiers and limit
 		return null;
 	}
 
-	public List<TestResult> getChangedResults(Interval interval) {
+	public List<Result> getChangedResults(Interval interval) {
 		// TODO get results but include results with update time in given interval only
 		return null;
+	}
+
+	@Override
+	public QueryBuilder getQueryBuilder() {
+		return query == null ? null : query.getQueryBuilder();
+	}
+
+	@Override
+	public FilterBuilder getFilterBuilder() {
+		if (filters == null || filters.isEmpty()) {
+			return null;
+		}
+		AndFilterBuilder filterBuilder = new AndFilterBuilder();
+		filters.forEach(f -> filterBuilder.add(f.getFilterBuilder()));
+		return filterBuilder;
+	}
+
+	@Override
+	public List<SortBuilder> getSortBuilders() {
+		if (sorters == null || sorters.isEmpty()) {
+			return null;
+		}
+		List<SortBuilder> sortBuilders = new ArrayList<>();
+		sorters.forEach(s -> sortBuilders.add(s.getSortBuilder()));
+		return sortBuilders;
+	}
+
+	@Override
+	public Pageable getPageable() {
+		return new PageRequest(page, size);
 	}
 	
 }

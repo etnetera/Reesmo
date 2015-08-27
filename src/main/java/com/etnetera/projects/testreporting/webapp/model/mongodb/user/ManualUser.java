@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-abstract public class ManualUser extends User {
+public class ManualUser extends User {
 	
 	@Indexed(unique = true)
 	private String email;

@@ -3,11 +3,9 @@ package com.etnetera.projects.testreporting.webapp.model.mongodb.monitoring;
 import org.joda.time.Interval;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.etnetera.projects.testreporting.webapp.model.mongodb.view.View;
 
-@Document
 abstract public class Monitoring {
 
 	@Id

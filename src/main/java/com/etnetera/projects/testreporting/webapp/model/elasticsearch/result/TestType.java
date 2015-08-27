@@ -1,4 +1,4 @@
-package com.etnetera.projects.testreporting.webapp.model.elasticsearch.test;
+package com.etnetera.projects.testreporting.webapp.model.elasticsearch.result;
 
 public enum TestType {
 

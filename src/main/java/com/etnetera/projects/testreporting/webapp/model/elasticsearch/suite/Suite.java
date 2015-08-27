@@ -1,4 +1,4 @@
-package com.etnetera.projects.testreporting.webapp.model.elasticsearch.test;
+package com.etnetera.projects.testreporting.webapp.model.elasticsearch.suite;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,8 +13,8 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.etnetera.projects.testreporting.webapp.model.elasticsearch.ElasticAuditedModel;
 
-@Document(indexName = "testresultdata", type = "testresult")
-abstract public class TestResult extends ElasticAuditedModel {
+@Document(indexName = "resultdata", type = "suite")
+public class Suite extends ElasticAuditedModel {
 	
 	@Id
 	private String id;
@@ -26,19 +26,10 @@ abstract public class TestResult extends ElasticAuditedModel {
 	private String suiteId;
 	
 	@Field(type = FieldType.String)
-	private String milestone;
-	
-	@Field(type = FieldType.String)
 	private String name;
 	
 	@Field(type = FieldType.String)
 	private String description;
-	
-	@Field(type = FieldType.String)
-	private String environment;
-	
-	@Field(type = FieldType.String)
-	private String author;
 	
 	@Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
 	private Date startedAt;
@@ -49,29 +40,11 @@ abstract public class TestResult extends ElasticAuditedModel {
 	@Field(type = FieldType.Long)
 	private Long duration;
 	
-	@Field(type = FieldType.String)
-	private TestStatus status;
-	
-	@Field(type = FieldType.String)
-	private TestSeverity severity;
-	
-	@Field(type = FieldType.Boolean)
-	private boolean automated;
+	@Field(type = FieldType.Object)
+	private List<String> resultIds = new ArrayList<>();
 	
 	@Field(type = FieldType.Object)
 	private List<String> labels = new ArrayList<>();
-	
-	@Field(type = FieldType.Object)
-	private List<TestCategory> categories = new ArrayList<>();
-	
-	@Field(type = FieldType.Object)
-	private List<TestType> types = new ArrayList<>();
-	
-	@Field(type = FieldType.Nested)
-	private List<TestAttachment> attachments = new ArrayList<>();
-	
-	@Field(type = FieldType.Nested)
-	private List<TestLink> links = new ArrayList<>();
 
 	public String getId() {
 		return id;
@@ -97,14 +70,6 @@ abstract public class TestResult extends ElasticAuditedModel {
 		this.suiteId = suiteId;
 	}
 
-	public String getMilestone() {
-		return milestone;
-	}
-
-	public void setMilestone(String milestone) {
-		this.milestone = milestone;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -119,22 +84,6 @@ abstract public class TestResult extends ElasticAuditedModel {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getEnvironment() {
-		return environment;
-	}
-
-	public void setEnvironment(String environment) {
-		this.environment = environment;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
 	}
 
 	public Date getStartedAt() {
@@ -161,44 +110,12 @@ abstract public class TestResult extends ElasticAuditedModel {
 		this.duration = duration;
 	}
 
-	public TestStatus getStatus() {
-		return status;
+	public List<String> getResultIds() {
+		return resultIds;
 	}
 
-	public void setStatus(TestStatus status) {
-		this.status = status;
-	}
-
-	public TestSeverity getSeverity() {
-		return severity;
-	}
-
-	public void setSeverity(TestSeverity severity) {
-		this.severity = severity;
-	}
-
-	public boolean isAutomated() {
-		return automated;
-	}
-
-	public void setAutomated(boolean automated) {
-		this.automated = automated;
-	}
-
-	public List<TestCategory> getCategories() {
-		return categories;
-	}
-
-	public void setCategories(List<TestCategory> categories) {
-		this.categories = categories;
-	}
-
-	public List<TestType> getTypes() {
-		return types;
-	}
-
-	public void setTypes(List<TestType> types) {
-		this.types = types;
+	public void setResultIds(List<String> resultIds) {
+		this.resultIds = resultIds;
 	}
 
 	public List<String> getLabels() {
@@ -207,22 +124,6 @@ abstract public class TestResult extends ElasticAuditedModel {
 
 	public void setLabels(List<String> labels) {
 		this.labels = labels;
-	}
-
-	public List<TestAttachment> getAttachments() {
-		return attachments;
-	}
-
-	public void setAttachments(List<TestAttachment> attachments) {
-		this.attachments = attachments;
-	}
-
-	public List<TestLink> getLinks() {
-		return links;
-	}
-
-	public void setLinks(List<TestLink> links) {
-		this.links = links;
 	}
 	
 }

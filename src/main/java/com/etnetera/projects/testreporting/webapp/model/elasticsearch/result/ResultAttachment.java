@@ -1,4 +1,4 @@
-package com.etnetera.projects.testreporting.webapp.model.elasticsearch.test;
+package com.etnetera.projects.testreporting.webapp.model.elasticsearch.result;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,8 +8,8 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.etnetera.projects.testreporting.webapp.model.elasticsearch.ElasticAuditedModel;
 
-@Document(indexName = "testresultdata", type = "testlink")
-public class TestLink extends ElasticAuditedModel {
+@Document(indexName = "resultdata", type = "resultattachment")
+public class ResultAttachment extends ElasticAuditedModel {
 
 	@Id
     private String id;
@@ -18,7 +18,7 @@ public class TestLink extends ElasticAuditedModel {
 	private String name;
 	
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
-	private String url;
+	private String path;
 
 	public String getId() {
 		return id;
@@ -36,12 +36,12 @@ public class TestLink extends ElasticAuditedModel {
 		this.name = name;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getPath() {
+		return path;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 }
