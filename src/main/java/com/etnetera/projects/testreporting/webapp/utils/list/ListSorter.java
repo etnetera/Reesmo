@@ -1,4 +1,4 @@
-package com.etnetera.projects.testreporting.webapp.model.mongodb.view;
+package com.etnetera.projects.testreporting.webapp.utils.list;
 
 import org.elasticsearch.search.sort.SortBuilder;
 
@@ -8,7 +8,7 @@ import org.elasticsearch.search.sort.SortBuilder;
  * @author zdenek
  *
  */
-public class ViewSorter {
+public class ListSorter {
 
 	private String field;
 	

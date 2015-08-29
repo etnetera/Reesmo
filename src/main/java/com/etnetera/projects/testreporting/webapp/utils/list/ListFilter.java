@@ -1,4 +1,4 @@
-package com.etnetera.projects.testreporting.webapp.model.mongodb.view;
+package com.etnetera.projects.testreporting.webapp.utils.list;
 
 import org.elasticsearch.index.query.FilterBuilder;
 
@@ -8,7 +8,7 @@ import org.elasticsearch.index.query.FilterBuilder;
  * @author zdenek
  *
  */
-public class ViewFilter {
+public class ListFilter {
 
 	private String field;
 	

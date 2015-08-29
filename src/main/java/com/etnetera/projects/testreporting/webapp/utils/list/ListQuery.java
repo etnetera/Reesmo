@@ -1,4 +1,4 @@
-package com.etnetera.projects.testreporting.webapp.model.mongodb.view;
+package com.etnetera.projects.testreporting.webapp.utils.list;
 
 import org.elasticsearch.index.query.QueryBuilder;
 
@@ -8,7 +8,7 @@ import org.elasticsearch.index.query.QueryBuilder;
  * @author zdenek
  *
  */
-public class ViewQuery {
+public class ListQuery {
 
 	private String query;
 	
