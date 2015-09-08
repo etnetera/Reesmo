@@ -1,6 +1,8 @@
 package com.etnetera.projects.testreporting.webapp.utils.list;
 
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 /**
  * Sorter representation.
@@ -15,8 +17,7 @@ public class ListSorter {
 	private String way;
 	
 	public SortBuilder getSortBuilder() {
-		// TODO implement
-		return null;
+		return new FieldSortBuilder(field).order(SortOrder.ASC.name().toLowerCase().equals(way) ? SortOrder.ASC : SortOrder.DESC);
 	}
 
 	public String getField() {

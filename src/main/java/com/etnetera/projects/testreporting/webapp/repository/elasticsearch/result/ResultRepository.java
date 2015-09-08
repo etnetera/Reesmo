@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.etnetera.projects.testreporting.webapp.model.elasticsearch.result.Result;
 
+/**
+ * Result repository
+ */
 @Repository
 public interface ResultRepository extends ElasticsearchCrudRepository<Result, String>, ResultRepositoryCustom {
 

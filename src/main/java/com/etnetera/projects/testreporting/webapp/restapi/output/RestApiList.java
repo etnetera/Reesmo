@@ -8,11 +8,11 @@ public class RestApiList<T> {
 	
 	public PageData page;
 	
-	public List<T> data;
+	public List<T> items;
 	
 	public RestApiList(Page<T> page) {
 		this.page = new PageData(page);
-		data = page.getContent();
+		items = page.getContent();
 	}
 	
 	public class PageData {

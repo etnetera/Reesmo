@@ -1,19 +1,21 @@
 package com.etnetera.projects.testreporting.webapp.repository.elasticsearch.result;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.etnetera.projects.testreporting.webapp.model.elasticsearch.result.Result;
-import com.etnetera.projects.testreporting.webapp.repository.elasticsearch.QueryWrapper;
+import com.etnetera.projects.testreporting.webapp.utils.list.ListModifier;
 
 /**
- * Interface holding custom ES access methods that have to be implemented by its impl.
+ * Result repository custom methods
  */
 public interface ResultRepositoryCustom {
 	
-	public Page<Result> findByQueryWrapper(QueryWrapper queryWrapper);
+	public Page<Result> findByModifier(ListModifier modifier, List<String> allowedProjectIds);
 	
-	public Page<Result> findBySuiteAndQueryWrapper(String suiteId, QueryWrapper queryWrapper);
+	public Page<Result> findBySuiteAndModifier(String suiteId, ListModifier modifier, List<String> allowedProjectIds);
 	
-	public Page<Result> findByViewAndQueryWrapper(String viewId, QueryWrapper queryWrapper);
+	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier, List<String> allowedProjectIds);
 	
 }

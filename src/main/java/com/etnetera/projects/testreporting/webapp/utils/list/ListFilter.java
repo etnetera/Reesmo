@@ -1,6 +1,12 @@
 package com.etnetera.projects.testreporting.webapp.utils.list;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.RangeFilterBuilder;
+import org.elasticsearch.index.query.TermFilterBuilder;
 
 /**
  * Filter representation.
@@ -14,11 +20,17 @@ public class ListFilter {
 	
 	private String comparator;
 	
-	private String value;
+	private Object value;
 	
 	public FilterBuilder getFilterBuilder() {
-		// TODO implement
-		return null;
+		if (StringUtils.isEmpty(comparator) || "TERM".equalsIgnoreCase(comparator)) {
+			return new BoolFilterBuilder().must(new TermFilterBuilder(field, value)).cache(true);
+		}
+		if ("RANGE".equalsIgnoreCase(comparator)) {
+			List<Object> ranges = (List<Object>) value;
+			return new BoolFilterBuilder().must(new RangeFilterBuilder(field).from(ranges.get(0)).to(ranges.get(1))).cache(true);
+		}
+		throw new IllegalArgumentException("Unknown list filter comparator: " + comparator);
 	}
 
 	public String getField() {
@@ -37,11 +49,11 @@ public class ListFilter {
 		this.comparator = comparator;
 	}
 
-	public String getValue() {
+	public Object getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 	

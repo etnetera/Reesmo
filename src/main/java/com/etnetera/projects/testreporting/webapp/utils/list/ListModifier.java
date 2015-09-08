@@ -5,12 +5,9 @@ import java.util.List;
 
 import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import com.etnetera.projects.testreporting.webapp.repository.elasticsearch.QueryWrapper;
 
 /**
  * Holds data for list modification.
@@ -21,16 +18,14 @@ import com.etnetera.projects.testreporting.webapp.repository.elasticsearch.Query
  * @author zdenek
  * 
  */
-public class ListModifier implements QueryWrapper {
+public class ListModifier {
 	
 	private static final int DEFAULT_PAGE = 0;
 	private static final int DEFAULT_SIZE = 20;
 	
-	private int page = DEFAULT_PAGE;
+	private int page = -1;
 	
-	private int size = DEFAULT_SIZE;
-	
-	private ListQuery query;
+	private int size = -1;
 	
 	private List<ListFilter> filters;
 	
@@ -59,14 +54,6 @@ public class ListModifier implements QueryWrapper {
 		this.size = size;
 	}
 
-	public ListQuery getQuery() {
-		return query;
-	}
-
-	public void setQuery(ListQuery query) {
-		this.query = query;
-	}
-
 	public List<ListFilter> getFilters() {
 		return filters;
 	}
@@ -88,13 +75,20 @@ public class ListModifier implements QueryWrapper {
 		size = pageable.getPageSize();
 		return this;
 	}
-
-	@Override
-	public QueryBuilder getQueryBuilder() {
-		return query == null ? null : query.getQueryBuilder();
+	
+	public ListModifier join(ListModifier modifier) {
+		if (modifier.page != -1) page = modifier.page;
+		if (modifier.size != -1) size = modifier.size;
+		
+		if (filters == null) filters = modifier.filters;
+		else if (modifier.filters != null) modifier.filters.forEach(f -> filters.add(f));
+		
+		if (sorters == null) sorters = modifier.sorters;
+		else if (modifier.sorters != null) modifier.sorters.forEach(f -> sorters.add(f));
+		
+		return this;
 	}
 
-	@Override
 	public FilterBuilder getFilterBuilder() {
 		if (filters == null || filters.isEmpty()) {
 			return null;
@@ -104,7 +98,6 @@ public class ListModifier implements QueryWrapper {
 		return filterBuilder;
 	}
 
-	@Override
 	public List<SortBuilder> getSortBuilders() {
 		List<SortBuilder> sortBuilders = new ArrayList<>();
 		if (sorters != null) {
@@ -113,9 +106,8 @@ public class ListModifier implements QueryWrapper {
 		return sortBuilders;
 	}
 
-	@Override
 	public Pageable getPageable() {
-		return new PageRequest(page, size);
+		return new PageRequest(page == -1 ? DEFAULT_PAGE : page, size == -1 ? DEFAULT_SIZE : size);
 	}
 	
 }
