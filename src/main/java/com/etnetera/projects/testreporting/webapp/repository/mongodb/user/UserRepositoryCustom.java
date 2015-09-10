@@ -9,4 +9,6 @@ public interface UserRepositoryCustom {
 
 	public User findOne(String id);
 	
+	public User findOneByUsername(String username);
+	
 }

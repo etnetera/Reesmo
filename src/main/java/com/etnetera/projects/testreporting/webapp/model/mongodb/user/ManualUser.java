@@ -20,4 +20,9 @@ public class ManualUser extends User {
 		this.email = email;
 	}
 	
+	@Override
+	public String getRole() {
+		return "ROLE_MANUALUSER";
+	}
+	
 }

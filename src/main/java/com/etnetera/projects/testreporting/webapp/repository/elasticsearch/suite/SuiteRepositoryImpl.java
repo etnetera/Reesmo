@@ -1,13 +1,14 @@
 package com.etnetera.projects.testreporting.webapp.repository.elasticsearch.suite;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.TermsFilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 
@@ -27,15 +28,17 @@ public class SuiteRepositoryImpl implements SuiteRepositoryCustom {
 		if (allowedProjectIds == null) {
 			return template.queryForPage(createSearchBuilderFromModifier(modifier).build(), Suite.class);
 		}
-		return template
-				.queryForPage(
-						createSearchBuilderFromModifier(modifier,
-								new AndFilterBuilder().add(new BoolFilterBuilder()
-										.must(new TermsFilterBuilder("projectId", allowedProjectIds)).cache(true))
-								.add(modifier.getFilterBuilder())).build(),
-						Suite.class);
+		if (allowedProjectIds.isEmpty()) {
+			return new PageImpl<>(new ArrayList<>());
+		}
+
+		return template.queryForPage(
+				createSearchBuilderFromModifier(modifier,
+						modifier.getFilterBuilder(new BoolFilterBuilder()
+								.must(new TermsFilterBuilder("projectId", allowedProjectIds)).cache(true))).build(),
+				Suite.class);
 	}
-	
+
 	private NativeSearchQueryBuilder createSearchBuilderFromModifier(ListModifier modifier) {
 		return createSearchBuilderFromModifier(modifier, null);
 	}

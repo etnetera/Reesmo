@@ -107,7 +107,7 @@ abstract public class User extends MongoAuditedModel {
 		List<Project> projects = new ArrayList<>();
 		if (permission != null) {
 			for (Map.Entry<Project, Permission> entry : getProjectsPermissions().entrySet()) {
-				if (permission.isGreaterThanOrEqual(entry.getValue())) {
+				if (entry.getValue().isGreaterThanOrEqual(permission)) {
 					projects.add(entry.getKey());
 				}
 			}
@@ -152,5 +152,7 @@ abstract public class User extends MongoAuditedModel {
 		}
 		return false;
 	}
+	
+	public abstract String getRole();
 	
 }

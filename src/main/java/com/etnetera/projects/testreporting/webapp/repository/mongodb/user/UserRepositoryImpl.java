@@ -1,11 +1,10 @@
 package com.etnetera.projects.testreporting.webapp.repository.mongodb.user;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.etnetera.projects.testreporting.webapp.model.mongodb.project.Project;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.project.ProjectGroup;
@@ -14,16 +13,17 @@ import com.etnetera.projects.testreporting.webapp.model.mongodb.user.ApiUser;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.ManualUser;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.Permission;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.User;
-import com.etnetera.projects.testreporting.webapp.user.AppUser;
 
 /**
  * User repository custom method implementation
  */
-public class UserRepositoryCustomImpl implements UserRepositoryCustom, UserDetailsService {
+public class UserRepositoryImpl implements UserRepositoryCustom {
 
-	private static List<User> users;
+	private static List<User> users = new ArrayList<>();
 	
 	static {
+		BCryptPasswordEncoder passEncoder = new BCryptPasswordEncoder();
+		
 		Project p1 = new Project();
 		p1.setId("tp1");
 		p1.setKey("TP1");
@@ -35,6 +35,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom, UserDetai
 		pg1.setProjects(Arrays.asList(p1, p2));
 		
 		ProjectGroupPermission pGP = new ProjectGroupPermission();
+		pGP.setProjectGroup(pg1);
 		pGP.setPermission(Permission.EDITOR);
 		
 		for (int i = 1; i <= 5; i++) {
@@ -42,7 +43,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom, UserDetai
 			u.setId("au" + i);
 			u.setLabel("API User " + i);
 			u.setUsername("apiuser" + i);
-			u.setPassword("apiuser" + i);
+			u.setPassword(passEncoder.encode("apiuser" + i));
 			u.setPermissions(Arrays.asList(pGP));
 			users.add(u);
 		}
@@ -52,12 +53,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom, UserDetai
 			u.setId("u" + i);
 			u.setLabel("User " + i);
 			u.setUsername("user" + i);
-			u.setPassword("user" + i);
+			u.setPassword(passEncoder.encode("user" + i));
 			u.setPermissions(Arrays.asList(pGP));
 			users.add(u);
 		}
 	}
-	
+
 	@Override
 	public User findOne(String id) {
 		for (User u : users) {
@@ -67,11 +68,9 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom, UserDetai
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public User findOneByUsername(String username) {
 		for (User u : users) {
-			if (u.getUsername().equals(username)) {
-				return new AppUser(u);
-			}
+			if (u.getUsername().equals(username)) return u;
 		}
 		return null;
 	}

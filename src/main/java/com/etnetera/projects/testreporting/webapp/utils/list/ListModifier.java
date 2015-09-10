@@ -89,12 +89,17 @@ public class ListModifier {
 		return this;
 	}
 
-	public FilterBuilder getFilterBuilder() {
-		if (filters == null || filters.isEmpty()) {
+	public AndFilterBuilder getFilterBuilder(FilterBuilder... withFilterBuilders) {
+		if ((filters == null || filters.isEmpty()) && withFilterBuilders.length == 0) {
 			return null;
 		}
 		AndFilterBuilder filterBuilder = new AndFilterBuilder();
-		filters.forEach(f -> filterBuilder.add(f.getFilterBuilder()));
+		if (filters != null) {
+			filters.forEach(f -> filterBuilder.add(f.getFilterBuilder()));
+		}
+		for (FilterBuilder fb : withFilterBuilders) {
+			filterBuilder.add(fb);
+		}
 		return filterBuilder;
 	}
 

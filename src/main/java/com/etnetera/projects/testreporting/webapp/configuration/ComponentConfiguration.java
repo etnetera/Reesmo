@@ -8,4 +8,5 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackages = "com.etnetera.projects.testreporting.webapp")
 @Import({SecurityConfiguration.class})
 class ComponentConfiguration {
+	
 }

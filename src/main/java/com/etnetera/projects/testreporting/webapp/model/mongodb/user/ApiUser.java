@@ -16,5 +16,10 @@ public class ApiUser extends User {
 	public void setAllowedIps(List<String> allowedIps) {
 		this.allowedIps = allowedIps;
 	}
+
+	@Override
+	public String getRole() {
+		return "ROLE_APIUSER";
+	}
 	
 }

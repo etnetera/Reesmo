@@ -5,21 +5,17 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.etnetera.projects.testreporting.webapp.model.mongodb.project.Project;
+import com.etnetera.projects.testreporting.webapp.model.mongodb.user.ApiUser;
+import com.etnetera.projects.testreporting.webapp.model.mongodb.user.ManualUser;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.Permission;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.User;
 import com.etnetera.projects.testreporting.webapp.repository.mongodb.user.UserRepository;
 
 public class AppUser implements UserDetails {
-
-	private static Collection<? extends GrantedAuthority> authorities = Arrays.asList(new GrantedAuthority() {
-		@Override
-		public String getAuthority() {
-			return "USER";
-		}
-	});
 	
 	@Autowired
 	private transient UserRepository userRepository;
@@ -31,6 +27,8 @@ public class AppUser implements UserDetails {
 	private String username;
 	
 	private String password;
+	
+	private Collection<? extends GrantedAuthority> authorities;
 	
 	private transient User user;
 
@@ -111,6 +109,9 @@ public class AppUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (authorities == null) {
+			authorities = Arrays.asList(new SimpleGrantedAuthority(getUser().getRole()));
+		}
 		return authorities;
 	}
 
