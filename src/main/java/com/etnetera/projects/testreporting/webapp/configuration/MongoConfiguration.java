@@ -1,16 +1,17 @@
 package com.etnetera.projects.testreporting.webapp.configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.etnetera.projects.testreporting.webapp.model.mongodb.user.User;
+import com.etnetera.projects.testreporting.webapp.user.UserHelper;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 
@@ -19,6 +20,8 @@ import com.mongodb.MongoClient;
 @EnableMongoAuditing
 class MongoConfiguration extends AbstractMongoConfiguration {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(MongoConfiguration.class);
+	
 	@Value("${mongodb.host}")
     private String host;
 
@@ -28,6 +31,16 @@ class MongoConfiguration extends AbstractMongoConfiguration {
     @Value("${mongodb.dbname}")
     private String dbName;
 	
+    @Bean
+    public GridFsTemplate gridFsTemplate() {
+        try {
+            return new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
+        } catch (Exception e) {
+            LOGGER.error("Failed to create GridFsTemplate.", e);
+        }
+        return null;
+    }
+    
 	@Override
 	protected String getDatabaseName() {
 		return dbName;
@@ -43,13 +56,7 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 		return new AuditorAware<String>() {
 			@Override
 			public String getCurrentAuditor() {
-				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-				if (authentication == null || !authentication.isAuthenticated()) {
-					return null;
-				}
-
-				return ((User) authentication.getPrincipal()).getId();
+				return UserHelper.getUserId();
 			}
 		};
 	}

@@ -1,5 +1,6 @@
 package com.etnetera.projects.testreporting.webapp.repository.elasticsearch.result;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +14,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.etnetera.projects.testreporting.webapp.model.elasticsearch.result.Result;
+import com.etnetera.projects.testreporting.webapp.model.elasticsearch.result.ResultAttachment;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.view.View;
 import com.etnetera.projects.testreporting.webapp.repository.mongodb.view.ViewRepository;
 import com.etnetera.projects.testreporting.webapp.utils.list.ListModifier;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSFile;
 
 /**
  * Result repository custom method implementation
@@ -28,7 +37,13 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	private ElasticsearchOperations template;
 
 	@Autowired
+	private ResultRepository resultRepository;
+	
+	@Autowired
 	private ViewRepository viewRepository;
+	
+	@Autowired
+    private GridFsTemplate gridFsTemplate;
 
 	@Override
 	public Page<Result> findByModifier(ListModifier modifier, List<String> allowedProjectIds) {
@@ -83,6 +98,65 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 				.withPageable(modifier.getPageable());
 		modifier.getSortBuilders().forEach(sb -> builder.withSort(sb));
 		return builder;
+	}
+	
+	@Override
+	public void delete(Result result) {
+		Assert.notNull(result, "Cannot delete 'null' result.");
+		List<ResultAttachment> attachments = result.getAttachments();
+		resultRepository.delete(result);
+		attachments.forEach(a -> gridFsTemplate.delete(Query.query(Criteria.where("_id").is(a.getFileId()))));
+	}
+
+	@Override
+	public Result save(Result result, List<ResultAttachment> attachments) {
+		result.setAttachments(attachments == null ? new ArrayList<>() : attachments);
+		return resultRepository.save(result);
+	}
+
+	@Override
+	public ResultAttachment createAttachment(Result result, MultipartFile file) throws IOException {
+		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+		
+		ResultAttachment attachment = new ResultAttachment();
+		attachment.setFileId(gridFile.getId().toString());
+		attachment.setName(gridFile.getFilename());
+		attachment.setContentType(gridFile.getContentType());
+		attachment.setSize(gridFile.getLength());
+		
+		result.addAttachment(attachment);
+		resultRepository.save(result);
+		
+		return attachment;
+	}
+	
+	@Override
+	public ResultAttachment updateAttachment(Result result, String attachmentId, MultipartFile file) throws IOException {
+		ResultAttachment attachment = result.getAttachment(attachmentId);
+		gridFsTemplate.delete(Query.query(Criteria.where("_id").is(attachment.getFileId())));
+		
+		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+		attachment.setFileId(gridFile.getId().toString());
+		attachment.setName(gridFile.getFilename());
+		attachment.setContentType(gridFile.getContentType());
+		attachment.setSize(gridFile.getLength());
+		
+		resultRepository.save(result);
+		
+		return attachment;
+	}
+
+	@Override
+	public void deleteAttachment(Result result, String attachmentId) {
+		ResultAttachment attachment = result.getAttachment(attachmentId);
+		gridFsTemplate.delete(Query.query(Criteria.where("_id").is(attachment.getFileId())));
+		result.removeAttachment(attachment);
+		resultRepository.save(result);
+	}
+
+	@Override
+	public GridFSDBFile getAttachmentFile(ResultAttachment attachment) {
+		return gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(attachment.getFileId())));
 	}
 
 }

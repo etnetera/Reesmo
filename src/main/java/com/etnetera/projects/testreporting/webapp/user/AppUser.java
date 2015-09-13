@@ -9,14 +9,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.etnetera.projects.testreporting.webapp.model.mongodb.project.Project;
-import com.etnetera.projects.testreporting.webapp.model.mongodb.user.ApiUser;
-import com.etnetera.projects.testreporting.webapp.model.mongodb.user.ManualUser;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.Permission;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.User;
 import com.etnetera.projects.testreporting.webapp.repository.mongodb.user.UserRepository;
 
 public class AppUser implements UserDetails {
 	
+	private static final long serialVersionUID = -1997854508838484884L;
+
 	@Autowired
 	private transient UserRepository userRepository;
 	

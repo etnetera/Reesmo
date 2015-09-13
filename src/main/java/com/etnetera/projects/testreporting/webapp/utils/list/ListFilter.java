@@ -22,6 +22,7 @@ public class ListFilter {
 	
 	private Object value;
 	
+	@SuppressWarnings("unchecked")
 	public FilterBuilder getFilterBuilder() {
 		if (StringUtils.isEmpty(comparator) || "TERM".equalsIgnoreCase(comparator)) {
 			return new BoolFilterBuilder().must(new TermFilterBuilder(field, value)).cache(true);

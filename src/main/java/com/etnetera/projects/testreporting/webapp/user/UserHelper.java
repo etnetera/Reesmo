@@ -3,7 +3,6 @@ package com.etnetera.projects.testreporting.webapp.user;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.etnetera.projects.testreporting.webapp.model.mongodb.user.Permission;
@@ -28,8 +27,20 @@ public class UserHelper {
 		return requireAppUser().isAllowedForProject(projectId, permission);
 	}
 	
+	public static String getUserId() {
+		AppUser appUser = getAppUser();
+		if (appUser != null) {
+			return appUser.getId();
+		}
+		return null;
+	}
+	
 	public static User getUser() {
-		return getUser(getSecurityContext());
+		AppUser appUser = getAppUser();
+		if (appUser != null) {
+			return appUser.getUser();
+		}
+		return null;
 	}
 	
 	public static AppUser requireAppUser() {
@@ -41,31 +52,15 @@ public class UserHelper {
 	}
 	
 	public static AppUser getAppUser() {
-		return getAppUser(getSecurityContext());
-	}
-	
-	public static User getUser(SecurityContext securityContext) {
-		AppUser appUser = getAppUser(securityContext);
-		if (appUser != null) {
-			return appUser.getUser();
-		}
-		return null;
-	}
-	
-	public static AppUser getAppUser(SecurityContext securityContext) {
-		Authentication auth = getAuthentication(securityContext);
+		Authentication auth = getAuthentication();
 		if (auth != null) {
 			return (AppUser) auth.getPrincipal();
 		}
 		return null;
 	}
 	
-	public static Authentication getAuthentication(SecurityContext securityContext) {
-		return securityContext.getAuthentication();
-	}
-	
-	public static SecurityContext getSecurityContext() {
-		return SecurityContextHolder.getContext();
+	public static Authentication getAuthentication() {
+		return SecurityContextHolder.getContext().getAuthentication();
 	}
 	
 }

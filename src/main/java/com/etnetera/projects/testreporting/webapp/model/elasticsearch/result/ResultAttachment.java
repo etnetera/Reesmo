@@ -17,8 +17,17 @@ public class ResultAttachment extends ElasticAuditedModel {
 	@Field(type = FieldType.String)
 	private String name;
 	
+	/**
+     * Reference id under which this file is stored in MongoDB GridFS.
+     */
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
-	private String path;
+    private String fileId;
+	
+	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+	private String contentType;
+	
+	@Field(type = FieldType.Long)
+	private long size;
 
 	public String getId() {
 		return id;
@@ -36,12 +45,28 @@ public class ResultAttachment extends ElasticAuditedModel {
 		this.name = name;
 	}
 
-	public String getPath() {
-		return path;
+	public String getFileId() {
+		return fileId;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
 	}
 	
 }

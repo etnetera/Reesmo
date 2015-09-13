@@ -225,4 +225,17 @@ public class Result extends ElasticAuditedModel {
 		this.links = links;
 	}
 	
+	public ResultAttachment getAttachment(String attachmentId) {
+		return attachments.stream().filter(a -> a.getId().equals(attachmentId)).findFirst().orElse(null);
+	}
+	
+	public ResultAttachment addAttachment(ResultAttachment attachment) {
+		attachments.add(attachment);
+		return attachment;
+	}
+	
+	public void removeAttachment(ResultAttachment attachment) {
+		attachments.remove(attachment); 
+	}
+	
 }

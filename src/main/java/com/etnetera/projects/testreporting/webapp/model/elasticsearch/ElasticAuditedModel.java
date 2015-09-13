@@ -8,9 +8,9 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 abstract public class ElasticAuditedModel {
 		
-	private String createdBy = "test";
+	private String createdBy;
 	
-	private String updatedBy = "test";
+	private String updatedBy;
 	
 	@Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
 	private Date createdAt;
