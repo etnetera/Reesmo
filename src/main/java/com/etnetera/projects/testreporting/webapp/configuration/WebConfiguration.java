@@ -1,8 +1,11 @@
 package com.etnetera.projects.testreporting.webapp.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.mustache.MustacheViewResolver;
@@ -13,6 +16,8 @@ import org.springframework.web.servlet.view.mustache.java.MustacheJTemplateFacto
  */
 @Configuration
 public class WebConfiguration extends WebMvcConfigurationSupport {
+	
+	public static final long FILE_SIZE_LIMIT = 31457280l;
 	
 	@Autowired
 	ResourceLoader resourceLoader;
@@ -31,5 +36,12 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 	    mustacheViewResolver.setTemplateFactory(mustacheFactory);
 	    return mustacheViewResolver;
 	}
+	
+	@Bean
+    public static MultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(FILE_SIZE_LIMIT);
+        return multipartResolver;
+    }
 	
 }

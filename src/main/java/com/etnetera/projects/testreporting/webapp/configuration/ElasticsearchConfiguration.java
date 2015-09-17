@@ -11,10 +11,10 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-import com.etnetera.projects.testreporting.webapp.elasticsearch.CustomElasticsearchRepositoryFactoryBean;
+import com.etnetera.projects.testreporting.webapp.elasticsearch.AuditedElasticsearchRepositoryFactoryBean;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "com.etnetera.projects.testreporting.webapp.repository.elasticsearch", repositoryFactoryBeanClass = CustomElasticsearchRepositoryFactoryBean.class)
+@EnableElasticsearchRepositories(basePackages = "com.etnetera.projects.testreporting.webapp.repository.elasticsearch", repositoryFactoryBeanClass = AuditedElasticsearchRepositoryFactoryBean.class)
 public class ElasticsearchConfiguration {
 
 	@Value("${elasticsearch.host}")

@@ -8,7 +8,7 @@ import org.springframework.data.repository.core.support.RepositoryFactoryBeanSup
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.util.Assert;
 
-public class CustomElasticsearchRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
+public class AuditedElasticsearchRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
 		extends RepositoryFactoryBeanSupport<T, S, ID> {
 
 	private ElasticsearchOperations operations;
@@ -35,7 +35,7 @@ public class CustomElasticsearchRepositoryFactoryBean<T extends Repository<S, ID
 
 	@Override
 	protected RepositoryFactorySupport createRepositoryFactory() {
-		return new CustomElasticsearchRepositoryFactory(operations);
+		return new AuditedElasticsearchRepositoryFactory(operations);
 	}
 
 }

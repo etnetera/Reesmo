@@ -1,13 +1,16 @@
 package com.etnetera.projects.testreporting.webapp.model.mongodb;
 
-import org.joda.time.LocalDateTime;
+import java.util.Date;
+
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 
-abstract public class MongoAuditedModel {
+import com.etnetera.projects.testreporting.webapp.model.AuditedModel;
+
+abstract public class MongoAuditedModel implements AuditedModel {
 	
 	@Version
 	private Long version;
@@ -19,10 +22,10 @@ abstract public class MongoAuditedModel {
 	private String updatedBy;
 	
 	@CreatedDate
-	private LocalDateTime createdAt;
+	private Date createdAt;
 	
 	@LastModifiedDate
-	private LocalDateTime updatedAt;
+	private Date updatedAt;
 
 	public Long getVersion() {
 		return version;
@@ -32,35 +35,43 @@ abstract public class MongoAuditedModel {
 		this.version = version;
 	}
 
+	@Override
 	public String getCreatedBy() {
 		return createdBy;
 	}
 
+	@Override
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
+	@Override
 	public String getUpdatedBy() {
 		return updatedBy;
 	}
 
+	@Override
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	@Override
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	@Override
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public LocalDateTime getUpdatedAt() {
+	@Override
+	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(LocalDateTime updatedAt) {
+	@Override
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 	

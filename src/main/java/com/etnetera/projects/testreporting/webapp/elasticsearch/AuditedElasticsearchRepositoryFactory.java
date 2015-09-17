@@ -6,11 +6,11 @@ import org.springframework.data.elasticsearch.repository.support.ElasticsearchEn
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
 
-public class CustomElasticsearchRepositoryFactory extends ElasticsearchRepositoryFactory {
+public class AuditedElasticsearchRepositoryFactory extends ElasticsearchRepositoryFactory {
 
 	private final ElasticsearchOperations localElasticsearchOperations;
 	
-	public CustomElasticsearchRepositoryFactory(ElasticsearchOperations elasticsearchOperations) {
+	public AuditedElasticsearchRepositoryFactory(ElasticsearchOperations elasticsearchOperations) {
 		super(elasticsearchOperations);
 		this.localElasticsearchOperations = elasticsearchOperations;
 	}
@@ -23,7 +23,7 @@ public class CustomElasticsearchRepositoryFactory extends ElasticsearchRepositor
 		Object repository;
 
 		if (entityInformation.getIdType() == String.class) {
-			AbstractElasticsearchRepository r = new CustomSimpleElasticsearchRepository(getEntityInformation(metadata.getDomainType()),
+			AbstractElasticsearchRepository r = new AuditedSimpleElasticsearchRepository(getEntityInformation(metadata.getDomainType()),
 					localElasticsearchOperations);
 			r.setEntityClass(metadata.getDomainType());
 			repository = r;

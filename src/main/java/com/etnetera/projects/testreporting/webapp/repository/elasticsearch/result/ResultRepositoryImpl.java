@@ -24,6 +24,7 @@ import com.etnetera.projects.testreporting.webapp.model.elasticsearch.result.Res
 import com.etnetera.projects.testreporting.webapp.model.elasticsearch.result.ResultAttachment;
 import com.etnetera.projects.testreporting.webapp.model.mongodb.view.View;
 import com.etnetera.projects.testreporting.webapp.repository.mongodb.view.ViewRepository;
+import com.etnetera.projects.testreporting.webapp.utils.ModelAuditor;
 import com.etnetera.projects.testreporting.webapp.utils.list.ListModifier;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
@@ -105,7 +106,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		Assert.notNull(result, "Cannot delete 'null' result.");
 		List<ResultAttachment> attachments = result.getAttachments();
 		resultRepository.delete(result);
-		attachments.forEach(a -> gridFsTemplate.delete(Query.query(Criteria.where("_id").is(a.getFileId()))));
+		attachments.forEach(a -> gridFsTemplate.delete(Query.query(Criteria.where("_id").is(a.getId()))));
 	}
 
 	@Override
@@ -119,10 +120,11 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
 		
 		ResultAttachment attachment = new ResultAttachment();
-		attachment.setFileId(gridFile.getId().toString());
+		attachment.setId(gridFile.getId().toString());
 		attachment.setName(gridFile.getFilename());
 		attachment.setContentType(gridFile.getContentType());
 		attachment.setSize(gridFile.getLength());
+		ModelAuditor.audit(attachment);
 		
 		result.addAttachment(attachment);
 		resultRepository.save(result);
@@ -133,13 +135,14 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	@Override
 	public ResultAttachment updateAttachment(Result result, String attachmentId, MultipartFile file) throws IOException {
 		ResultAttachment attachment = result.getAttachment(attachmentId);
-		gridFsTemplate.delete(Query.query(Criteria.where("_id").is(attachment.getFileId())));
+		gridFsTemplate.delete(Query.query(Criteria.where("_id").is(attachment.getId())));
 		
 		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
-		attachment.setFileId(gridFile.getId().toString());
+		attachment.setId(gridFile.getId().toString());
 		attachment.setName(gridFile.getFilename());
 		attachment.setContentType(gridFile.getContentType());
 		attachment.setSize(gridFile.getLength());
+		ModelAuditor.audit(attachment);
 		
 		resultRepository.save(result);
 		
@@ -149,14 +152,14 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	@Override
 	public void deleteAttachment(Result result, String attachmentId) {
 		ResultAttachment attachment = result.getAttachment(attachmentId);
-		gridFsTemplate.delete(Query.query(Criteria.where("_id").is(attachment.getFileId())));
+		gridFsTemplate.delete(Query.query(Criteria.where("_id").is(attachment.getId())));
 		result.removeAttachment(attachment);
 		resultRepository.save(result);
 	}
 
 	@Override
 	public GridFSDBFile getAttachmentFile(ResultAttachment attachment) {
-		return gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(attachment.getFileId())));
+		return gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(attachment.getId())));
 	}
 
 }
