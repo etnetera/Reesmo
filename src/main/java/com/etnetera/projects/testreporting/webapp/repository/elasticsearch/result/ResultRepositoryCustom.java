@@ -47,10 +47,11 @@ public interface ResultRepositoryCustom {
 	 * 
 	 * @param result
 	 * @param file
+	 * @param path 
 	 * @return
 	 * @throws IOException 
 	 */
-	public ResultAttachment createAttachment(Result result, MultipartFile file) throws IOException;
+	public ResultAttachment createAttachment(Result result, MultipartFile file, String path) throws IOException;
 	
 	/**
 	 * Updates existing attachment.

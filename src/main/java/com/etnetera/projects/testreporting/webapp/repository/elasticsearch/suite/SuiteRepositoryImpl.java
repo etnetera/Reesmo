@@ -3,6 +3,8 @@ package com.etnetera.projects.testreporting.webapp.repository.elasticsearch.suit
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.TermsFilterBuilder;
@@ -23,6 +25,13 @@ public class SuiteRepositoryImpl implements SuiteRepositoryCustom {
 	@Autowired
 	private ElasticsearchOperations template;
 
+	@PostConstruct
+	private void init() {
+        if (!template.indexExists(Suite.class)) {
+            template.createIndex(Suite.class);
+        }
+	}
+	
 	@Override
 	public Page<Suite> findByModifier(ListModifier modifier, List<String> allowedProjectIds) {
 		if (allowedProjectIds == null) {

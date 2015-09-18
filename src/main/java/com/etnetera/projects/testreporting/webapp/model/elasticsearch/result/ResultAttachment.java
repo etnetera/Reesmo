@@ -17,7 +17,10 @@ public class ResultAttachment extends ElasticAuditedModel {
 	@Field(type = FieldType.String)
 	private String name;
 	
-	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+	@Field(type = FieldType.String)
+	private String path;
+	
+	@Field(type = FieldType.String)
 	private String contentType;
 	
 	@Field(type = FieldType.Long)
@@ -37,6 +40,14 @@ public class ResultAttachment extends ElasticAuditedModel {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public String getContentType() {

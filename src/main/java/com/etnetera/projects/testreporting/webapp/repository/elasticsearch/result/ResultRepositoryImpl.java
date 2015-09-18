@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
@@ -46,6 +49,13 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	@Autowired
     private GridFsTemplate gridFsTemplate;
 
+	@PostConstruct
+	private void init() {
+        if (!template.indexExists(Result.class)) {
+            template.createIndex(Result.class);
+        }
+	}
+	
 	@Override
 	public Page<Result> findByModifier(ListModifier modifier, List<String> allowedProjectIds) {
 		if (allowedProjectIds == null) {
@@ -116,12 +126,13 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	}
 
 	@Override
-	public ResultAttachment createAttachment(Result result, MultipartFile file) throws IOException {
+	public ResultAttachment createAttachment(Result result, MultipartFile file, String path) throws IOException {
 		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
 		
 		ResultAttachment attachment = new ResultAttachment();
 		attachment.setId(gridFile.getId().toString());
 		attachment.setName(gridFile.getFilename());
+		attachment.setPath(StringUtils.trimToNull(path));
 		attachment.setContentType(gridFile.getContentType());
 		attachment.setSize(gridFile.getLength());
 		ModelAuditor.audit(attachment);

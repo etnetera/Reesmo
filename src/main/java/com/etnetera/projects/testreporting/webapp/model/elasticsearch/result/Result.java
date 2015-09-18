@@ -58,13 +58,13 @@ public class Result extends ElasticAuditedModel {
 	@Field(type = FieldType.Boolean)
 	private boolean automated;
 	
-	@Field(type = FieldType.Object)
+	@Field(type = FieldType.String)
 	private List<String> labels = new ArrayList<>();
 	
-	@Field(type = FieldType.Object)
+	@Field(type = FieldType.String)
 	private List<TestCategory> categories = new ArrayList<>();
 	
-	@Field(type = FieldType.Object)
+	@Field(type = FieldType.String)
 	private List<TestType> types = new ArrayList<>();
 	
 	@Field(type = FieldType.Nested)

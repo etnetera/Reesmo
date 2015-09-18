@@ -34,11 +34,11 @@ public class ResultAttachmentRestApiController {
 	private ResultRepository resultRepository;
 
 	@RequestMapping(value = "/results/attachment/create/{resultId}", method = RequestMethod.POST, produces = "application/json")
-	public ResultAttachment createResultAttachment(@PathVariable String resultId, @RequestParam MultipartFile file)
-			throws IOException {
+	public ResultAttachment createResultAttachment(@PathVariable String resultId, @RequestParam MultipartFile file,
+			@RequestParam(required = false) String path) throws IOException {
 		Result result = resultRepository.findOne(resultId);
 		UserHelper.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
-		return resultRepository.createAttachment(result, file);
+		return resultRepository.createAttachment(result, file, path);
 	}
 
 	@RequestMapping(value = "/results/attachment/update/{resultId}/{attachmentId}", method = RequestMethod.POST, produces = "application/json")
@@ -48,7 +48,7 @@ public class ResultAttachmentRestApiController {
 		UserHelper.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
 		return resultRepository.updateAttachment(result, attachmentId, file);
 	}
-	
+
 	@RequestMapping(value = "/results/attachment/delete/{resultId}/{attachmentId}", method = RequestMethod.GET, produces = "application/json")
 	public void deleteResultAttachment(@PathVariable String resultId, @PathVariable String attachmentId) {
 		Result result = resultRepository.findOne(resultId);
