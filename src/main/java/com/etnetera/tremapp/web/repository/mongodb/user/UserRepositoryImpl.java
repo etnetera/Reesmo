@@ -25,11 +25,13 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		BCryptPasswordEncoder passEncoder = new BCryptPasswordEncoder();
 		
 		Project p1 = new Project();
-		p1.setId("tp1");
-		p1.setKey("TP1");
+		p1.setId("p1");
+		p1.setKey("P1");
+		p1.setName("Project 1");
 		Project p2 = new Project();
-		p2.setId("tp2");
-		p2.setKey("TP2");
+		p2.setId("p2");
+		p2.setKey("P2");
+		p2.setName("Project 2");
 		
 		ProjectGroup pg1 = new ProjectGroup();
 		pg1.setProjects(Arrays.asList(p1, p2));
