@@ -112,7 +112,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	}
 	
 	@Override
-	public void delete(Result result) {
+	public void deleteResult(Result result) {
 		Assert.notNull(result, "Cannot delete 'null' result.");
 		List<ResultAttachment> attachments = result.getAttachments();
 		resultRepository.delete(result);
@@ -120,7 +120,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	}
 
 	@Override
-	public Result save(Result result, List<ResultAttachment> attachments) {
+	public Result saveResult(Result result, List<ResultAttachment> attachments) {
 		result.setAttachments(attachments == null ? new ArrayList<>() : attachments);
 		return resultRepository.save(result);
 	}

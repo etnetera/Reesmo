@@ -29,7 +29,7 @@ public interface ResultRepositoryCustom {
 	 * 
 	 * @param result
 	 */
-	public void delete(Result result);
+	public void deleteResult(Result result);
 	
 	/**
 	 * Save result with specific attachments, overriding every existing.
@@ -40,7 +40,7 @@ public interface ResultRepositoryCustom {
 	 * @param attachments
 	 * @return
 	 */
-	public Result save(Result result, List<ResultAttachment> attachments);
+	public Result saveResult(Result result, List<ResultAttachment> attachments);
 	
 	/**
 	 * Creates new attachment.

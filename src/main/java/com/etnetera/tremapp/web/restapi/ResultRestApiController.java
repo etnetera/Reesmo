@@ -35,7 +35,7 @@ public class ResultRestApiController {
 	public Result createResult(@RequestBody Result result) {
 		UserHelper.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
 		// save result without attachments
-		return resultRepository.save(result, null);
+		return resultRepository.saveResult(result, null);
 	}
 	
 	@RequestMapping(value = "/results/get/{resultId}", method = RequestMethod.GET)
@@ -52,14 +52,14 @@ public class ResultRestApiController {
 		UserHelper.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
 		result.setId(resultId);
 		// save result without modifying attachments
-		return resultRepository.save(result, persistedResult.getAttachments());
+		return resultRepository.saveResult(result, persistedResult.getAttachments());
 	}
 	
 	@RequestMapping(value = "/results/delete/{resultId}", method = RequestMethod.GET)
 	public void deleteResult(@PathVariable String resultId) {
 		Result result = resultRepository.findOne(resultId);
 		UserHelper.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
-		resultRepository.delete(result);
+		resultRepository.deleteResult(result);
 	}
 	
 	@RequestMapping(value = "/results/list", method = RequestMethod.GET)

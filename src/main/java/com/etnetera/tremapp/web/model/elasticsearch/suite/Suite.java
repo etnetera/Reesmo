@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.etnetera.tremapp.web.model.elasticsearch.ElasticAuditedModel;
+import com.etnetera.tremapp.web.model.elasticsearch.result.TestStatus;
 
 @Document(indexName = "resultdata", type = "suite")
 public class Suite extends ElasticAuditedModel {
@@ -39,6 +40,9 @@ public class Suite extends ElasticAuditedModel {
 	
 	@Field(type = FieldType.Long)
 	private Long duration;
+	
+	@Field(type = FieldType.String)
+	private TestStatus status;
 	
 	@Field(type = FieldType.Object)
 	private List<String> resultIds = new ArrayList<>();
@@ -108,6 +112,14 @@ public class Suite extends ElasticAuditedModel {
 
 	public void setDuration(Long duration) {
 		this.duration = duration;
+	}
+	
+	public TestStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TestStatus status) {
+		this.status = status;
 	}
 
 	public List<String> getResultIds() {
