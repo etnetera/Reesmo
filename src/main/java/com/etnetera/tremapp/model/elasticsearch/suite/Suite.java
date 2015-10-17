@@ -44,10 +44,10 @@ public class Suite extends ElasticAuditedModel {
 	@Field(type = FieldType.String)
 	private TestStatus status;
 	
-	@Field(type = FieldType.Object)
+	@Field(type = FieldType.String)
 	private List<String> resultIds = new ArrayList<>();
 	
-	@Field(type = FieldType.Object)
+	@Field(type = FieldType.String)
 	private List<String> labels = new ArrayList<>();
 
 	public String getId() {

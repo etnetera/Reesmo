@@ -43,12 +43,11 @@ public class SuiteRestApiController {
 		return suiteRepository.save(suite);
 	}
 	
-	@RequestMapping(value = "/suites/{suiteId}", method = RequestMethod.DELETE)
-	public Suite deleteSuite(@PathVariable String suiteId) {
+	@RequestMapping(value = "/suites/delete/{suiteId}", method = RequestMethod.GET)
+	public void deleteSuite(@PathVariable String suiteId) {
 		Suite suite = suiteRepository.findOne(suiteId);
 		UserHelper.checkProjectPermission(suite.getProjectId(), Permission.EDITOR);
 		suiteRepository.delete(suite);
-		return suite;
 	}
 	
 	@RequestMapping(value = "/suites/list", method = RequestMethod.GET)
