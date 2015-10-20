@@ -22,12 +22,7 @@ public enum TestStatus {
 	/**
 	 * Test that did not run for some reason, e.g. test dependencies.
 	 */
-	CANCELED, 
-	
-	/**
-	 * Test that did not run because is not implemented.
-	 */
-	PENDING,
+	SKIPPED,
 
 	/**
 	 * A situation in which a test is run and all actual outcomes match the
@@ -37,8 +32,8 @@ public enum TestStatus {
 	
 	/**
 	 * Special status indicating that test 
-	 * is not yet completely stored. It is just running.
+	 * is not yet completely stored.
 	 */
-	RUNNING
+	DRAFT
 	
 }

@@ -46,9 +46,6 @@ public class Result extends ElasticAuditedModel {
 	@Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
 	private Date endedAt;
 	
-	@Field(type = FieldType.Long)
-	private Long duration;
-	
 	@Field(type = FieldType.String)
 	private TestStatus status;
 	
@@ -157,14 +154,6 @@ public class Result extends ElasticAuditedModel {
 
 	public void setEndedAt(Date endedAt) {
 		this.endedAt = endedAt;
-	}
-
-	public Long getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Long duration) {
-		this.duration = duration;
 	}
 
 	public TestStatus getStatus() {
