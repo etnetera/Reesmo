@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "monitoring")
 public class EmailMonitoring extends Monitoring {
 
 	private List<String> emails;

@@ -1,5 +1,7 @@
 package com.etnetera.tremapp.repository.mongodb.user;
 
+import java.util.List;
+
 import com.etnetera.tremapp.model.mongodb.user.User;
 
 /**
@@ -7,6 +9,8 @@ import com.etnetera.tremapp.model.mongodb.user.User;
  */
 public interface UserRepositoryCustom {
 
+	public List<User> findAll();
+	
 	public User findOne(String id);
 	
 	public User findOneByUsername(String username);

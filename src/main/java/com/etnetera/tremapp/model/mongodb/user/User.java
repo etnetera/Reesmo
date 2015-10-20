@@ -7,14 +7,12 @@ import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroupPermission;
 import com.etnetera.tremapp.user.ForbiddenException;
 
-@Document(collection = "user")
 abstract public class User extends MongoAuditedModel {
 
 	@Id

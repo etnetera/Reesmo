@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.suite.Suite;
+import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.view.View;
 import com.etnetera.tremapp.repository.elasticsearch.result.ResultRepository;
 import com.etnetera.tremapp.repository.elasticsearch.suite.SuiteRepository;
+import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
 import com.etnetera.tremapp.repository.mongodb.view.ViewRepository;
 import com.etnetera.tremapp.restapi.output.RestApiList;
 import com.etnetera.tremapp.user.UserHelper;
@@ -29,11 +31,23 @@ public class ResultRestApiController {
 	private SuiteRepository suiteRepository;
 	
 	@Autowired
+	private ProjectRepository projectRepository;
+	
+	@Autowired
 	private ViewRepository viewRepository;
 	
 	@RequestMapping(value = "/results/create", method = RequestMethod.POST)
 	public Result createResult(@RequestBody Result result) {
 		UserHelper.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
+		// save result without attachments
+		return resultRepository.saveResult(result, null);
+	}
+	
+	@RequestMapping(value = "/results/create/{projectKey}", method = RequestMethod.POST)
+	public Result createResult(@PathVariable String projectKey, @RequestBody Result result) {
+		Project project = projectRepository.findOneByKey(projectKey);
+		UserHelper.checkProjectPermission(project.getId(), Permission.EDITOR);
+		result.setProjectId(project.getId());
 		// save result without attachments
 		return resultRepository.saveResult(result, null);
 	}
@@ -49,7 +63,10 @@ public class ResultRestApiController {
 	public Result updateResult(@PathVariable String resultId, @RequestBody Result result) {
 		Result persistedResult = resultRepository.findOne(resultId);
 		UserHelper.checkProjectPermission(persistedResult.getProjectId(), Permission.EDITOR);
-		UserHelper.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
+		if (result.getProjectId() == null)
+			result.setProjectId(persistedResult.getProjectId());
+		else if (!result.getProjectId().equals(persistedResult.getProjectId()))
+			UserHelper.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
 		result.setId(resultId);
 		// save result without modifying attachments
 		return resultRepository.saveResult(result, persistedResult.getAttachments());

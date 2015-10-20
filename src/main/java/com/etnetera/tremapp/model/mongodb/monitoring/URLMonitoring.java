@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "monitoring")
 public class URLMonitoring extends Monitoring {
 
 	private List<String> urls;

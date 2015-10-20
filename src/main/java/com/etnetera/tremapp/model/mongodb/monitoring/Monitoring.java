@@ -4,9 +4,10 @@ import org.joda.time.Interval;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.view.View;
 
-abstract public class Monitoring {
+abstract public class Monitoring extends MongoAuditedModel {
 
 	@Id
 	private String id;

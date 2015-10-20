@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etnetera.tremapp.model.elasticsearch.suite.Suite;
+import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.elasticsearch.suite.SuiteRepository;
+import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
 import com.etnetera.tremapp.restapi.output.RestApiList;
 import com.etnetera.tremapp.user.UserHelper;
 import com.etnetera.tremapp.utils.list.ListModifier;
@@ -21,9 +23,20 @@ public class SuiteRestApiController {
 	@Autowired
 	private SuiteRepository suiteRepository;
 	
+	@Autowired
+	private ProjectRepository projectRepository;
+	
 	@RequestMapping(value = "/suites/create", method = RequestMethod.POST)
 	public Suite createSuite(@RequestBody Suite suite) {
 		UserHelper.checkProjectPermission(suite.getProjectId(), Permission.EDITOR);
+		return suiteRepository.save(suite);
+	}
+	
+	@RequestMapping(value = "/suites/create/{projectKey}", method = RequestMethod.POST)
+	public Suite createSuite(@PathVariable String projectKey, @RequestBody Suite suite) {
+		Project project = projectRepository.findOneByKey(projectKey);
+		UserHelper.checkProjectPermission(project.getId(), Permission.EDITOR);
+		suite.setProjectId(project.getId());
 		return suiteRepository.save(suite);
 	}
 	
@@ -38,7 +51,10 @@ public class SuiteRestApiController {
 	public Suite updateSuite(@PathVariable String suiteId, @RequestBody Suite suite) {
 		Suite persistedSuite = suiteRepository.findOne(suiteId);
 		UserHelper.checkProjectPermission(persistedSuite.getProjectId(), Permission.EDITOR);
-		UserHelper.checkProjectPermission(suite.getProjectId(), Permission.EDITOR);
+		if (suite.getProjectId() == null)
+			suite.setProjectId(persistedSuite.getProjectId());
+		else if (!suite.getProjectId().equals(persistedSuite.getProjectId()))
+			UserHelper.checkProjectPermission(suite.getProjectId(), Permission.EDITOR);
 		suite.setSuiteId(suiteId);
 		return suiteRepository.save(suite);
 	}

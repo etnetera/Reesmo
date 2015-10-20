@@ -2,7 +2,7 @@ package com.etnetera.tremapp.model.mongodb.monitoring;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "monitoring")
 public class DashboardMonitoring extends Monitoring {
 
 	private String position;
