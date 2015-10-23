@@ -6,29 +6,24 @@ function usage() {
     echo ""
     echo "Options:"
     echo "  -s  server where WAR will be deployed (i.e. myserver.mydomain.com)"
+    echo "  -w  path to WAR to be deployed (i.e. target/tremapp-0.0.1-SNAPSHOT.war)"
     echo "  -u  (optional) user which will connect to server (defaults to actual user)"
-    echo "  -d  (optional) path to checkout directory (defaults to cwd)"
-    echo "  -w  (optional) path to WAR to be deployed (defaults to CHECKOUT_DIR/target/tremapp.*war)
     echo "  -v  (optional) verbose mode"
     echo "  -h  (optional) prints help (this screen)"
 }
 
 # default arguments
 WAR_LOCATION=""
-CHECKOUT_DIR=`pwd`
 VERBOSITY=0
 TARGET_SERVER=""
 TARGET_USER=$USER
 
 # parse arguments
-while getopts ":hvd:w:" opt; do
+while getopts ":hvw:s:u:" opt; do
     case $opt in
         h)
             usage
             exit 0;
-            ;;
-        d)
-            CHECKOUT_DIR="${OPTARG%/}"
             ;;
         v)
             VERBOSITY=$((VERBOSITY+1))
@@ -48,15 +43,9 @@ while getopts ":hvd:w:" opt; do
     esac
 done
 
-if [ "$WAR_LOCATION" == "" ]; then
-    # assumes that matches only one file
-    WAR_LOCATION="$CHECKOUT_DIR/target/tremapp"*war
-fi
-
 if [ "$VERBOSITY" -gt 0 ]; then
 	echo "TARGET_SERVER = $TARGET_SERVER"
     echo "TARGET_USER = $TARGET_USER"
-    echo "CHECKOUT_DIR = $CHECKOUT_DIR"
     echo "WAR_LOCATION = $WAR_LOCATION"
 fi
 
