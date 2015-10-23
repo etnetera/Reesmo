@@ -55,7 +55,7 @@ public class SuiteRestApiController {
 			suite.setProjectId(persistedSuite.getProjectId());
 		else if (!suite.getProjectId().equals(persistedSuite.getProjectId()))
 			UserHelper.checkProjectPermission(suite.getProjectId(), Permission.EDITOR);
-		suite.setSuiteId(suiteId);
+		suite.setId(suiteId);
 		return suiteRepository.save(suite);
 	}
 	
