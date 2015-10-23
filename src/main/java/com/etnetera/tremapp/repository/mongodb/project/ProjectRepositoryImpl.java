@@ -18,7 +18,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	}
 	
 	@Override
-	public Project findOne(String id) {
+	public Project findOneById(String id) {
 		for (Project p : getProjects()) {
 			if (p.getId().equals(id)) return p;
 		}

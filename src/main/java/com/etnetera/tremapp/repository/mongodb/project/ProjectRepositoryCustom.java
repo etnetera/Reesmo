@@ -11,7 +11,7 @@ public interface ProjectRepositoryCustom {
 
 	public List<Project> findAll();
 	
-	public Project findOne(String id);
+	public Project findOneById(String id);
 	
 	public Project findOneByKey(String key);
 	

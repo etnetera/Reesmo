@@ -31,7 +31,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	}
 	
 	@Override
-	public User findOne(String id) {
+	public User findOneById(String id) {
 		for (User u : getUsers()) {
 			if (u.getId().equals(id)) return u;
 		}

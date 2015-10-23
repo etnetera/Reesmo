@@ -74,7 +74,7 @@ public class AppUser implements UserDetails {
 
 	public User getUser() {
 		if (user == null) {
-			User u = userRepository.findOne(id);
+			User u = userRepository.findOneById(id);
 			if (u == null) {
 				throw new UnauthorizedException("User with id " + id + " was not found in repository.");
 			}

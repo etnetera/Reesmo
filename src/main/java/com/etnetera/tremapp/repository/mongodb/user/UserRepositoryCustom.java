@@ -11,7 +11,7 @@ public interface UserRepositoryCustom {
 
 	public List<User> findAll();
 	
-	public User findOne(String id);
+	public User findOneById(String id);
 	
 	public User findOneByUsername(String username);
 	
