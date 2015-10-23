@@ -11,10 +11,11 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.etnetera.tremapp.Tremapp;
 import com.etnetera.tremapp.model.elasticsearch.ElasticAuditedModel;
 import com.etnetera.tremapp.model.elasticsearch.result.TestStatus;
 
-@Document(indexName = "resultdata", type = "suite")
+@Document(indexName = Tremapp.ELASTICSEARCH_INDEX, type = "suite")
 public class Suite extends ElasticAuditedModel {
 	
 	@Id

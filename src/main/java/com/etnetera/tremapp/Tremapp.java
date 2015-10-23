@@ -6,4 +6,6 @@ public class Tremapp {
 	
 	public static final String PACKAGE = "com.etnetera.tremapp";
 	
+	public static final String ELASTICSEARCH_INDEX = "tremapp";
+	
 }

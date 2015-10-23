@@ -11,9 +11,10 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.etnetera.tremapp.Tremapp;
 import com.etnetera.tremapp.model.elasticsearch.ElasticAuditedModel;
 
-@Document(indexName = "resultdata", type = "result")
+@Document(indexName = Tremapp.ELASTICSEARCH_INDEX, type = "result")
 public class Result extends ElasticAuditedModel {
 	
 	@Id
