@@ -74,7 +74,7 @@ TOMCAT_APP_DIR="$TOMCAT_WEBAPPS_DIR/ROOT"
 BACKUP_DIR="/opt/tomcat/backup"
 # must be writable
 TOMCAT_APP_WAR="$TOMCAT_WEBAPPS_DIR/tremapp.war"
-TOMCAT_SERVICE_NAME="tremapp"
+TOMCAT_SERVICE_NAME="tomcat"
 DATE=$(date +%Y-%m-%d_%H-%M-%S)
 
 # make sure backup dir exists
