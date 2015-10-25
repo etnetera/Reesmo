@@ -66,7 +66,7 @@ else
 	echo "================================================================================"
 ssh ${TARGET_USER}@${TARGET_SERVER} << "ENDSSH"
 #!/bin/bash
-NEW_BUILD="/home/$TARGET_USER/tremapp.war"
+NEW_BUILD="/home/$USER/tremapp.war"
 TOMCAT_WEBAPPS_DIR="/opt/tomcat/webapps"
 # must be writable
 TOMCAT_APP_DIR="$TOMCAT_WEBAPPS_DIR/ROOT"
