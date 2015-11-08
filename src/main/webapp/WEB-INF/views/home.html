@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html layout:decorator="layout/main">
+<head>
+	<title>Home</title>
+</head>
 <body>
-	{{title}}
+	<div layout:fragment="content">
+		<span th:text="${title}">home title</span>
+	</div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.etnetera.tremapp.configuration;
 
+import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
@@ -10,6 +11,8 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.etnetera.tremapp.Tremapp;
+import com.github.dandelion.core.web.DandelionFilter;
+import com.github.dandelion.core.web.DandelionServlet;
 
 /**
  * Initializes whole webapp and configuration.
@@ -23,9 +26,19 @@ public class Initializer extends AbstractSecurityWebApplicationInitializer {
 	public void beforeSpringSecurityFilterChain(ServletContext servletContext) {
     	WebApplicationContext context = getContext();
         servletContext.addListener(new ContextLoaderListener(context));
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping(MAPPING_URL);
+        
+        // Register the Dandelion filter
+        FilterRegistration.Dynamic dandelionFilter = servletContext.addFilter("DandelionFilter", new DandelionFilter());
+        dandelionFilter.addMappingForUrlPatterns(null, false, "/*");
+        
+        ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
+        dispatcherServlet.setLoadOnStartup(1);
+        dispatcherServlet.addMapping(MAPPING_URL);
+        
+        // Register the Dandelion servlet
+        ServletRegistration.Dynamic dandelionServlet = servletContext.addServlet("DandelionServlet", new DandelionServlet());
+        dandelionServlet.setLoadOnStartup(2);
+        dandelionServlet.addMapping("/dandelion-assets/*");
 	}
 
     private AnnotationConfigWebApplicationContext getContext() {
