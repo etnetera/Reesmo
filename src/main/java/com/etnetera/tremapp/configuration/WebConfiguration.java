@@ -1,8 +1,10 @@
 package com.etnetera.tremapp.configuration;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -28,6 +30,14 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 
 	public static final long FILE_SIZE_LIMIT = 31457280l;
 
+	@Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations("/static/", "/",
+                "classpath:/META-INF/web-resources/");
+        registry.addResourceHandler("/favicon.ico").addResourceLocations("/");
+        registry.addResourceHandler("/robots.txt").addResourceLocations("/");
+    }
+	
 	@Bean
 	public static MultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
@@ -62,12 +72,12 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 		return resolver;
 	}
 	
-	@Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("/static/", "/",
-                "classpath:/META-INF/web-resources/");
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("/");
-        registry.addResourceHandler("/robots.txt").addResourceLocations("/");
-    }
+	@Bean
+	public MessageSource messageSource() {
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setBasename("i18n/messages");
+		messageSource.setDefaultEncoding("UTF-8");
+		return messageSource;
+	}
 
 }

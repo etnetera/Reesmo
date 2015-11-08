@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Tremapp</title>
+<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE" th:text="#{app.name}"></title>
 <!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
 <link rel="stylesheet" th:href="@{/static/bootstrap/css/bootstrap.min.css}" href="../../../static/bootstrap/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
-<link rel="stylesheet" th:href="@{/static/dist/css/AdminLTE.min.css}" href="../../../static/dist/css/AdminLTE.min.css"/>
-<link rel="stylesheet" th:href="@{/static/dist/css/skins/skin-blue.min.css}" href="../../../static/dist/css/skins/skin-blue.min.css"/>
+<link rel="stylesheet" th:href="@{/static/dist/css/AdminLTE.css}" href="../../../static/dist/css/AdminLTE.css"/>
+<link rel="stylesheet" th:href="@{/static/dist/css/skins/skin-blue.css}" href="../../../static/dist/css/skins/skin-blue.css"/>
+<link rel="stylesheet" th:href="@{/static/app/css/main.css}" href="../../../static/app/css/main.css"/>
 <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -19,35 +20,20 @@
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 
-		<div th:replace="fragments/main-header :: header">MAIN-HEADER</div>
-		<div th:replace="fragments/main-sidebar :: sidebar">MAIN-SIDEBAR</div>
+		<div th:replace="fragments/main-header :: header">Main header</div>
+		<div th:replace="fragments/main-sidebar :: sidebar">Main sidebar</div>
 
-		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
-			<!-- Content Header (Page header) -->
-			<section class="content-header">
-				<h1>
-					Page Header <small>Optional description</small>
-				</h1>
-				<ol class="breadcrumb">
-					<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-					<li class="active">Here</li>
-				</ol>
-			</section>
-
-			<!-- Main content -->
+			<div th:replace="fragments/content-header :: header">Content header</div>
 			<section class="content">
-				<div layout:fragment="content">place for content</div>
+				<div layout:fragment="content">Content</div>
 			</section>
-			<!-- /.content -->
 		</div>
-		<!-- /.content-wrapper -->
 
-		<div th:replace="fragments/main-footer :: footer">MAIN-FOOTER</div>
-		<div th:replace="fragments/control-sidebar :: sidebar">CONTROL-SIDEBAR</div>
+		<div th:replace="fragments/main-footer :: footer">Main footer</div>
+		<div th:replace="fragments/control-sidebar :: sidebar">Control sidebar</div>
 
 	</div>
-	<!-- ./wrapper -->
 	<script th:src="@{/static/plugins/jQuery/jQuery-2.1.4.min.js}" src="../../../static/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 	<script th:src="@{/static/bootstrap/js/bootstrap.min.js}" src="../../../static/bootstrap/js/bootstrap.min.js"></script>
 	<script th:src="@{/static/dist/js/app.min.js}" src="../../../static/dist/js/app.min.js"></script>

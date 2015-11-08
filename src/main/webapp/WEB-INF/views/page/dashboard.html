@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/main">
+<head>
+	<title th:text="#{page.dashboard.title}">Dashboard</title>
+</head>
+<body>
+	<span layout:fragment="content-title" th:text="#{page.dashboard.title}">Dashboard</span>
+	<div layout:fragment="content-breadcrumb">
+		<li class="active"><a th:href="@{/}" href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.dashboard.title}">Dashboard</span></a></li>
+	</div>
+	<span layout:fragment="content" th:text="${title}">Home title variable</span>
+</body>
+</html>

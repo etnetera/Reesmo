@@ -6,12 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class HomeController {
+public class DashboardController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model) {
-		model.addAttribute("title", "Test Reporting Web Application");
-		return "home";
+	public String dashboard(Model model) {
+		return "page/dashboard";
 	}
 	
 }
