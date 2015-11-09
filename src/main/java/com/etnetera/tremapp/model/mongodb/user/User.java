@@ -35,7 +35,7 @@ abstract public class User extends MongoAuditedModel {
 	 */
 	private boolean superadmin;
 	
-	private List<ProjectGroupPermission> permissions;
+	private List<ProjectGroupPermission> permissions = new ArrayList<>();
 
 	public String getId() {
 		return id;

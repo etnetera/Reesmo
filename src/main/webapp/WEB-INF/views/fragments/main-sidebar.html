@@ -6,11 +6,12 @@
 			<ul class="sidebar-menu">
 				<li class="header" th:text="#{sidebar.menu.title}">Menu</li>
 				<li class="active"><a th:href="@{/}" href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.dashboard.title}">Dashboard</span></a></li>
+				<li><a href="#"><i class="fa fa-eye"></i> <span th:text="#{page.views.title}">Views</span></a></li>
 				<li><a href="#"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
-				<li><a href="#"><i class="fa fa-folder-o"></i> <span th:text="#{page.suites.title}">Suites</span></a></li>
+				<li><a href="#"><i class="fa fa-folder"></i> <span th:text="#{page.suites.title}">Suites</span></a></li>
 				<li><a href="#"><i class="fa fa-cube"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
 				<li><a href="#"><i class="fa fa-cubes"></i> <span th:text="#{page.projectgroups.title}">Project groups</span></a></li>
-				<li><a href="#"><i class="fa fa-user"></i> <span th:text="#{page.users.title}">Users</span></a></li>
+				<li><a th:href="@{/users}" href="#"><i class="fa fa-user"></i> <span th:text="#{page.users.title}">Users</span></a></li>
 			</ul>
 		</section>
 	</aside>

@@ -1,19 +1,19 @@
 package com.etnetera.tremapp.repository.mongodb.user;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
-import com.etnetera.tremapp.model.mongodb.project.ProjectGroupPermission;
-import com.etnetera.tremapp.model.mongodb.user.ApiUser;
 import com.etnetera.tremapp.model.mongodb.user.ManualUser;
-import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
-import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
+import com.github.dandelion.datatables.core.ajax.DataSet;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 
 /**
  * User repository custom method implementation
@@ -21,67 +21,42 @@ import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Autowired
-	private ProjectRepository projectRepository;
-	
-	private List<User> users;
+	private MongoOperations mongoTemplate;
+
+	@Autowired
+	private ManualUserRepository manualUserRepository;
+
+	@PostConstruct
+	private void init() {
+		// create super admin if there is no one
+		if (!manualUserRepository.hasAnyAdmin()) {
+			ManualUser u = new ManualUser();
+			u.setLabel("Super Admin");
+			u.setUsername("admin");
+			u.setPassword(new BCryptPasswordEncoder().encode("admin"));
+			u.setEmail("admin@tremapp.local");
+			u.setSuperadmin(true);
+			manualUserRepository.save(u);
+		}
+	}
 
 	@Override
-	public List<User> findAll() {
-		return getUsers();
-	}
-	
-	@Override
 	public User findOneById(String id) {
-		for (User u : getUsers()) {
-			if (u.getId().equals(id)) return u;
-		}
-		return null;
+		return mongoTemplate.findOne(Query.query(Criteria.where("_id").is(id)), User.class);
 	}
 
 	@Override
 	public User findOneByUsername(String username) {
-		for (User u : getUsers()) {
-			if (u.getUsername().equals(username)) return u;
-		}
-		return null;
+		return mongoTemplate.findOne(Query.query(Criteria.where("username").is(username)), User.class);
 	}
-	
-	private List<User> getUsers() {
-		if (this.users == null) {
-			List<User> users = new ArrayList<>();
-			
-			BCryptPasswordEncoder passEncoder = new BCryptPasswordEncoder();
-			
-			ProjectGroup pg1 = new ProjectGroup();
-			pg1.setProjects(projectRepository.findAll());
-			
-			ProjectGroupPermission pGP = new ProjectGroupPermission();
-			pGP.setProjectGroup(pg1);
-			pGP.setPermission(Permission.EDITOR);
-			
-			for (int i = 1; i <= 5; i++) {
-				ApiUser u = new ApiUser();
-				u.setId("au" + i);
-				u.setLabel("API User " + i);
-				u.setUsername("apiuser" + i);
-				u.setPassword(passEncoder.encode("apiuser" + i));
-				u.setPermissions(Arrays.asList(pGP));
-				users.add(u);
-			}
-			
-			for (int i = 1; i <= 5; i++) {
-				ManualUser u = new ManualUser();
-				u.setId("u" + i);
-				u.setLabel("User " + i);
-				u.setUsername("user" + i);
-				u.setPassword(passEncoder.encode("user" + i));
-				u.setPermissions(Arrays.asList(pGP));
-				users.add(u);
-			}
-			
-			this.users = users;
-		}
-		return this.users;
+
+	@Override
+	public DataSet<User> findWithDatatablesCriterias(DatatablesCriterias criterias) {
+		List<User> users = mongoTemplate.findAll(User.class);
+		Long count = mongoTemplate.count(Query.query(Criteria.where("_id").exists(true)), User.class);
+		Long countFiltered = count;
+
+		return new DataSet<User>(users, count, countFiltered);
 	}
 
 }

@@ -25,16 +25,16 @@
 						data-toggle="dropdown"> <!-- The user image in the navbar--> <img
 							th:src="@{/static/app/img/avatar-160x160.png}"
 							src="../../../static/app/img/avatar-160x160.png"
-							class="user-image" alt="User Image" /> <!-- hidden-xs hides the username on small devices so only the image appears. -->
-							<span class="hidden-xs">Alexander Pierce</span>
+							class="user-image" alt="#{user.avatar}" /> <!-- hidden-xs hides the username on small devices so only the image appears. -->
+							<span sec:authentication="principal.label" class="hidden-xs">Logged user</span>
 					</a>
 						<ul class="dropdown-menu">
 							<!-- The user image in the menu -->
 							<li class="user-header"><img
 								th:src="@{/static/app/img/avatar-160x160.png}"
 								src="../../../static/app/img/avatar-160x160.png"
-								class="img-circle" alt="User Image" />
-								<p>Alexander Pierce - Web Developer</p></li>
+								class="img-circle" alt="#{user.avatar}" />
+								<p sec:authentication="principal.label">Logged user</p></li>
 							<!-- Menu Footer-->
 							<li class="user-footer">
 								<div class="pull-left">
