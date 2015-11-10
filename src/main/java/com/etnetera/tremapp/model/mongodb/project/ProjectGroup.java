@@ -1,14 +1,13 @@
 package com.etnetera.tremapp.model.mongodb.project;
 
-
-
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
+import com.etnetera.tremapp.model.mongodb.user.Permission;
 
 @Document
 public class ProjectGroup extends MongoAuditedModel {
@@ -20,8 +19,9 @@ public class ProjectGroup extends MongoAuditedModel {
 	
 	private String description;
 	
-	@DBRef
-	private List<Project> projects;
+	private List<String> projects;
+	
+	private Map<String, Permission> members;
 
 	public String getId() {
 		return id;
@@ -47,12 +47,20 @@ public class ProjectGroup extends MongoAuditedModel {
 		this.description = description;
 	}
 
-	public List<Project> getProjects() {
+	public List<String> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(List<Project> projects) {
+	public void setProjects(List<String> projects) {
 		this.projects = projects;
+	}
+
+	public Map<String, Permission> getMembers() {
+		return members;
+	}
+
+	public void setMembers(Map<String, Permission> members) {
+		this.members = members;
 	}
 	
 }

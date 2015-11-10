@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.etnetera.tremapp.http.exception.UnauthorizedException;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
 import com.etnetera.tremapp.model.mongodb.view.View;
@@ -12,7 +13,7 @@ import com.etnetera.tremapp.model.mongodb.view.View;
 public class UserHelper {
 
 	public static List<String> getAllowedProjectIds(Permission permission) {
-		return requireAppUser().getUser().getAllowedProjectIds(permission);
+		return requireAppUser().getUser().getAllowedProjectsIds(permission);
 	}
 	
 	public static void checkProjectPermission(String projectId, Permission permission) {
@@ -33,6 +34,10 @@ public class UserHelper {
 			return appUser.getId();
 		}
 		return null;
+	}
+	
+	public static User requireUser() {
+		return requireAppUser().getUser();
 	}
 	
 	public static User getUser() {

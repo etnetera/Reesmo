@@ -1,5 +1,7 @@
 package com.etnetera.tremapp.user;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -8,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.etnetera.tremapp.configuration.Initializer;
+import com.etnetera.tremapp.http.exception.UnauthorizedException;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
@@ -32,9 +36,12 @@ public class AppUser implements UserDetails {
 	
 	private transient User user;
 
-	public AppUser() {}
+	public AppUser() {
+		autowire();
+	}
 	
 	public AppUser(User user) {
+		this();
 		setUser(user);
 	}
 
@@ -89,6 +96,7 @@ public class AppUser implements UserDetails {
 		label = user.getLabel();
 		username = user.getUsername();
 		password = user.getPassword();
+		authorities = Arrays.asList(new SimpleGrantedAuthority(user.getRole().getAuthority()));
 	}
 	
 	public void checkProjectPermission(Project project, Permission permission) {
@@ -109,9 +117,6 @@ public class AppUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if (authorities == null) {
-			authorities = Arrays.asList(new SimpleGrantedAuthority(getUser().getRole()));
-		}
 		return authorities;
 	}
 
@@ -133,6 +138,15 @@ public class AppUser implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		ois.defaultReadObject();
+		autowire();
+	}
+	
+	private void autowire() {
+		Initializer.getApplicationContext().getAutowireCapableBeanFactory().autowireBean(this);
 	}
 	
 }

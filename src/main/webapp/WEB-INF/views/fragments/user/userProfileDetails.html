@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="details" class="col-md-9">
+		<div class="box box-primary">
+			<div class="box-header box-default">
+				<h3 class="box-title" th:text="#{page.userdetail.details}">Details</h3>
+			</div>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div><b><span th:text="#{user.label}">Label</span>:</b> <span th:text="${user.label}">label</span></div>
+						<div><b><span th:text="#{user.username}">Username</span>:</b> <span th:text="${user.username}">username</span></div>
+						<div th:if="${user.type} == 'manual'"><b><span th:text="#{user.email}">Email</span>:</b> <span th:text="${user.email}">email@email.com</span></div>
+						<div><b><span th:text="#{user.type}">Type</span>:</b> <span th:text="${user.type}">type</span></div>
+						<div><b><span th:text="#{user.active}">Active</span>:</b> <span th:text="${user.active}">true</span></div>
+						<div><b><span th:text="#{user.superadmin}">Superadmin</span>:</b> <span th:text="${user.superadmin}">true</span></div>
+						<div><b><span th:text="#{user.createdAt}">Created at</span>:</b> <span th:text="${user.createdAt}">123456</span></div>
+						<div><b><span th:text="#{user.updatedAt}">Updated at</span>:</b> <span th:text="${user.updatedAt}">123456</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

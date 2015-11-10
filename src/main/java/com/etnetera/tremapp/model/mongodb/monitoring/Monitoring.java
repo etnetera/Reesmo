@@ -2,7 +2,6 @@ package com.etnetera.tremapp.model.mongodb.monitoring;
 
 import org.joda.time.Interval;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.view.View;
@@ -14,8 +13,7 @@ abstract public class Monitoring extends MongoAuditedModel {
 	
 	private Interval updateInterval;
 	
-	@DBRef
-	private View view;
+	private String view;
 
 	public String getId() {
 		return id;
@@ -33,12 +31,16 @@ abstract public class Monitoring extends MongoAuditedModel {
 		this.updateInterval = updateInterval;
 	}
 
-	public View getView() {
+	public String getView() {
 		return view;
 	}
 
-	public void setView(View view) {
+	public void setView(String view) {
 		this.view = view;
+	}
+	
+	public void setView(View view) {
+		this.view = view.getId();
 	}
 	
 }

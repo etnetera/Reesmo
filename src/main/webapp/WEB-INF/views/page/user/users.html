@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/main">
+<head>
+<title th:text="#{page.users.title}">Users</title>
+</head>
+<body>
+	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="#{page.users.title}">Users</span> <small th:text="#{page.users.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
+		<li class="active"><a th:href="@{/users}" href="#"><i
+				class="fa fa-user"></i> <span th:text="#{page.users.title}">Users</span></a></li>
+	</ol>
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-sm-12">
+				<a th:href="@{/users/create/manual}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.users.newmanualuser}">New user</span></a>
+				<a th:href="@{/users/create/api}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.users.newapiuser}">New API user</span></a>
+			</div>
+		</div>
+		<div class="box">
+			<div class="box-body">
+				<div class="dataTables_wrapper form-inline dt-bootstrap">
+					<div class="row">
+						<div class="col-sm-12">
+							<table id="users-table" dt:table="true" dt:url="@{/dt/users}" dt:serverside="true" dt:stateSave="true">
+								<thead>
+									<tr>
+										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
+										<th dt:property="username" th:text="#{user.username}">Username</th>
+										<th dt:property="type" dt:searchable="false" dt:sortable="false" th:text="#{user.type}">Type</th>
+										<th dt:property="active" dt:searchable="false" dt:sortable="false" th:text="#{user.active}">Active</th>
+										<th dt:property="superadmin" dt:searchable="false" dt:sortable="false" th:text="#{user.superadmin}">Superadmin</th>
+									</tr>
+								</thead>
+							</table>
+							<script th:inline="javascript">
+								Tremapp.usersTableRenderLabel = function(label, type, user) {
+									return '<a href="' + Tremapp.baseUrl + 'users/detail/' + user.id + '">' + label + '</a>';
+								};
+							</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

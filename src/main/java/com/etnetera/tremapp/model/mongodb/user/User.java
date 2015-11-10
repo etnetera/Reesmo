@@ -1,17 +1,17 @@
 package com.etnetera.tremapp.model.mongodb.user;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.project.Project;
-import com.etnetera.tremapp.model.mongodb.project.ProjectGroupPermission;
-import com.etnetera.tremapp.user.ForbiddenException;
+import com.etnetera.tremapp.user.UserRole;
+import com.etnetera.tremapp.user.UserType;
 
 abstract public class User extends MongoAuditedModel {
 
@@ -30,13 +30,18 @@ abstract public class User extends MongoAuditedModel {
 	private String password;
 	
 	/**
+	 * User can be deactivated but still kept in app.
+	 */
+	private boolean active;
+	
+	/**
 	 * If true than this user is allowed for everything
 	 * and is not affected with permissions.
 	 */
 	private boolean superadmin;
 	
-	private List<ProjectGroupPermission> permissions = new ArrayList<>();
-
+	private Map<String, Permission> projectsPermissions;
+	
 	public String getId() {
 		return id;
 	}
@@ -69,6 +74,14 @@ abstract public class User extends MongoAuditedModel {
 		this.password = password;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public boolean isSuperadmin() {
 		return superadmin;
 	}
@@ -76,51 +89,28 @@ abstract public class User extends MongoAuditedModel {
 	public void setSuperadmin(boolean superadmin) {
 		this.superadmin = superadmin;
 	}
-
-	public List<ProjectGroupPermission> getPermissions() {
-		return permissions;
+	
+	public Map<String, Permission> getProjectsPermissions() {
+		return projectsPermissions;
 	}
 
-	public void setPermissions(List<ProjectGroupPermission> permissions) {
-		this.permissions = permissions;
+	public void setProjectsPermissions(Map<String, Permission> projectsPermissions) {
+		this.projectsPermissions = projectsPermissions;
 	}
 	
-	public Map<Project, Permission> getProjectsPermissions() {
-		Map<Project, Permission> perms = new HashMap<>();
-		permissions.forEach(pgp -> {
-			pgp.getProjectGroup().getProjects().forEach(p -> {
-				Permission pPerm = perms.get(p);
-				if (pPerm == null || pgp.getPermission().isGreaterThan(pPerm)) {
-					perms.put(p, pgp.getPermission());
-				}
-			});
-		});
-		return perms;
-	}
-	
-	public List<Project> getAllowedProjects(Permission permission) {
+	public List<String> getAllowedProjectsIds(Permission permission) {
 		if (superadmin) {
 			return null;
 		}
-		List<Project> projects = new ArrayList<>();
+		List<String> projectsIds = new ArrayList<>();
 		if (permission != null) {
-			for (Map.Entry<Project, Permission> entry : getProjectsPermissions().entrySet()) {
+			for (Map.Entry<String, Permission> entry : getProjectsPermissions().entrySet()) {
 				if (entry.getValue().isGreaterThanOrEqual(permission)) {
-					projects.add(entry.getKey());
+					projectsIds.add(entry.getKey());
 				}
 			}
 		}
-		return projects;
-	}
-	
-	public List<String> getAllowedProjectIds(Permission permission) {
-		List<Project> projects = getAllowedProjects(permission);
-		if (projects == null) {
-			return null;
-		}
-		List<String> projectIds = new ArrayList<>();
-		projects.forEach(p -> projectIds.add(p.getId()));
-		return projectIds;
+		return projectsIds;
 	}
 	
 	public void checkProjectPermission(Project project, Permission permission) {
@@ -142,8 +132,8 @@ abstract public class User extends MongoAuditedModel {
 			return true;
 		}
 		if (projectId != null && permission != null) {
-			for (Map.Entry<Project, Permission> entry : getProjectsPermissions().entrySet()) {
-				if (entry.getKey().getId().equals(projectId)) {
+			for (Map.Entry<String, Permission> entry : getProjectsPermissions().entrySet()) {
+				if (entry.getKey().equals(projectId)) {
 					return entry.getValue().isGreaterThanOrEqual(permission);
 				}
 			}
@@ -151,6 +141,8 @@ abstract public class User extends MongoAuditedModel {
 		return false;
 	}
 	
-	public abstract String getRole();
+	public abstract UserRole getRole();
+	
+	public abstract UserType getType();
 	
 }

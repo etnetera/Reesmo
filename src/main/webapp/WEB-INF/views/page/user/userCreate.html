@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/main">
+<head>
+<title th:text="#{page.users.title} - ${user.label}">Users -
+	User label</title>
+</head>
+<body>
+	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label}">User label</span> <small th:text="#{page.userdetail.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
+		<li><a th:href="@{/users}" href="#"><i class="fa fa-user"></i>
+				<span th:text="#{page.users.title}">Users</span></a></li>
+		<li class="active"><a
+			th:href="@{/users/detail/{userId}(userId=${user.id})}" href="#"
+			th:text="${user.label}">User label</a></li>
+	</ol>
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="box box-primary">
+					<div class="box-body box-profile">
+						<img class="profile-user-img img-responsive img-circle"
+							th:src="@{/static/app/img/avatar-160x160.png}"
+							src="../../../static/app/img/avatar-160x160.png" alt="User profile picture"/>
+						<h3 class="profile-username text-center" th:text="${user.label}">User label</h3>
+						<p class="text-muted text-center" th:text="${user.type}">type</p>
+						<a th:href="@{/users/change-password/{userId}(userId=${user.id})}" href="#" class="btn btn-default btn-block"><b>Change password</b></a>
+						<a th:href="@{/users/edit/{userId}(userId=${user.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+						<a th:if="${#authentication.principal.id} != ${user.id}" th:href="@{/users/delete/{userId}(userId=${user.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+					</div>
+				</div>
+			</div>
+			<div th:replace="fragments/user/userProfileDetails :: details">Details</div>
+		</div>
+	</div>
+</body>
+</html>

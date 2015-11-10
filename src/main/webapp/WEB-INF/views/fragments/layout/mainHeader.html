@@ -38,12 +38,12 @@
 							<!-- Menu Footer-->
 							<li class="user-footer">
 								<div class="pull-left">
-									<a href="#" class="btn btn-default btn-flat"
-										th:text="#{user.profile}">Profile</a>
+									<a th:href="@{/user-profile}" href="#" class="btn btn-default btn-flat"
+										th:text="#{header.user.profile}">Profile</a>
 								</div>
 								<div class="pull-right">
 									<a th:href="@{/logout}" href="#" class="btn btn-default btn-flat"
-										th:text="#{user.signout}">Sign out</a>
+										th:text="#{header.user.signout}">Sign out</a>
 								</div>
 							</li>
 						</ul>

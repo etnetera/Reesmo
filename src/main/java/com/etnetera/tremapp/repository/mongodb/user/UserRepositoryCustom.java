@@ -1,5 +1,6 @@
 package com.etnetera.tremapp.repository.mongodb.user;
 
+import com.etnetera.tremapp.model.datatables.UserDT;
 import com.etnetera.tremapp.model.mongodb.user.User;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
@@ -13,6 +14,6 @@ public interface UserRepositoryCustom {
 	
 	public User findOneByUsername(String username);
 	
-	public DataSet<User> findWithDatatablesCriterias(DatatablesCriterias criterias);
+	public DataSet<UserDT> findWithDatatablesCriterias(DatatablesCriterias criterias);
 	
 }

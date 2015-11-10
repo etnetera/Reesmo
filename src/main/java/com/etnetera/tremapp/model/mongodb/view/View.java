@@ -5,14 +5,13 @@ import java.util.List;
 import org.joda.time.Interval;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
-import com.etnetera.tremapp.user.ForbiddenException;
 import com.etnetera.tremapp.utils.list.ListModifier;
 
 /**
@@ -46,10 +45,9 @@ public class View extends MongoAuditedModel {
 	private boolean shared;
 
 	/**
-	 * List of users with this view registered
+	 * List of users ids with this view registered
 	 */
-	@DBRef
-	private List<User> users;
+	private List<String> users;
 
 	public String getId() {
 		return id;
@@ -99,11 +97,11 @@ public class View extends MongoAuditedModel {
 		this.shared = shared;
 	}
 
-	public List<User> getUsers() {
+	public List<String> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<String> users) {
 		this.users = users;
 	}
 
@@ -138,7 +136,7 @@ public class View extends MongoAuditedModel {
 		switch (permission) {
 		case BASIC:
 			// view is visible if shared or user is in list of assigned users
-			return shared || (users != null && users.stream().anyMatch(u -> u.getId().equals(user.getId())));
+			return shared || (users != null && users.stream().anyMatch(u -> u.equals(user.getId())));
 		case EDITOR:
 			// view is editable only by author
 			return user.getId().equals(getCreatedAt());

@@ -4,10 +4,10 @@
 	<title th:text="#{page.dashboard.title}">Dashboard</title>
 </head>
 <body>
-	<span layout:fragment="content-title" th:text="#{page.dashboard.title}">Dashboard</span>
-	<div layout:fragment="content-breadcrumb">
+	<h1 layout:fragment="content-title"><i class="fa fa-dashboard"></i> <span th:text="#{page.dashboard.title}">Dashboard</span> <small th:text="#{page.dashboard.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
 		<li class="active"><a th:href="@{/}" href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.dashboard.title}">Dashboard</span></a></li>
-	</div>
+	</ol>
 	<span layout:fragment="content" th:text="${title}">Home title variable</span>
 </body>
 </html>

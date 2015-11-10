@@ -1,10 +1,13 @@
 package com.etnetera.tremapp.model.mongodb.project;
 
+import java.util.Map;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
+import com.etnetera.tremapp.model.mongodb.user.Permission;
 
 @Document
 public class Project extends MongoAuditedModel {
@@ -22,6 +25,8 @@ public class Project extends MongoAuditedModel {
 	private String name;
 	
 	private String description;
+	
+	private Map<String, Permission> members;
 
 	public String getId() {
 		return id;
@@ -53,6 +58,14 @@ public class Project extends MongoAuditedModel {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Map<String, Permission> getMembers() {
+		return members;
+	}
+
+	public void setMembers(Map<String, Permission> members) {
+		this.members = members;
 	}
 	
 }

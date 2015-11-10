@@ -19,5 +19,10 @@ public class ManualUserRepositoryImpl implements ManualUserRepositoryCustom {
 	public boolean hasAnyAdmin() {
 		return mongoTemplate.count(Query.query(Criteria.where("superadmin").is(true)), ManualUser.class) > 0;
 	}
+
+	@Override
+	public ManualUser findOneByEmail(String email) {
+		return mongoTemplate.findOne(Query.query(Criteria.where("email").is(email)), ManualUser.class);
+	}
 	
 }

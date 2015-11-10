@@ -19,20 +19,25 @@
     <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+	<script th:inline="javascript">
+		var Tremapp = {
+			baseUrl: [[@{/}]]	
+		};
+	</script>
 	<div class="wrapper">
 
-		<div th:replace="fragments/main-header :: header">Main header</div>
-		<div th:replace="fragments/main-sidebar :: sidebar">Main sidebar</div>
+		<div th:replace="fragments/layout/mainHeader :: header">Main header</div>
+		<div th:replace="fragments/layout/mainSidebar :: sidebar">Main sidebar</div>
 
 		<div class="content-wrapper">
-			<div th:replace="fragments/content-header :: header">Content header</div>
+			<div th:replace="fragments/layout/contentHeader :: header">Content header</div>
 			<section class="content">
 				<div layout:fragment="content">Content</div>
 			</section>
 		</div>
 
-		<div th:replace="fragments/main-footer :: footer">Main footer</div>
-		<div th:replace="fragments/control-sidebar :: sidebar">Control sidebar</div>
+		<div th:replace="fragments/layout/mainFooter :: footer">Main footer</div>
+		<div th:replace="fragments/layout/controlSidebar :: sidebar">Control sidebar</div>
 
 	</div>
 	<script th:src="@{/static/plugins/jQuery/jQuery-2.1.4.min.js}" src="../../../static/plugins/jQuery/jQuery-2.1.4.min.js"></script>

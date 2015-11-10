@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<aside th:fragment="sidebar" class="main-sidebar">
+		<section class="sidebar">
+			<ul class="sidebar-menu">
+				<li class="header" th:text="#{sidebar.menu.title}">Menu</li>
+				<li th:class="(${activeMenu} == 'dashboard')? 'active'"><a th:href="@{/}" href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.dashboard.title}">Dashboard</span></a></li>
+				<li th:class="(${activeMenu} == 'views')? 'active'"><a href="#"><i class="fa fa-eye"></i> <span th:text="#{page.views.title}">Views</span></a></li>
+				<li th:class="(${activeMenu} == 'results')? 'active'"><a href="#"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
+				<li th:class="(${activeMenu} == 'projects')? 'active'"><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
+				<li th:class="(${activeMenu} == 'projectGroups')? 'active'"><a th:href="@{/project-groups}" href="#"><i class="fa fa-cubes"></i> <span th:text="#{page.projectgroups.title}">Project groups</span></a></li>
+				<li th:class="(${activeMenu} == 'users')? 'active'"><a th:href="@{/users}" href="#"><i class="fa fa-user"></i> <span th:text="#{page.users.title}">Users</span></a></li>
+			</ul>
+		</section>
+	</aside>
+</body>
+</html>

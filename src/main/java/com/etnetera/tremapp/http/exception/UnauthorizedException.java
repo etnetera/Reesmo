@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.user;
+package com.etnetera.tremapp.http.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -4,8 +4,13 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.etnetera.tremapp.user.UserRole;
+import com.etnetera.tremapp.user.UserType;
+
 @Document(collection = "user")
 public class ApiUser extends User {
+	
+	public static final String TYPE = "api";
 	
 	private List<String> allowedIps;
 
@@ -18,8 +23,13 @@ public class ApiUser extends User {
 	}
 
 	@Override
-	public String getRole() {
-		return "ROLE_APIUSER";
+	public UserRole getRole() {
+		return UserRole.APIUSER;
+	}
+
+	@Override
+	public UserType getType() {
+		return UserType.API;
 	}
 	
 }

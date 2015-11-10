@@ -4,6 +4,7 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
@@ -22,9 +23,16 @@ public class Initializer extends AbstractSecurityWebApplicationInitializer {
     private static final String CONFIG_LOCATION = Tremapp.PACKAGE + ".configuration";
     private static final String MAPPING_URL = "/*";
 
-    @Override
+    private static ApplicationContext applicationContext;
+    
+    public static ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	@Override
 	public void beforeSpringSecurityFilterChain(ServletContext servletContext) {
-    	WebApplicationContext context = getContext();
+    	WebApplicationContext context = createContext();
+    	applicationContext = context;
         servletContext.addListener(new ContextLoaderListener(context));
         
         // Register the Dandelion filter
@@ -41,7 +49,7 @@ public class Initializer extends AbstractSecurityWebApplicationInitializer {
         dandelionServlet.addMapping("/dandelion-assets/*");
 	}
 
-    private AnnotationConfigWebApplicationContext getContext() {
+    private AnnotationConfigWebApplicationContext createContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation(CONFIG_LOCATION);
         return context;

@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.etnetera.tremapp.user.AppUserRepository;
+import com.etnetera.tremapp.user.UserRole;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +29,7 @@ public class SecurityConfiguration {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable().authorizeRequests().anyRequest().hasAnyRole("MANUALUSER").and().formLogin();
+			http.csrf().disable().authorizeRequests().anyRequest().hasAnyRole(UserRole.MANUALUSER.getRole()).and().formLogin();
 		}
 
 		@Override
@@ -44,7 +45,7 @@ public class SecurityConfiguration {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable().antMatcher("/api/**").authorizeRequests().antMatchers("/api/**").hasAnyRole("MANUALUSER", "APIUSER").and()
+			http.csrf().disable().antMatcher("/api/**").authorizeRequests().antMatchers("/api/**").hasAnyRole(UserRole.MANUALUSER.getRole(), UserRole.APIUSER.getRole()).and()
 					.httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		}
 
