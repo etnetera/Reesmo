@@ -14,8 +14,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 
+import com.etnetera.tremapp.list.ListModifier;
 import com.etnetera.tremapp.model.elasticsearch.suite.Suite;
-import com.etnetera.tremapp.utils.list.ListModifier;
 
 /**
  * Suite repository custom method implementation

@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.etnetera.tremapp.model.datatables.UserDT;
 import com.etnetera.tremapp.model.mongodb.user.ManualUser;
 import com.etnetera.tremapp.model.mongodb.user.User;
-import com.etnetera.tremapp.utils.mongo.MongoDatatables;
+import com.etnetera.tremapp.repository.mongodb.MongoDatatables;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 

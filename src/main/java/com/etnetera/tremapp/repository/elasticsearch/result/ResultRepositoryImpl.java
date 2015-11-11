@@ -23,12 +23,12 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.etnetera.tremapp.list.ListModifier;
+import com.etnetera.tremapp.model.ModelAuditor;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
 import com.etnetera.tremapp.model.mongodb.view.View;
 import com.etnetera.tremapp.repository.mongodb.view.ViewRepository;
-import com.etnetera.tremapp.utils.ModelAuditor;
-import com.etnetera.tremapp.utils.list.ListModifier;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
 

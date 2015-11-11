@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.utils.mongo;
+package com.etnetera.tremapp.repository.mongodb;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,16 +1,20 @@
 package com.etnetera.tremapp.model.form.user;
 
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
+import org.springframework.validation.ValidationUtils;
 
-import com.etnetera.tremapp.repository.mongodb.user.UserRepository;
+import com.etnetera.tremapp.model.mongodb.user.User;
 
-public class UserCommandValidator implements Validator {
+public class UserCommandValidator extends UserProfileCommandValidator {
 
-	private UserRepository userRepository;
+	private PasswordCommandValidator passwordValidator;
 	
-	public UserCommandValidator(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	private User editedUser;
+	
+	public UserCommandValidator(UsernameCommandValidator usernameValidator, EmailCommandValidator emailValidator, PasswordCommandValidator passwordValidator, User editedUser) {
+		super(usernameValidator, emailValidator);
+		this.passwordValidator = passwordValidator;
+		this.editedUser = editedUser;
 	}
 
 	@Override
@@ -20,10 +24,10 @@ public class UserCommandValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		UserCommand userCommand = (UserCommand) target;
-		if (userRepository.findOneByUsername(userCommand.getUsername()) != null) {
-			errors.rejectValue("username", "user.validation.username.unique", "Username is already taken by another user!");
+		super.validate(target, errors);
+		if (editedUser == null) {
+			ValidationUtils.invokeValidator(passwordValidator, target, errors);
 		}
-	}
+	} 
 
 }

@@ -1,39 +1,95 @@
 package com.etnetera.tremapp.model.form.user;
 
+import java.util.List;
+
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.etnetera.tremapp.user.UserType;
+import com.etnetera.tremapp.model.mongodb.user.ApiUser;
+import com.etnetera.tremapp.model.mongodb.user.ManualUser;
+import com.etnetera.tremapp.model.mongodb.user.User;
 
-abstract public class UserCommand {
-	
-	@NotBlank
-	@Size(min = 2, max = 255)
-	private String label;
-	
-	@NotBlank
-	@Size(min = 2, max = 255)
-	private String username;
-	
+public class UserCommand extends UserProfileCommand {
+
 	private boolean active;
-	
+
 	private boolean superadmin;
-
-	public String getLabel() {
-		return label;
+	
+	private List<String> allowedIps;
+	
+	@Size(min = 4, max = 255)
+	private String password;
+	
+	@Size(min = 4, max = 255)
+	private String passwordConfirm;
+	
+	@Override
+	public void updateFromUser(User user) {
+		super.updateFromUser(user);
+		if (user instanceof ApiUser) {
+			fromUser((ApiUser) user);
+		}
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	@Override
+	public void propagateToUser(User user) {
+		propagateToUser(user, false);
+	}
+	
+	public void propagateToUser(User user, boolean create) {
+		if (user instanceof ManualUser) {
+			toUser((ManualUser) user, create);
+		} else if (user instanceof ApiUser) {
+			toUser((ApiUser) user, create);
+		}
 	}
 
-	public String getUsername() {
-		return username;
+	@Override
+	protected void fromUser(User user) {
+		super.fromUser(user);
+		active = user.isActive();
+		superadmin = user.isSuperadmin();
 	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	
+	protected void fromUser(ApiUser user) {
+		fromUser((User) user);
+		allowedIps = user.getAllowedIps();
+	}
+	
+	@Override
+	protected void toUser(User user) {
+		toUser(user, false);
+	}
+	
+	protected void toUser(User user, boolean create) {
+		super.toUser(user);
+		user.setActive(active);
+		user.setSuperadmin(superadmin);
+		
+		if (create) {
+			BCryptPasswordEncoder passEncoder = new BCryptPasswordEncoder();
+			user.setPassword(passEncoder.encode(password));
+		}
+	}
+	
+	@Override
+	protected void toUser(ManualUser user) {
+		toUser(user, false);
+	}
+	
+	protected void toUser(ManualUser user, boolean create) {
+		toUser((User) user, create);
+		super.toUser(user);
+	}
+	
+	protected void toUser(ApiUser user) {
+		toUser(user, false);
+	}
+	
+	protected void toUser(ApiUser user, boolean create) {
+		toUser((User) user, create);
+		user.setAllowedIps(allowedIps);
 	}
 
 	public boolean isActive() {
@@ -52,6 +108,28 @@ abstract public class UserCommand {
 		this.superadmin = superadmin;
 	}
 	
-	abstract public UserType getType();
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
 	
+	public List<String> getAllowedIps() {
+		return allowedIps;
+	}
+
+	public void setAllowedIps(List<String> allowedIps) {
+		this.allowedIps = allowedIps;
+	}
+
 }

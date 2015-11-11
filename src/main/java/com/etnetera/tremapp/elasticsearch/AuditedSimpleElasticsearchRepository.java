@@ -7,8 +7,8 @@ import org.springframework.data.elasticsearch.repository.support.ElasticsearchEn
 import org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository;
 import org.springframework.util.Assert;
 
+import com.etnetera.tremapp.model.ModelAuditor;
 import com.etnetera.tremapp.model.elasticsearch.ElasticAuditedModel;
-import com.etnetera.tremapp.utils.ModelAuditor;
 
 public class AuditedSimpleElasticsearchRepository<T> extends SimpleElasticsearchRepository<T> {
 	

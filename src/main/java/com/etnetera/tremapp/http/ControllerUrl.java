@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.utils;
+package com.etnetera.tremapp.http;
 
 public class ControllerUrl {
 

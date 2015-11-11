@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.utils.file;
+package com.etnetera.tremapp.file;
 
 import java.io.InputStream;
 

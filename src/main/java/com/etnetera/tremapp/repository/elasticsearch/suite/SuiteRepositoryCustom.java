@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.etnetera.tremapp.list.ListModifier;
 import com.etnetera.tremapp.model.elasticsearch.suite.Suite;
-import com.etnetera.tremapp.utils.list.ListModifier;
 
 /**
  * Suite repository custom methods

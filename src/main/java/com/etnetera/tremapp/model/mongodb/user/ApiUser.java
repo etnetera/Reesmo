@@ -10,8 +10,6 @@ import com.etnetera.tremapp.user.UserType;
 @Document(collection = "user")
 public class ApiUser extends User {
 	
-	public static final String TYPE = "api";
-	
 	private List<String> allowedIps;
 
 	public List<String> getAllowedIps() {
@@ -23,8 +21,8 @@ public class ApiUser extends User {
 	}
 
 	@Override
-	public UserRole getRole() {
-		return UserRole.APIUSER;
+	public String getRole() {
+		return UserRole.ROLE_APIUSER;
 	}
 
 	@Override

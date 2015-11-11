@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.utils.list;
+package com.etnetera.tremapp.list;
 
 import org.elasticsearch.index.query.QueryBuilder;
 

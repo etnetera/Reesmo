@@ -1,6 +1,6 @@
 package com.etnetera.tremapp.model.form.user;
 
-public interface ManualUserCommandInterface {
+public interface EmailCommand {
 
 	public String getEmail();
 	

@@ -24,8 +24,8 @@ public class ManualUser extends User {
 	}
 	
 	@Override
-	public UserRole getRole() {
-		return UserRole.MANUALUSER;
+	public String getRole() {
+		return UserRole.ROLE_MANUALUSER;
 	}
 	
 	@Override

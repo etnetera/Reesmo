@@ -1,15 +1,15 @@
 package com.etnetera.tremapp.user;
 
-public enum UserRole {
-
-	MANUALUSER, APIUSER;
+public class UserRole {
 	
-	public String getAuthority() {
-		return "ROLE_" + name();
-	}
+	private static final String ROLE_PREFIX = "ROLE_";
 	
-	public String getRole() {
-		return name();
-	}
+	public static final String MANUALUSER = "MANUALUSER";
+	public static final String APIUSER = "APIUSER";
+	public static final String ADMIN = "ADMIN";
+	
+	public static final String ROLE_MANUALUSER = ROLE_PREFIX + MANUALUSER;
+	public static final String ROLE_APIUSER = ROLE_PREFIX + APIUSER;
+	public static final String ROLE_ADMIN = ROLE_PREFIX + ADMIN;
 	
 }

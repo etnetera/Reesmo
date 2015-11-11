@@ -8,11 +8,11 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.etnetera.tremapp.http.exception.ForbiddenException;
+import com.etnetera.tremapp.list.ListModifier;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
-import com.etnetera.tremapp.utils.list.ListModifier;
 
 /**
  * Describes stored view representing list modifier.

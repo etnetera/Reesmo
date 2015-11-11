@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.etnetera.tremapp.model.datatables.ProjectDT;
 import com.etnetera.tremapp.model.mongodb.project.Project;
-import com.etnetera.tremapp.utils.mongo.MongoDatatables;
+import com.etnetera.tremapp.repository.mongodb.MongoDatatables;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.etnetera.tremapp.list.ListModifier;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.suite.Suite;
 import com.etnetera.tremapp.model.mongodb.project.Project;
@@ -18,7 +19,6 @@ import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
 import com.etnetera.tremapp.repository.mongodb.view.ViewRepository;
 import com.etnetera.tremapp.restapi.output.RestApiList;
 import com.etnetera.tremapp.user.UserHelper;
-import com.etnetera.tremapp.utils.list.ListModifier;
 
 @RestController
 @RequestMapping(value = "/api", produces = "application/json")

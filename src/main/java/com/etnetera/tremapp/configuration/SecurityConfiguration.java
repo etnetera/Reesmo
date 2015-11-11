@@ -29,7 +29,7 @@ public class SecurityConfiguration {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable().authorizeRequests().anyRequest().hasAnyRole(UserRole.MANUALUSER.getRole()).and().formLogin();
+			http.csrf().disable().authorizeRequests().anyRequest().hasAnyRole(UserRole.MANUALUSER).and().formLogin();
 		}
 
 		@Override
@@ -45,7 +45,7 @@ public class SecurityConfiguration {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable().antMatcher("/api/**").authorizeRequests().antMatchers("/api/**").hasAnyRole(UserRole.MANUALUSER.getRole(), UserRole.APIUSER.getRole()).and()
+			http.csrf().disable().antMatcher("/api/**").authorizeRequests().antMatchers("/api/**").hasAnyRole(UserRole.APIUSER).and()
 					.httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		}
 

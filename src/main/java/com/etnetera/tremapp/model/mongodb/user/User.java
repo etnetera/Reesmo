@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.project.Project;
-import com.etnetera.tremapp.user.UserRole;
 import com.etnetera.tremapp.user.UserType;
 
 abstract public class User extends MongoAuditedModel {
@@ -141,7 +140,7 @@ abstract public class User extends MongoAuditedModel {
 		return false;
 	}
 	
-	public abstract UserRole getRole();
+	public abstract String getRole();
 	
 	public abstract UserType getType();
 	

@@ -2,8 +2,9 @@ package com.etnetera.tremapp.user;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -96,7 +97,13 @@ public class AppUser implements UserDetails {
 		label = user.getLabel();
 		username = user.getUsername();
 		password = user.getPassword();
-		authorities = Arrays.asList(new SimpleGrantedAuthority(user.getRole().getAuthority()));
+		
+		List<SimpleGrantedAuthority> auths = new ArrayList<>();
+		auths.add(new SimpleGrantedAuthority(user.getRole()));
+		if (user.isSuperadmin()) {
+			auths.add(new SimpleGrantedAuthority(UserRole.ROLE_ADMIN));
+		}
+		authorities = auths;
 	}
 	
 	public void checkProjectPermission(Project project, Permission permission) {

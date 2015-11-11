@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.utils.list;
+package com.etnetera.tremapp.list;
 
 import java.util.ArrayList;
 import java.util.List;

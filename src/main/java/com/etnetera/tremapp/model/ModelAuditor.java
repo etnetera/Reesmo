@@ -1,11 +1,10 @@
-package com.etnetera.tremapp.utils;
+package com.etnetera.tremapp.model;
 
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.etnetera.tremapp.model.AuditedModel;
 import com.etnetera.tremapp.user.UserHelper;
 
 public class ModelAuditor {
