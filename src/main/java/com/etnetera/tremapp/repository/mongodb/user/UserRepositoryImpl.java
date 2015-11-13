@@ -1,6 +1,7 @@
 package com.etnetera.tremapp.repository.mongodb.user;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.etnetera.tremapp.message.Localizer;
 import com.etnetera.tremapp.model.datatables.UserDT;
 import com.etnetera.tremapp.model.mongodb.user.ManualUser;
 import com.etnetera.tremapp.model.mongodb.user.User;
@@ -28,6 +30,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Autowired
 	private ManualUserRepository manualUserRepository;
+	
+	@Autowired
+	private Localizer localizer;
 
 	@PostConstruct
 	private void init() {
@@ -55,7 +60,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	}
 
 	@Override
-	public DataSet<UserDT> findWithDatatablesCriterias(DatatablesCriterias criterias) {
+	public DataSet<UserDT> findWithDatatablesCriterias(DatatablesCriterias criterias, Locale locale) {
 		Criteria crit = MongoDatatables.getCriteria(criterias);
 		Criteria allCrit = Criteria.where("_id").exists(true);
 
@@ -68,7 +73,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		Long count = mongoTemplate.count(Query.query(allCrit), User.class);
 		Long countFiltered = mongoTemplate.count(Query.query(crit), User.class);
 
-		return new DataSet<UserDT>(users.stream().map(u -> new UserDT(u)).collect(Collectors.toList()),
+		return new DataSet<UserDT>(users.stream().map(u -> new UserDT(u, localizer, locale)).collect(Collectors.toList()),
 				count, countFiltered);
 	}
 

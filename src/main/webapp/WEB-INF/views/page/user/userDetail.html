@@ -22,14 +22,14 @@
 							th:src="@{/static/app/img/avatar-160x160.png}"
 							src="../../../static/app/img/avatar-160x160.png" alt="User profile picture"/>
 						<h3 class="profile-username text-center" th:text="${user.label}">User label</h3>
-						<p class="text-muted text-center" th:text="${user.type}">type</p>
+						<p class="text-muted text-center" th:text="#{'user.type.' + ${#strings.toLowerCase(user.type)}}">type</p>
 						<a th:href="@{/users/change-password/{userId}(userId=${user.id})}" href="#" class="btn btn-default btn-block"><b>Change password</b></a>
 						<a th:href="@{/users/edit/{userId}(userId=${user.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
 						<a th:if="${#authentication.principal.id} != ${user.id}" th:href="@{/users/delete/{userId}(userId=${user.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
 					</div>
 				</div>
 			</div>
-			<div th:replace="fragments/user/userDetails :: details">Details</div>
+			<div th:replace="fragments/user/userDetail :: details">Details</div>
 		</div>
 	</div>
 </body>

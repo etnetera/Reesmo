@@ -36,6 +36,13 @@ public class UserHelper {
 		return null;
 	}
 	
+	public static boolean isSameAsLogged(User user) {
+		if (user == null) {
+			return false;
+		}
+		return user.getId().equals(getUserId());
+	}
+	
 	public static User requireUser() {
 		return requireAppUser().getUser();
 	}
@@ -46,6 +53,10 @@ public class UserHelper {
 			return appUser.getUser();
 		}
 		return null;
+	}
+	
+	public static void updateUser(User user) {
+		requireAppUser().setUser(user);
 	}
 	
 	public static AppUser requireAppUser() {

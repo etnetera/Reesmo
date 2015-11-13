@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="edit" class="col-md-6">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title" th:text="#{page.useredit.formtitle}">Profile information</h3>
+			</div>
+			<form action="#" th:action="@{/users/edit/{userId}(userId=${user.id})}" th:object="${userCommand}" method="post">
+				<input type="hidden" th:field="*{type}"/>
+				<div class="box-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group" th:classappend="${#fields.hasErrors('label')}? has-error">
+								<label th:for="${#ids.next('label')}" th:text="#{user.label}">Label</label>
+								<input type="text" class="form-control" th:field="*{label}"/>
+								<p th:replace="fragments/form/error :: errors (fieldName='label')"/>
+							</div>
+							<div class="form-group" th:classappend="${#fields.hasErrors('username')}? has-error">
+								<label th:for="${#ids.next('username')}" th:text="#{user.username}">Username</label>
+								<input type="text" class="form-control" th:field="*{username}"/>
+								<p th:replace="fragments/form/error :: errors (fieldName='username')"/>
+							</div>
+							<div th:if="*{type} == 'manual'" class="form-group" th:classappend="${#fields.hasErrors('email')}? has-error">
+								<label th:for="${#ids.next('email')}" th:text="#{user.email}">Email</label>
+								<input type="text" class="form-control" th:field="*{email}"/>
+								<p th:replace="fragments/form/error :: errors (fieldName='email')"/>
+							</div>
+							<div th:if="${#authentication.principal.id} != ${user.id}">
+								<div>
+									<div class="checkbox" th:classappend="${#fields.hasErrors('active')}? has-error">
+										<label>
+											<input type="checkbox" th:field="*{active}"/>
+											<span th:text="#{user.active}">Active</span>
+										</label>
+										<p th:replace="fragments/form/error :: errors (fieldName='active')"/>
+									</div>
+								</div>
+								<div>
+									<div class="checkbox" th:classappend="${#fields.hasErrors('superadmin')}? has-error">
+										<label>
+											<input type="checkbox" th:field="*{superadmin}"/>
+											<span th:text="#{user.superadmin}">Superadmin</span>
+										</label>
+										<p th:replace="fragments/form/error :: errors (fieldName='superadmin')"/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="box-footer">
+					<button type="submit" class="btn btn-primary" th:text="#{page.useredit.submit}">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div th:fragment="create" class="col-md-6">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title" th:text="#{page.usercreate.formtitle}">Profile information</h3>
+			</div>
+			<form action="#" th:action="@{/users/create/{type}(type=${userCommand.type})}" th:object="${userCommand}" method="post">
+				<input type="hidden" th:field="*{type}"/>
+				<div class="box-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group" th:classappend="${#fields.hasErrors('label')}? has-error">
+								<label th:for="${#ids.next('label')}" th:text="#{user.label}">Label</label>
+								<input type="text" class="form-control" th:field="*{label}"/>
+								<p th:replace="fragments/form/error :: errors (fieldName='label')"/>
+							</div>
+							<div class="form-group" th:classappend="${#fields.hasErrors('username')}? has-error">
+								<label th:for="${#ids.next('username')}" th:text="#{user.username}">Username</label>
+								<input type="text" class="form-control" th:field="*{username}"/>
+								<p th:replace="fragments/form/error :: errors (fieldName='username')"/>
+							</div>
+							<div th:if="*{type} == 'manual'" class="form-group" th:classappend="${#fields.hasErrors('email')}? has-error">
+								<label th:for="${#ids.next('email')}" th:text="#{user.email}">Email</label>
+								<input type="text" class="form-control" th:field="*{email}"/>
+								<p th:replace="fragments/form/error :: errors (fieldName='email')"/>
+							</div>
+							<div class="form-group" th:classappend="${#fields.hasErrors('password')}? has-error">
+								<label th:for="${#ids.next('password')}" th:text="#{user.password}">Password</label>
+								<input type="password" class="form-control" id="password" name="password"/>
+								<p th:replace="fragments/form/error :: errors (fieldName='password')"/>
+							</div>
+							<div class="form-group" th:classappend="${#fields.hasErrors('passwordConfirm')}? has-error">
+								<label th:for="${#ids.next('passwordConfirm')}" th:text="#{user.passwordConfirm}">Password confirm</label>
+								<input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm"/>
+								<p th:replace="fragments/form/error :: errors (fieldName='passwordConfirm')"/>
+							</div>
+							<div>
+								<div class="checkbox" th:classappend="${#fields.hasErrors('active')}? has-error">
+									<label>
+										<input type="checkbox" th:field="*{active}"/>
+										<span th:text="#{user.active}">Active</span>
+									</label>
+									<p th:replace="fragments/form/error :: errors (fieldName='active')"/>
+								</div>
+							</div>
+							<div>
+								<div class="checkbox" th:classappend="${#fields.hasErrors('superadmin')}? has-error">
+									<label>
+										<input type="checkbox" th:field="*{superadmin}"/>
+										<span th:text="#{user.superadmin}">Superadmin</span>
+									</label>
+									<p th:replace="fragments/form/error :: errors (fieldName='superadmin')"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="box-footer">
+					<button type="submit" class="btn btn-primary" th:text="#{page.usercreate.submit}">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -13,4 +13,8 @@ public enum UserType {
 		return null;
 	}
 	
+	public boolean is(String value) {
+		return name().equalsIgnoreCase(value);
+	}
+	
 }

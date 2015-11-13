@@ -1,5 +1,7 @@
 package com.etnetera.tremapp.repository.mongodb.user;
 
+import java.util.Locale;
+
 import com.etnetera.tremapp.model.datatables.UserDT;
 import com.etnetera.tremapp.model.mongodb.user.User;
 import com.github.dandelion.datatables.core.ajax.DataSet;
@@ -14,6 +16,6 @@ public interface UserRepositoryCustom {
 	
 	public User findOneByUsername(String username);
 	
-	public DataSet<UserDT> findWithDatatablesCriterias(DatatablesCriterias criterias);
+	public DataSet<UserDT> findWithDatatablesCriterias(DatatablesCriterias criterias, Locale locale);
 	
 }

@@ -1,7 +1,9 @@
 package com.etnetera.tremapp.model.datatables;
 
+import java.util.Locale;
+
+import com.etnetera.tremapp.message.Localizer;
 import com.etnetera.tremapp.model.mongodb.user.User;
-import com.etnetera.tremapp.user.UserType;
 
 public class UserDT extends AuditedModelDT {
 
@@ -11,20 +13,20 @@ public class UserDT extends AuditedModelDT {
 	
 	private String username;
 	
-	private UserType type;
+	private String type;
 	
-	private boolean active;
+	private String active;
 	
-	private boolean superadmin;
+	private String superadmin;
 	
-	public UserDT(User user) {
+	public UserDT(User user, Localizer localizer, Locale locale) {
 		super(user);
 		this.id = user.getId();
 		this.label = user.getLabel();
 		this.username = user.getUsername();
-		this.type = user.getType();
-		this.active = user.isActive();
-		this.superadmin = user.isSuperadmin();
+		this.type = localizer.localize(user.getType(), locale);
+		this.active = localizer.localize(user.isActive(), locale);
+		this.superadmin = localizer.localize(user.isSuperadmin(), locale);
 	}
 
 	public String getId() {
@@ -39,15 +41,15 @@ public class UserDT extends AuditedModelDT {
 		return username;
 	}
 
-	public UserType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public boolean isActive() {
+	public String getActive() {
 		return active;
 	}
 
-	public boolean isSuperadmin() {
+	public String getSuperadmin() {
 		return superadmin;
 	}
 	

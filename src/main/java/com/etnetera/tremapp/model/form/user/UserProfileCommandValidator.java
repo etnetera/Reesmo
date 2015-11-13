@@ -6,9 +6,9 @@ import org.springframework.validation.Validator;
 
 public class UserProfileCommandValidator implements Validator {
 	
-	private UsernameCommandValidator usernameValidator;
+	protected UsernameCommandValidator usernameValidator;
 	
-	private EmailCommandValidator emailValidator;
+	protected EmailCommandValidator emailValidator;
 	
 	public UserProfileCommandValidator(UsernameCommandValidator usernameValidator, EmailCommandValidator emailValidator) {
 		this.usernameValidator = usernameValidator;

@@ -13,12 +13,12 @@ public class PasswordCommandValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.validation.password.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "password.validation.passwordConfirm.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "validator.NotEmpty.message");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "validator.NotEmpty.message");
 		
 		PasswordCommand passwordCommand = (PasswordCommand) target;
 		if (!passwordCommand.getPassword().equals(passwordCommand.getPasswordConfirm())) {
-			errors.rejectValue("passwordConfirm", "password.validation.passwordConfirm.match");
+			errors.rejectValue("passwordConfirm", "validator.Mismatch.password.message");
 		}
 	}
 

@@ -25,12 +25,12 @@ public class EmailCommandValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "email.validation.email.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "validator.NotEmpty.message");
 		EmailCommand command = (EmailCommand) target;
 		
 		User userByEmail = manualUserRepository.findOneByEmail(command.getEmail());
-		if (userByEmail != null && (editedUser != null || !userByEmail.getId().equals(editedUser.getId()))) {
-			errors.rejectValue("email", "email.validation.email.unique");
+		if (userByEmail != null && (editedUser == null || !userByEmail.getId().equals(editedUser.getId()))) {
+			errors.rejectValue("email", "validator.Unique.message");
 		}
 	} 
 

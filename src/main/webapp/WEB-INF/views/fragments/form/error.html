@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<p th:fragment="errors (fieldName)" class="help-block" th:each="err : ${#fields.errors(fieldName)}">
+		<i class="fa fa-exclamation"></i> <span th:text="${err}"></span>
+	</p>
+</body>
+</html>

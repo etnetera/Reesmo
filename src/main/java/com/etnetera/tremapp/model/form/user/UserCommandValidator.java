@@ -2,17 +2,24 @@ package com.etnetera.tremapp.model.form.user;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 
 import com.etnetera.tremapp.model.mongodb.user.User;
+import com.etnetera.tremapp.user.UserType;
 
-public class UserCommandValidator extends UserProfileCommandValidator {
+public class UserCommandValidator implements Validator {
 
-	private PasswordCommandValidator passwordValidator;
+	protected UsernameCommandValidator usernameValidator;
 	
-	private User editedUser;
+	protected EmailCommandValidator emailValidator;
+	
+	protected PasswordCommandValidator passwordValidator;
+	
+	protected User editedUser;
 	
 	public UserCommandValidator(UsernameCommandValidator usernameValidator, EmailCommandValidator emailValidator, PasswordCommandValidator passwordValidator, User editedUser) {
-		super(usernameValidator, emailValidator);
+		this.usernameValidator = usernameValidator;
+		this.emailValidator = emailValidator;
 		this.passwordValidator = passwordValidator;
 		this.editedUser = editedUser;
 	}
@@ -24,7 +31,11 @@ public class UserCommandValidator extends UserProfileCommandValidator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		super.validate(target, errors);
+		UserCommand command = (UserCommand) target;
+		ValidationUtils.invokeValidator(usernameValidator, target, errors);
+		if (UserType.MANUAL.is(command.getType())) {
+			ValidationUtils.invokeValidator(emailValidator, target, errors);
+		}
 		if (editedUser == null) {
 			ValidationUtils.invokeValidator(passwordValidator, target, errors);
 		}
