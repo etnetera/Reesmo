@@ -33,6 +33,8 @@ public class AppUser implements UserDetails {
 	
 	private String password;
 	
+	private boolean enabled;
+	
 	private Collection<? extends GrantedAuthority> authorities;
 	
 	private transient User user;
@@ -80,6 +82,15 @@ public class AppUser implements UserDetails {
 		this.password = password;
 	}
 
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public User getUser() {
 		if (user == null) {
 			User u = userRepository.findOneById(id);
@@ -97,6 +108,7 @@ public class AppUser implements UserDetails {
 		label = user.getLabel();
 		username = user.getUsername();
 		password = user.getPassword();
+		enabled = user.isEnabled();
 		
 		List<SimpleGrantedAuthority> auths = new ArrayList<>();
 		auths.add(new SimpleGrantedAuthority(user.getRole()));
@@ -141,10 +153,9 @@ public class AppUser implements UserDetails {
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
+	
+	public boolean hasAuthority(String authority) {
+		return authority != null && authorities.stream().anyMatch(a -> a.getAuthority().equals(authority));
 	}
 	
 	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {

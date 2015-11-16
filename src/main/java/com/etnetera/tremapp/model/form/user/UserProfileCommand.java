@@ -11,21 +11,21 @@ public class UserProfileCommand implements UsernameCommand, EmailCommand {
 
 	@NotBlank
 	@Size(min = 2, max = 255)
-	protected String label;
+	private String label;
 
 	@Size(min = 2, max = 255)
-	protected String username;
+	private String username;
 	
 	@Email
-	protected String email;
+	private String email;
 	
-	public void updateFromUser(ManualUser user) {
+	public void fromUser(ManualUser user) {
 		label = user.getLabel();
 		username = user.getUsername();
 		email = user.getEmail();
 	}
 	
-	public void propagateToUser(ManualUser user) {
+	public void toUser(ManualUser user) {
 		user.setLabel(label);
 		user.setUsername(username);
 		user.setEmail(email);

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/main">
+<head>
+<title th:text="#{page.projects.title} - ${project.name} - #{page.projectdelete.title}">Projects -
+	Project - Delete</title>
+</head>
+<body>
+	<h1 layout:fragment="content-title"><i class="fa fa-cube"></i> <span th:text="${project.name} + ' - ' + #{page.projectdelete.title}">Project - Delete</span> <small th:text="#{page.projectdelete.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
+		<li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
+				<span th:text="#{page.projects.title}">Projects</span></a></li>
+		<li><a
+			th:href="@{/projects/detail/{projectId}(projectId=${project.id})}" href="#"
+			th:text="${project.name}">Project</a></li>
+		<li class="active"><a
+			th:href="@{/projects/delete/{projectId}(projectId=${project.id})}" href="#"
+			th:text="#{page.projectdelete.title}">Delete</a></li>
+	</ol>
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title"><i class="fa fa-bullhorn"></i> <span th:text="#{page.projectdelete.formtitle}">Read well</span></h3>
+					</div>
+					<form action="#" th:action="@{/projects/delete/{projectId}(projectId=${project.id})}" method="post">
+						<div class="box-body">
+							<div class="callout callout-danger">
+								<h4 th:text="#{page.projectdelete.dangertitle}">I am a danger callout!</h4>
+								<p th:text="#{page.projectdelete.dangercontent}">There is a problem that we need to fix. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</p>
+							</div>
+						</div>
+						<div class="box-footer">
+							<button type="submit" class="btn btn-primary" th:text="#{submit}">Submit</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

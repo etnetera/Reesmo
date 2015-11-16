@@ -15,7 +15,7 @@ public class UserDT extends AuditedModelDT {
 	
 	private String type;
 	
-	private String active;
+	private String enabled;
 	
 	private String superadmin;
 	
@@ -25,7 +25,7 @@ public class UserDT extends AuditedModelDT {
 		this.label = user.getLabel();
 		this.username = user.getUsername();
 		this.type = localizer.localize(user.getType(), locale);
-		this.active = localizer.localize(user.isActive(), locale);
+		this.enabled = localizer.localize(user.isEnabled(), locale);
 		this.superadmin = localizer.localize(user.isSuperadmin(), locale);
 	}
 
@@ -45,8 +45,8 @@ public class UserDT extends AuditedModelDT {
 		return type;
 	}
 
-	public String getActive() {
-		return active;
+	public String getEnabled() {
+		return enabled;
 	}
 
 	public String getSuperadmin() {

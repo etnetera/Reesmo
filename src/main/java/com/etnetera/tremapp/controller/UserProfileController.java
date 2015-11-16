@@ -56,7 +56,7 @@ public class UserProfileController {
 	public String editUserProfile(Model model) {
 		User user = UserHelper.requireUser();
 		UserProfileCommand userProfileCommand = new UserProfileCommand();
-		userProfileCommand.updateFromUser((ManualUser) user);
+		userProfileCommand.fromUser((ManualUser) user);
 		model.addAttribute("user", user);
 		model.addAttribute("userProfileCommand", userProfileCommand);
 		return "page/user/userProfileEdit";
@@ -69,7 +69,7 @@ public class UserProfileController {
 			model.addAttribute("user", user);
 			return "page/user/userProfileEdit";
 		}
-		userProfileCommand.propagateToUser((ManualUser) user);
+		userProfileCommand.toUser((ManualUser) user);
 		userRepository.save(user);
 		UserHelper.updateUser(user);
 		return "redirect:/user-profile";

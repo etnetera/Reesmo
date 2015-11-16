@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/main">
+<head>
+<title th:text="#{page.projects.title} - ${project.name}">Projects -
+	Project</title>
+</head>
+<body>
+	<h1 layout:fragment="content-title"><i class="fa fa-cube"></i> <span th:text="${project.name}">Project</span> <small th:text="#{page.projectdetail.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
+		<li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
+				<span th:text="#{page.projects.title}">Projects</span></a></li>
+		<li class="active"><a
+			th:href="@{/projects/detail/{projectId}(projectId=${project.id})}" href="#"
+			th:text="${project.name}">Project</a></li>
+	</ol>
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="box box-primary">
+					<div class="box-body box-profile">
+						<h3 class="profile-username text-center" th:text="${project.name}">User</h3>
+						<a th:href="@{/projects/edit/{projectId}(projectId=${project.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+						<a th:href="@{/projects/delete/{projectId}(projectId=${project.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+					</div>
+				</div>
+			</div>
+			<div th:replace="fragments/project/projectDetail :: details">Details</div>
+		</div>
+	</div>
+</body>
+</html>

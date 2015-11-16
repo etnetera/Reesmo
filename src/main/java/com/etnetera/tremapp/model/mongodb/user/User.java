@@ -31,7 +31,7 @@ abstract public class User extends MongoAuditedModel {
 	/**
 	 * User can be deactivated but still kept in app.
 	 */
-	private boolean active;
+	private boolean enabled;
 	
 	/**
 	 * If true than this user is allowed for everything
@@ -73,12 +73,12 @@ abstract public class User extends MongoAuditedModel {
 		this.password = password;
 	}
 
-	public boolean isActive() {
-		return active;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public boolean isSuperadmin() {

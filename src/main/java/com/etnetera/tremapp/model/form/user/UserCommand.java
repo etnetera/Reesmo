@@ -18,33 +18,33 @@ public class UserCommand implements UsernameCommand, EmailCommand, PasswordComma
 
 	@NotBlank
 	@Size(min = 2, max = 255)
-	protected String label;
+	private String label;
 
 	@Size(min = 2, max = 255)
-	protected String username;
+	private String username;
 	
-	private boolean active;
+	private boolean enabled;
 
 	private boolean superadmin;
 	
 	@NotNull
-	protected String type = UserType.MANUAL.name().toLowerCase();
+	private String type = UserType.MANUAL.name().toLowerCase();
 	
 	@Size(min = 4, max = 255)
-	protected String password;
+	private String password;
 	
 	@Size(min = 4, max = 255)
-	protected String passwordConfirm;
+	private String passwordConfirm;
 	
 	@Email
-	protected String email;
+	private String email;
 	
-	protected List<String> allowedIps;
+	private List<String> allowedIps;
 	
-	public void updateFromUser(User user) {
+	public void fromUser(User user) {
 		label = user.getLabel();
 		username = user.getUsername();
-		active = user.isActive();
+		enabled = user.isEnabled();
 		superadmin = user.isSuperadmin();
 		type = user.getType().name().toLowerCase();
 		if (user instanceof ManualUser) {
@@ -62,11 +62,11 @@ public class UserCommand implements UsernameCommand, EmailCommand, PasswordComma
 		allowedIps = user.getAllowedIps();
 	}
 
-	public void propagateToUser(User user, boolean create, boolean sameUserLoggedUser) {
+	public void toUser(User user, boolean create, boolean sameUserLoggedUser) {
 		user.setLabel(label);
 		user.setUsername(username);
 		if (!sameUserLoggedUser) {
-			user.setActive(active);
+			user.setEnabled(enabled);
 			user.setSuperadmin(superadmin);
 		}
 		if (create) {
@@ -81,14 +81,14 @@ public class UserCommand implements UsernameCommand, EmailCommand, PasswordComma
 		}
 	}
 	
-	protected void toUser(ManualUser user, boolean create, boolean sameUserLoggedUser) {
+	private void toUser(ManualUser user, boolean create, boolean sameUserLoggedUser) {
 		if (!UserType.MANUAL.is(type)) {
 			throw new IllegalArgumentException("Manual user can not be injected from " + type + " type!");
 		}
 		user.setEmail(email);
 	}
 	
-	protected void toUser(ApiUser user, boolean create, boolean sameUserLoggedUser) {
+	private void toUser(ApiUser user, boolean create, boolean sameUserLoggedUser) {
 		if (!UserType.API.is(type)) {
 			throw new IllegalArgumentException("Api user can not be injected from " + type + " type!");
 		}
@@ -113,12 +113,12 @@ public class UserCommand implements UsernameCommand, EmailCommand, PasswordComma
 		this.username = username;
 	}
 
-	public boolean isActive() {
-		return active;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public boolean isSuperadmin() {

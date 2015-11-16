@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="edit" class="col-md-6">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title" th:text="#{page.projectedit.formtitle}">Information</h3>
+			</div>
+			<form action="#" th:action="@{/projects/edit/{projectId}(projectId=${project.id})}" th:object="${projectCommand}" method="post">
+				<div th:replace="fragments/project/projectFormFields :: fields">Form</div>
+			</form>
+		</div>
+	</div>
+	
+	<div th:fragment="create" class="col-md-6">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title" th:text="#{page.projectcreate.formtitle}">Information</h3>
+			</div>
+			<form action="#" th:action="@{/projects/create}" th:object="${projectCommand}" method="post">
+				<div th:replace="fragments/project/projectFormFields :: fields">Form</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

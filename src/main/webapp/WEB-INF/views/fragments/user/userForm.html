@@ -28,12 +28,12 @@
 							</div>
 							<div th:if="${#authentication.principal.id} != ${user.id}">
 								<div>
-									<div class="checkbox" th:classappend="${#fields.hasErrors('active')}? has-error">
+									<div class="checkbox" th:classappend="${#fields.hasErrors('enabled')}? has-error">
 										<label>
-											<input type="checkbox" th:field="*{active}"/>
-											<span th:text="#{user.active}">Active</span>
+											<input type="checkbox" th:field="*{enabled}"/>
+											<span th:text="#{user.enabled}">Enabled</span>
 										</label>
-										<p th:replace="fragments/form/error :: errors (fieldName='active')"/>
+										<p th:replace="fragments/form/error :: errors (fieldName='enabled')"/>
 									</div>
 								</div>
 								<div>
@@ -92,12 +92,12 @@
 								<p th:replace="fragments/form/error :: errors (fieldName='passwordConfirm')"/>
 							</div>
 							<div>
-								<div class="checkbox" th:classappend="${#fields.hasErrors('active')}? has-error">
+								<div class="checkbox" th:classappend="${#fields.hasErrors('enabled')}? has-error">
 									<label>
-										<input type="checkbox" th:field="*{active}"/>
-										<span th:text="#{user.active}">Active</span>
+										<input type="checkbox" th:field="*{enabled}"/>
+										<span th:text="#{user.enabled}">Enabled</span>
 									</label>
-									<p th:replace="fragments/form/error :: errors (fieldName='active')"/>
+									<p th:replace="fragments/form/error :: errors (fieldName='enabled')"/>
 								</div>
 							</div>
 							<div>

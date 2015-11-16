@@ -99,7 +99,7 @@ public class UserController implements MenuActivityController {
 		User user = userRepository.findOne(userId);
 		ControllerModel.exists(user, User.class);
 		UserCommand userCommand = new UserCommand();
-		userCommand.updateFromUser(user);
+		userCommand.fromUser(user);
 		model.addAttribute("user", user);
 		model.addAttribute("userCommand", userCommand);
 		return "page/user/userEdit";
@@ -114,7 +114,7 @@ public class UserController implements MenuActivityController {
 			model.addAttribute("user", user);
 			return "page/user/userEdit";
 		}
-		userCommand.propagateToUser(user, false, UserHelper.isSameAsLogged(user));
+		userCommand.toUser(user, false, UserHelper.isSameAsLogged(user));
 		userRepository.save(user);
 		if (UserHelper.isSameAsLogged(user)) {
 			UserHelper.updateUser(user);
@@ -151,7 +151,7 @@ public class UserController implements MenuActivityController {
 		default:
 			throw new IllegalArgumentException("Uknown user type " + userType);
 		}
-		userCommand.propagateToUser(user, true, false);
+		userCommand.toUser(user, true, false);
 		userRepository.save(user);
 		return "redirect:/users/detail/" + user.getId();
 	}

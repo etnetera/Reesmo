@@ -2,16 +2,16 @@
 <html layout:decorator="layout/main">
 <head>
 <title th:text="#{page.users.title} - ${user.label} - #{page.useredit.title}">Users -
-	User label - Edit</title>
+	User - Edit</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label} + ' - ' + #{page.useredit.title}">User label - Edit</span> <small th:text="#{page.useredit.titledesc}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label} + ' - ' + #{page.useredit.title}">User - Edit</span> <small th:text="#{page.useredit.titledesc}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/users}" href="#"><i class="fa fa-user"></i>
 				<span th:text="#{page.users.title}">Users</span></a></li>
 		<li><a
 			th:href="@{/users/detail/{userId}(userId=${user.id})}" href="#"
-			th:text="${user.label}">User label</a></li>
+			th:text="${user.label}">User</a></li>
 		<li class="active"><a
 			th:href="@{/users/edit/{userId}(userId=${user.id})}" href="#"
 			th:text="#{page.useredit.title}">Edit</a></li>

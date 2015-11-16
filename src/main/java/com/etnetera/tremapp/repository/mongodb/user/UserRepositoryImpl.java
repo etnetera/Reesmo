@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			u.setUsername("admin");
 			u.setPassword(new BCryptPasswordEncoder().encode("admin"));
 			u.setEmail("admin@tremapp.local");
-			u.setActive(true);
+			u.setEnabled(true);
 			u.setSuperadmin(true);
 			manualUserRepository.save(u);
 		}
