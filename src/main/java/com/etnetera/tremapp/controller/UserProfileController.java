@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.etnetera.tremapp.model.form.user.EmailCommandValidator;
+import com.etnetera.tremapp.model.form.user.PasswordCommandValidator;
+import com.etnetera.tremapp.model.form.user.UserChangePasswordCommand;
+import com.etnetera.tremapp.model.form.user.UserChangePasswordCommandValidator;
 import com.etnetera.tremapp.model.form.user.UserProfileCommand;
 import com.etnetera.tremapp.model.form.user.UserProfileCommandValidator;
 import com.etnetera.tremapp.model.form.user.UsernameCommandValidator;
@@ -37,6 +40,12 @@ public class UserProfileController {
 				new EmailCommandValidator(manualUserRepository, user)));
 	}
 	
+	@InitBinder(value = "userChangePasswordCommand")
+	protected void initChangePasswordBinder(WebDataBinder binder) {		
+		User user = UserHelper.requireUser();
+		binder.addValidators(new UserChangePasswordCommandValidator(new PasswordCommandValidator(), user));
+	}
+	
 	@RequestMapping(value = "/user-profile", method = RequestMethod.GET)
 	public String userProfile(Model model) {
 		model.addAttribute("user", UserHelper.requireUser());
@@ -54,13 +63,35 @@ public class UserProfileController {
 	}
 	
 	@RequestMapping(value = "/user-profile/edit", method = RequestMethod.POST)
-	public String editUser(@Valid UserProfileCommand userProfileCommand, BindingResult bindingResult, Model model) {
+	public String editUserProfile(@Valid UserProfileCommand userProfileCommand, BindingResult bindingResult, Model model) {
 		User user = UserHelper.requireUser();
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("user", user);
 			return "page/user/userProfileEdit";
 		}
 		userProfileCommand.propagateToUser((ManualUser) user);
+		userRepository.save(user);
+		UserHelper.updateUser(user);
+		return "redirect:/user-profile";
+	}
+	
+	@RequestMapping(value = "/user-profile/change-password", method = RequestMethod.GET)
+	public String changeUserProfilePassword(Model model) {
+		User user = UserHelper.requireUser();
+		model.addAttribute("user", user);
+		model.addAttribute("userChangePasswordCommand", new UserChangePasswordCommand());
+		return "page/user/userProfileChangePassword";
+	}
+
+	@RequestMapping(value = "/user-profile/change-password", method = RequestMethod.POST)
+	public String changeUserProfilePassword(@Valid UserChangePasswordCommand userChangePasswordCommand,
+			BindingResult bindingResult, Model model) {
+		User user = UserHelper.requireUser();
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("user", user);
+			return "page/user/userProfileChangePassword";
+		}
+		userChangePasswordCommand.propagateToUser(user);
 		userRepository.save(user);
 		UserHelper.updateUser(user);
 		return "redirect:/user-profile";

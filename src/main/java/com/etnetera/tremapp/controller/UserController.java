@@ -23,6 +23,8 @@ import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.datatables.UserDT;
 import com.etnetera.tremapp.model.form.user.EmailCommandValidator;
 import com.etnetera.tremapp.model.form.user.PasswordCommandValidator;
+import com.etnetera.tremapp.model.form.user.UserChangePasswordCommand;
+import com.etnetera.tremapp.model.form.user.UserChangePasswordCommandValidator;
 import com.etnetera.tremapp.model.form.user.UserCommand;
 import com.etnetera.tremapp.model.form.user.UserCommandValidator;
 import com.etnetera.tremapp.model.form.user.UsernameCommandValidator;
@@ -61,6 +63,15 @@ public class UserController implements MenuActivityController {
 		}
 		binder.addValidators(new UserCommandValidator(new UsernameCommandValidator(userRepository, user),
 				new EmailCommandValidator(manualUserRepository, user), new PasswordCommandValidator(), user));
+	}
+	
+	@InitBinder(value = "userChangePasswordCommand")
+	protected void initChangePasswordBinder(WebDataBinder binder, @PathVariable String userId) {		
+		User user = userRepository.findOne(userId);
+		if (user != null && !UserHelper.isSameAsLogged(user)) {
+			user = null;
+		}
+		binder.addValidators(new UserChangePasswordCommandValidator(new PasswordCommandValidator(), user));
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -165,6 +176,32 @@ public class UserController implements MenuActivityController {
 		}
 		userRepository.delete(user);
 		return "redirect:/users";
+	}
+	
+	@RequestMapping(value = "/users/change-password/{userId}", method = RequestMethod.GET)
+	public String changeUserPassword(@PathVariable String userId, Model model) {
+		User user = userRepository.findOne(userId);
+		ControllerModel.exists(user, User.class);
+		model.addAttribute("user", user);
+		model.addAttribute("userChangePasswordCommand", new UserChangePasswordCommand());
+		return "page/user/userChangePassword";
+	}
+
+	@RequestMapping(value = "/users/change-password/{userId}", method = RequestMethod.POST)
+	public String changeUserPassword(@Valid UserChangePasswordCommand userChangePasswordCommand,
+			BindingResult bindingResult, @PathVariable String userId, Model model) {
+		User user = userRepository.findOne(userId);
+		ControllerModel.exists(user, User.class);
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("user", user);
+			return "page/user/userChangePassword";
+		}
+		userChangePasswordCommand.propagateToUser(user);
+		userRepository.save(user);
+		if (UserHelper.isSameAsLogged(user)) {
+			UserHelper.updateUser(user);
+		}
+		return "redirect:/users/detail/" + user.getId();
 	}
 
 }

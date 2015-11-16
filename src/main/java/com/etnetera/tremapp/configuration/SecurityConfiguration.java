@@ -29,7 +29,7 @@ public class SecurityConfiguration {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable().authorizeRequests().anyRequest().hasAnyRole(UserRole.MANUALUSER).and().formLogin();
+			http.authorizeRequests().anyRequest().hasAnyRole(UserRole.MANUALUSER).and().formLogin();
 		}
 
 		@Override

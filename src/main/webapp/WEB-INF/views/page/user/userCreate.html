@@ -4,7 +4,7 @@
 <title th:text="#{page.users.title} - #{'page.usercreate' + ${userCommand.type} + '.title'}">Users - Create</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="#{'page.usercreate' + ${userCommand.type} + '.title'}">Create</span> <small th:text="#{page.usercreate' + ${userCommand.type} + '.titledesc}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="#{'page.usercreate' + ${userCommand.type} + '.title'}">Create</span> <small th:text="#{'page.usercreate' + ${userCommand.type} + '.titledesc'}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/users}" href="#"><i class="fa fa-user"></i>
 				<span th:text="#{page.users.title}">Users</span></a></li>
