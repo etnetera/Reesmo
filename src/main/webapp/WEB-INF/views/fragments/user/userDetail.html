@@ -13,8 +13,6 @@
 						<div th:if="${user.type.name()} == 'MANUAL'"><b><span th:text="#{user.email}">Email</span>:</b> <span th:text="${user.email}">email@email.com</span></div>
 						<div><b><span th:text="#{user.enabled}">Enabled</span>:</b> <span th:text="#{${user.enabled}}">true</span></div>
 						<div><b><span th:text="#{user.superadmin}">Superadmin</span>:</b> <span th:text="#{${user.superadmin}}">true</span></div>
-						<div><b><span th:text="#{createdAt}">Created at</span>:</b> <span th:text="${user.createdAt}">123456</span></div>
-						<div><b><span th:text="#{updatedAt}">Updated at</span>:</b> <span th:text="${user.updatedAt}">123456</span></div>
 					</div>
 				</div>
 			</div>

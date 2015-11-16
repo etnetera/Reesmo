@@ -1,7 +1,7 @@
 package com.etnetera.tremapp.model.form.project;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.etnetera.tremapp.model.mongodb.project.Project;
@@ -25,13 +25,12 @@ public class ProjectCommandValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "key", "validator.NotEmpty.message");
 		ProjectCommand command = (ProjectCommand) target;
 		
-		if (StringUtils.isNotEmpty(command.getKey())) {
-			Project projectByKey = projectRepository.findOneByKey(command.getKey());
-			if (projectByKey != null && (editedProject == null || !projectByKey.getId().equals(editedProject.getId()))) {
-				errors.rejectValue("key", "validator.Unique.message");
-			}
+		Project projectByKey = projectRepository.findOneByKey(command.getKey());
+		if (projectByKey != null && (editedProject == null || !projectByKey.getId().equals(editedProject.getId()))) {
+			errors.rejectValue("key", "validator.Unique.message");
 		}
 	} 
 

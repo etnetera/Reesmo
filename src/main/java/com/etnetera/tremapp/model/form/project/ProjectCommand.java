@@ -1,5 +1,6 @@
 package com.etnetera.tremapp.model.form.project;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -8,33 +9,26 @@ import com.etnetera.tremapp.model.mongodb.project.Project;
 
 public class ProjectCommand {
 
-	@Size(max = 255)
-	private String key;
-
 	@NotBlank
 	@Size(min = 2, max = 255)
 	protected String name;
 	
+	@Pattern(regexp = "^[A-Za-z0-9_\\-\\.]*$", message = "{validator.Pattern.alphaNumericUnderscoreDashDot.message}")
+	@Size(max = 255)
+	private String key;
+	
 	protected String description;
 	
 	public void fromProject(Project project) {
-		key = project.getKey();
 		name = project.getName();
+		key = project.getKey();
 		description = project.getDescription();
 	}
 	
 	public void toProject(Project project) {
-		project.setKey(key);
 		project.setName(name);
+		project.setKey(key);
 		project.setDescription(description);
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
 	}
 
 	public String getName() {
@@ -43,6 +37,14 @@ public class ProjectCommand {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 	public String getDescription() {

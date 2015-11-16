@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/main">
+<head>
+<title th:text="#{page.projectgroups.title} - ${projectGroup.name}">Project groups -
+	Project group</title>
+</head>
+<body>
+	<h1 layout:fragment="content-title"><i class="fa fa-cubes"></i> <span th:text="${projectGroup.name}">Project group</span> <small th:text="#{page.projectgroupdetail.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
+		<li><a th:href="@{/project-groups}" href="#"><i class="fa fa-cubes"></i>
+				<span th:text="#{page.projectgroups.title}">Project groups</span></a></li>
+		<li class="active"><a
+			th:href="@{/project-groups/detail/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
+			th:text="${projectGroup.name}">Project group</a></li>
+	</ol>
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="box box-primary">
+					<div class="box-body box-profile">
+						<h3 class="profile-username text-center" th:text="${projectGroup.name}">Project group</h3>
+						<a th:href="@{/project-groups/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+						<a th:href="@{/project-groups/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+					</div>
+				</div>
+			</div>
+			<div th:replace="fragments/projectGroup/projectGroupDetail :: details">Details</div>
+			<div th:replace="fragments/model/audit :: history (model=${projectGroup})">History</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="details" class="col-md-6">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title" th:text="#{projectgroup.details}">Details</h3>
+			</div>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div><b><span th:text="#{projectgroup.name}">Name</span>:</b> <span th:text="${projectGroup.name}">name</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:if="${projectGroup.description?.length()} > 0" class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title" th:text="#{projectgroup.description}">Description</h3>
+			</div>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div th:text="${projectGroup.description}" style="white-space: pre;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

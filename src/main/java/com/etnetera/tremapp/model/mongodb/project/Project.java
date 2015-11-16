@@ -16,13 +16,16 @@ public class Project extends MongoAuditedModel {
 	private String id;
 	
 	/**
-	 * Unique not required key for API access.
-	 * Is not ID so it can be changed if needed.
+	 * Is used for filtering mainly.
+	 * No need to be unique.
+	 */
+	private String name;
+	
+	/**
+	 * Is required. It is used in API access or in views.
 	 */
 	@Indexed(unique = true)
 	private String key;
-	
-	private String name;
 	
 	private String description;
 	
@@ -36,20 +39,20 @@ public class Project extends MongoAuditedModel {
 		this.id = id;
 	}
 
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 	public String getDescription() {

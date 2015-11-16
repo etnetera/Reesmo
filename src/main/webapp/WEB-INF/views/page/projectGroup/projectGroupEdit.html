@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/main">
+<head>
+<title th:text="#{page.projectgroups.title} - ${projectGroup.name} - #{page.projectgroupedit.title}">Project groups -
+	Project group - Edit</title>
+</head>
+<body>
+	<h1 layout:fragment="content-title"><i class="fa fa-cube"></i> <span th:text="${projectGroup.name} + ' - ' + #{page.projectgroupedit.title}">Project - Edit</span> <small th:text="#{page.projectgroupedit.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
+		<li><a th:href="@{/project-groups}" href="#"><i class="fa fa-cube"></i>
+				<span th:text="#{page.projectgroups.title}">Project groups</span></a></li>
+		<li><a
+			th:href="@{/project-groups/detail/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
+			th:text="${projectGroup.name}">Project group</a></li>
+		<li class="active"><a
+			th:href="@{/project-groups/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
+			th:text="#{page.projectgroupedit.title}">Edit</a></li>
+	</ol>
+	<div layout:fragment="content">
+		<div class="row">
+			<div th:replace="fragments/projectGroup/projectGroupForm :: edit">Edit form</div>
+		</div>
+	</div>
+</body>
+</html>

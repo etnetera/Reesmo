@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="history (model)" class="col-md-3">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title" th:text="#{history.box.title}">History</h3>
+			</div>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div><b><span th:text="#{createdAt}">Created at</span>:</b> <span th:text="${model.createdAt}">123456</span></div>
+						<div><b><span th:text="#{updatedAt}">Updated at</span>:</b> <span th:text="${model.updatedAt}">123456</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

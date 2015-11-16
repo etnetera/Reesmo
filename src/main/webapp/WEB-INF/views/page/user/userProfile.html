@@ -25,6 +25,7 @@
 				</div>
 			</div>
 			<div th:replace="fragments/user/userDetail :: details">Details</div>
+			<div th:replace="fragments/model/audit :: history (model=${user})">History</div>
 		</div>
 	</div>
 </body>

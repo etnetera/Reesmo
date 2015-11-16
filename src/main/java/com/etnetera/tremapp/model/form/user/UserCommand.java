@@ -3,6 +3,7 @@ package com.etnetera.tremapp.model.form.user;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -20,6 +21,7 @@ public class UserCommand implements UsernameCommand, EmailCommand, PasswordComma
 	@Size(min = 2, max = 255)
 	private String label;
 
+	@Pattern(regexp = "^[A-Za-z0-9_\\-\\.]*$", message = "{validator.Pattern.alphaNumericUnderscoreDashDot.message}")
 	@Size(min = 2, max = 255)
 	private String username;
 	

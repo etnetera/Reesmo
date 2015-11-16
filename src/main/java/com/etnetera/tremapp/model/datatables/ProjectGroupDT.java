@@ -10,14 +10,11 @@ public class ProjectGroupDT extends AuditedModelDT {
 	
 	private String description;
 	
-	private String projects;
-	
 	public ProjectGroupDT(ProjectGroup projectGroup) {
 		super(projectGroup);
 		this.id = projectGroup.getId();
 		this.name = projectGroup.getName();
 		this.description = projectGroup.getDescription();
-		this.projects = String.join(", ", projectGroup.getProjects());
 	}
 
 	public String getId() {
@@ -42,14 +39,6 @@ public class ProjectGroupDT extends AuditedModelDT {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getProjects() {
-		return projects;
-	}
-
-	public void setProjects(String projects) {
-		this.projects = projects;
 	}
 
 }

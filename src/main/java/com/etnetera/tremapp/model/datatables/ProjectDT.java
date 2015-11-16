@@ -6,17 +6,17 @@ public class ProjectDT extends AuditedModelDT {
 
 	private String id;
 	
-	private String key;
-	
 	private String name;
+	
+	private String key;
 	
 	private String description;
 	
 	public ProjectDT(Project project) {
 		super(project);
 		this.id = project.getId();
-		this.key = project.getKey();
 		this.name = project.getName();
+		this.key = project.getKey();
 		this.description = project.getDescription();
 	}
 
@@ -28,20 +28,20 @@ public class ProjectDT extends AuditedModelDT {
 		this.id = id;
 	}
 
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 	public String getDescription() {
