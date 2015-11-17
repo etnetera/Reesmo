@@ -27,6 +27,35 @@
 			<div th:replace="fragments/project/projectDetail :: details">Details</div>
 			<div th:replace="fragments/model/audit :: history (model=${project})">History</div>
 		</div>
+		<div class="box">
+			<div class="box-header with-border">
+				<h3 class="box-title" th:text="#{page.projectdetail.members.title}">Members</h3>
+			</div>
+			<div class="box-body">
+				<div class="dataTables_wrapper form-inline dt-bootstrap">
+					<div class="row">
+						<div class="col-sm-12">
+							<table id="project-users-table" dt:table="true" dt:url="@{/dt/users}">
+								<thead>
+									<tr>
+										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
+										<th dt:property="username" th:text="#{user.username}">Username</th>
+										<th dt:property="type" dt:searchable="false" dt:sortable="false" th:text="#{user.type}">Type</th>
+										<th dt:property="enabled" dt:searchable="false" dt:sortable="false" th:text="#{user.enabled}">Enabled</th>
+										<th dt:property="superadmin" dt:searchable="false" dt:sortable="false" th:text="#{user.superadmin}">Superadmin</th>
+									</tr>
+								</thead>
+							</table>
+							<script th:inline="javascript">
+								Tremapp.usersTableRenderLabel = function(label, type, user) {
+									return '<a href="' + Tremapp.baseUrl + 'users/detail/' + user.id + '">' + label + '</a>';
+								};
+							</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
