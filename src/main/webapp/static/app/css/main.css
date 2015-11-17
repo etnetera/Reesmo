@@ -1,7 +1,26 @@
+.padding-left {
+	padding-left: 10px;
+}
+
+.padding-right {
+	padding-right: 10px;
+}
+
+.padding-horizontal {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
 .navbar-nav>.user-menu>.dropdown-menu>li.user-header {
 	height: 150px;
 }
 
-table.dataTable tbody tr.selected {
-	background-color: #B0BED9;
+table.dataTable tbody tr.selected td {
+	background-color: yellow;
+}
+
+label.with-input {
+	font-weight: normal;
+	text-align: left;
+	white-space: nowrap;	
 }

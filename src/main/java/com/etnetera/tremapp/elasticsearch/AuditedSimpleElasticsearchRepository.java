@@ -46,12 +46,12 @@ public class AuditedSimpleElasticsearchRepository<T> extends SimpleElasticsearch
 		return super.save(entities);
 	}
 
-	private <S extends T> void auditEntity(S entity) {
+	protected <S extends T> void auditEntity(S entity) {
 		if (!(entity instanceof ElasticAuditedModel)) {
 			return;
 		}
 		
-		ModelAuditor.audit((ElasticAuditedModel) entity);
+		ModelAuditor.getInstance().audit((ElasticAuditedModel) entity);
 	}
 
 }

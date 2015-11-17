@@ -19,7 +19,7 @@ import com.etnetera.tremapp.model.form.project.ProjectGroupCommand;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.mongodb.project.ProjectGroupRepository;
-import com.etnetera.tremapp.user.UserHelper;
+import com.etnetera.tremapp.user.UserManager;
 import com.etnetera.tremapp.user.UserRole;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
@@ -27,6 +27,9 @@ import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 
 @Controller
 public class ProjectGroupController implements MenuActivityController {
+	
+	@Autowired
+    private UserManager userManager;
 	
 	@Autowired
 	private ProjectGroupRepository projectGroupRepository;
@@ -44,7 +47,7 @@ public class ProjectGroupController implements MenuActivityController {
 	@RequestMapping(value = "/dt/project-groups")
 	public @ResponseBody DatatablesResponse<ProjectGroupDT> findAllForDataTables(HttpServletRequest request) {
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ProjectGroupDT> projectGroups = projectGroupRepository.findWithDatatablesCriterias(criterias, UserHelper.getAllowedProjectGroupIds(Permission.BASIC));
+		DataSet<ProjectGroupDT> projectGroups = projectGroupRepository.findWithDatatablesCriterias(criterias, userManager.isSuperadmin() ? null : userManager.requireUserId());
 		return DatatablesResponse.build(projectGroups, criterias);
 	}
 	
@@ -52,7 +55,7 @@ public class ProjectGroupController implements MenuActivityController {
 	public String showProjectGroup(@PathVariable String projectGroupId, Model model) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
 		ControllerModel.exists(projectGroup, ProjectGroup.class);
-		UserHelper.checkProjectGroupPermission(projectGroupId, Permission.BASIC);
+		projectGroup.checkUserPermission(userManager.requireUser(), Permission.BASIC);
 		model.addAttribute("projectGroup", projectGroup);
 		return "page/projectGroup/projectGroupDetail";
 	}

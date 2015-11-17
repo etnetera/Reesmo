@@ -39,7 +39,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 			allCrit = Criteria.where("_id").in(projectIds);
 		}
 		
-		Criteria crit = MongoDatatables.getCriteria(criterias);
+		Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 
 		Query query = Query.query(crit);
 		MongoDatatables.sortQuery(query, criterias);

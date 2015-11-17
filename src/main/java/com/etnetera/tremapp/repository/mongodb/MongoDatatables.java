@@ -14,7 +14,15 @@ import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 public class MongoDatatables {
 
 	public static Criteria getCriteria(DatatablesCriterias criterias) {
+		return getCriteria(criterias, null);
+	}
+	
+	public static Criteria getCriteria(DatatablesCriterias criterias, Criteria basicCriteria) {
 		Criteria c = new Criteria();
+		List<Criteria> crits = new ArrayList<>();
+		if (basicCriteria != null) {
+			crits.add(basicCriteria);
+		}
 
 		if (StringUtils.isNotBlank(criterias.getSearch()) && criterias.hasOneSearchableColumn()) {
 			List<Criteria> cs = new ArrayList<>();
@@ -26,7 +34,7 @@ public class MongoDatatables {
 			});
 			
 			if (!cs.isEmpty()) {
-				c.orOperator(cs.toArray(new Criteria[cs.size()]));
+				crits.add(new Criteria().orOperator(cs.toArray(new Criteria[cs.size()])));
 			}
 		}
 
@@ -48,8 +56,12 @@ public class MongoDatatables {
 			});
 			
 			if (!cs.isEmpty()) {
-				c.andOperator(cs.toArray(new Criteria[cs.size()]));
+				crits.add(new Criteria().andOperator(cs.toArray(new Criteria[cs.size()])));
 			}
+		}
+		
+		if (!crits.isEmpty()) {
+			c.andOperator(crits.toArray(new Criteria[crits.size()]));
 		}
 
 		return c;

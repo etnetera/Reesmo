@@ -109,15 +109,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			ObjectWrapper<Permission> permWrapper = new ObjectWrapper<>(Permission.NONE);
 			// collect project groups which belongs to specific user, gathering most prioritized permission
 			List<ProjectGroup> memberProjectGroups = projectGroups.stream().filter(pg -> {
-				boolean in = u.getProjectGroupsPermissions().keySet().contains(pg.getId());
-				if (in) {
-					Permission projectGroupPermission = u.getProjectGroupsPermissions().getOrDefault(pg.getId(),
-							Permission.NONE);
+				Permission projectGroupPermission = pg.getMembers().get(u.getId());
+				if (projectGroupPermission != null) {
 					if (projectGroupPermission.isGreaterThan(permWrapper.getValue())) {
 						permWrapper.setValue(projectGroupPermission);
 					}
+					return true;
 				}
-				return in;
+				return false;
 			}).collect(Collectors.toList());
 			return new ProjectMemberFromGroupsDT(u, project, permWrapper.getValue(), memberProjectGroups, localizer,
 					locale);
@@ -134,7 +133,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			allCrit = Criteria.where("_id").in(userIds);
 		}
 
-		Criteria crit = MongoDatatables.getCriteria(criterias);
+		Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 
 		Query query = Query.query(crit);
 		MongoDatatables.sortQuery(query, criterias);

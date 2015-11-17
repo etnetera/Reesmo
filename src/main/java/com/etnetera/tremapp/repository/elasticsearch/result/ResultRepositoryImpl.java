@@ -2,15 +2,14 @@ package com.etnetera.tremapp.repository.elasticsearch.result;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.TermFilterBuilder;
 import org.elasticsearch.index.query.TermsFilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,6 +47,9 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	
 	@Autowired
     private GridFsTemplate gridFsTemplate;
+	
+	@Autowired
+	private ModelAuditor modelAuditor;
 
 	@PostConstruct
 	private void init() {
@@ -57,45 +59,26 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	}
 	
 	@Override
-	public Page<Result> findByModifier(ListModifier modifier, List<String> allowedProjectIds) {
-		if (allowedProjectIds == null) {
+	public Page<Result> findByModifier(ListModifier modifier, List<String> projectIds) {
+		if (projectIds == null) {
 			return template.queryForPage(createSearchBuilderFromModifier(modifier).build(), Result.class);
 		}
-		if (allowedProjectIds.isEmpty()) {
+		if (projectIds.isEmpty()) {
 			return new PageImpl<>(new ArrayList<>());
 		}
 
 		return template.queryForPage(
 				createSearchBuilderFromModifier(modifier,
 						modifier.getFilterBuilder(new BoolFilterBuilder()
-								.must(new TermsFilterBuilder("projectId", allowedProjectIds)).cache(true))).build(),
+								.must(new TermsFilterBuilder("projectId", projectIds)).cache(true))).build(),
 				Result.class);
 	}
 
 	@Override
-	public Page<Result> findBySuiteAndModifier(String suiteId, ListModifier modifier, List<String> projectIds) {
-		if (projectIds != null && projectIds.isEmpty()) {
-			return new PageImpl<>(new ArrayList<>());
-		}
-
-		AndFilterBuilder fB = modifier
-				.getFilterBuilder(new BoolFilterBuilder().must(new TermFilterBuilder("suiteId", suiteId)).cache(true));
-		if (projectIds != null) {
-			fB.add(new BoolFilterBuilder().must(new TermsFilterBuilder("projectId", projectIds)).cache(true));
-		}
-
-		return template.queryForPage(createSearchBuilderFromModifier(modifier, fB).build(), Result.class);
-	}
-
-	@Override
-	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier, List<String> projectIds) {
-		if (projectIds != null && projectIds.isEmpty()) {
-			return new PageImpl<>(new ArrayList<>());
-		}
-
+	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier) {
 		View view = viewRepository.findOne(viewId);
 		modifier = view.getModifier().join(modifier);
-		return findByModifier(modifier, projectIds);
+		return findByModifier(modifier, Arrays.asList(view.getProjectId()));
 	}
 
 	private NativeSearchQueryBuilder createSearchBuilderFromModifier(ListModifier modifier) {
@@ -135,7 +118,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		attachment.setPath(StringUtils.trimToNull(path));
 		attachment.setContentType(gridFile.getContentType());
 		attachment.setSize(gridFile.getLength());
-		ModelAuditor.audit(attachment);
+		modelAuditor.audit(attachment);
 		
 		result.addAttachment(attachment);
 		resultRepository.save(result);
@@ -153,7 +136,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		attachment.setName(gridFile.getFilename());
 		attachment.setContentType(gridFile.getContentType());
 		attachment.setSize(gridFile.getLength());
-		ModelAuditor.audit(attachment);
+		modelAuditor.audit(attachment);
 		
 		resultRepository.save(result);
 		

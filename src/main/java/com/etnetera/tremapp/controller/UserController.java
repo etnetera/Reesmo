@@ -33,7 +33,7 @@ import com.etnetera.tremapp.model.mongodb.user.ManualUser;
 import com.etnetera.tremapp.model.mongodb.user.User;
 import com.etnetera.tremapp.repository.mongodb.user.ManualUserRepository;
 import com.etnetera.tremapp.repository.mongodb.user.UserRepository;
-import com.etnetera.tremapp.user.UserHelper;
+import com.etnetera.tremapp.user.UserManager;
 import com.etnetera.tremapp.user.UserRole;
 import com.etnetera.tremapp.user.UserType;
 import com.github.dandelion.datatables.core.ajax.DataSet;
@@ -44,6 +44,9 @@ import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 @Controller
 public class UserController implements MenuActivityController {
 
+	@Autowired
+    private UserManager userManager;
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -68,7 +71,7 @@ public class UserController implements MenuActivityController {
 	@InitBinder(value = "userChangePasswordCommand")
 	protected void initChangePasswordBinder(WebDataBinder binder, @PathVariable String userId) {		
 		User user = userRepository.findOne(userId);
-		if (user != null && !UserHelper.isSameAsLogged(user)) {
+		if (user != null && !userManager.isSameAsLogged(user)) {
 			user = null;
 		}
 		binder.addValidators(new UserChangePasswordCommandValidator(new PasswordCommandValidator(), user));
@@ -114,10 +117,10 @@ public class UserController implements MenuActivityController {
 			model.addAttribute("user", user);
 			return "page/user/userEdit";
 		}
-		userCommand.toUser(user, false, UserHelper.isSameAsLogged(user));
+		userCommand.toUser(user, false, userManager.isSameAsLogged(user));
 		userRepository.save(user);
-		if (UserHelper.isSameAsLogged(user)) {
-			UserHelper.updateUser(user);
+		if (userManager.isSameAsLogged(user)) {
+			userManager.updateUser(user);
 		}
 		return "redirect:/users/detail/" + user.getId();
 	}
@@ -160,7 +163,7 @@ public class UserController implements MenuActivityController {
 	public String deleteUser(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
 		ControllerModel.exists(user, User.class);
-		if (UserHelper.isSameAsLogged(user)) {
+		if (userManager.isSameAsLogged(user)) {
 			throw new ForbiddenException("You can not delete yourself!");
 		}
 		model.addAttribute("user", user);
@@ -171,7 +174,7 @@ public class UserController implements MenuActivityController {
 	public String deleteUser(@PathVariable String userId) {
 		User user = userRepository.findOne(userId);
 		ControllerModel.exists(user, User.class);
-		if (UserHelper.isSameAsLogged(user)) {
+		if (userManager.isSameAsLogged(user)) {
 			throw new ForbiddenException("You can not delete yourself!");
 		}
 		userRepository.delete(user);
@@ -198,8 +201,8 @@ public class UserController implements MenuActivityController {
 		}
 		userChangePasswordCommand.propagateToUser(user);
 		userRepository.save(user);
-		if (UserHelper.isSameAsLogged(user)) {
-			UserHelper.updateUser(user);
+		if (userManager.isSameAsLogged(user)) {
+			userManager.updateUser(user);
 		}
 		return "redirect:/users/detail/" + user.getId();
 	}

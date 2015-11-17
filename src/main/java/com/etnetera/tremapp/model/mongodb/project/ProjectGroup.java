@@ -8,8 +8,10 @@ import java.util.Map;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
+import com.etnetera.tremapp.model.mongodb.user.User;
 
 @Document
 public class ProjectGroup extends MongoAuditedModel {
@@ -63,6 +65,30 @@ public class ProjectGroup extends MongoAuditedModel {
 
 	public void setMembers(Map<String, Permission> members) {
 		this.members = members;
+	}
+	
+	public void checkUserPermission(User user, Permission permission) {
+		if (!isAllowedForUser(user, permission)) {
+			throw new ForbiddenException("User with id " + user == null ? null
+					: user.getId() + " has not " + permission + " permission for project group with id " + getId() + ".");
+		}
+	}
+
+	public boolean isAllowedForUser(User user, Permission permission) {
+		if (user == null) {
+			return false;
+		}
+		if (user.isSuperadmin()) {
+			return true;
+		}
+		if (permission == null) {
+			return false;
+		}
+		Permission userPermission = members.get(user.getId());
+		if (userPermission != null && userPermission.isGreaterThanOrEqual(permission)) {
+			return true;
+		}
+		return false;
 	}
 	
 }

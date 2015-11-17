@@ -36,4 +36,17 @@ public enum Permission {
 		return priority >= permission.priority;
 	}
 	
+	public static Permission fromString(String value) {
+		for (Permission p : Permission.values()) {
+			if (p.name().equalsIgnoreCase(value)) {
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	public boolean is(String value) {
+		return name().equalsIgnoreCase(value);
+	}
+	
 }

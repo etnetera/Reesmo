@@ -24,7 +24,7 @@ import com.etnetera.tremapp.model.form.project.ProjectCommandValidator;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
-import com.etnetera.tremapp.user.UserHelper;
+import com.etnetera.tremapp.user.UserManager;
 import com.etnetera.tremapp.user.UserRole;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
@@ -32,6 +32,9 @@ import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 
 @Controller
 public class ProjectController implements MenuActivityController {
+	
+	@Autowired
+    private UserManager userManager;
 	
 	@Autowired
 	private ProjectRepository projectRepository;
@@ -58,7 +61,7 @@ public class ProjectController implements MenuActivityController {
 	@RequestMapping(value = "/dt/projects")
 	public @ResponseBody DatatablesResponse<ProjectDT> findAllForDataTables(HttpServletRequest request) {
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ProjectDT> projects = projectRepository.findWithDatatablesCriterias(criterias, UserHelper.getAllowedProjectIds(Permission.BASIC));
+		DataSet<ProjectDT> projects = projectRepository.findWithDatatablesCriterias(criterias, userManager.getAllowedProjectIds(Permission.BASIC));
 		return DatatablesResponse.build(projects, criterias);
 	}
 	
@@ -66,7 +69,7 @@ public class ProjectController implements MenuActivityController {
 	public String showProject(@PathVariable String projectId, Model model) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
-		UserHelper.checkProjectPermission(projectId, Permission.BASIC);
+		userManager.checkProjectPermission(projectId, Permission.BASIC);
 		model.addAttribute("project", project);
 		return "page/project/projectDetail";
 	}

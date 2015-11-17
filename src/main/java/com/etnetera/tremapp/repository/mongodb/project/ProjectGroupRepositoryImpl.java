@@ -1,6 +1,5 @@
 package com.etnetera.tremapp.repository.mongodb.project;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.etnetera.tremapp.model.datatables.project.ProjectGroupDT;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
+import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.mongodb.MongoDatatables;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
@@ -24,16 +24,14 @@ public class ProjectGroupRepositoryImpl implements ProjectGroupRepositoryCustom 
 	private MongoOperations mongoTemplate;
 
 	@Override
-	public DataSet<ProjectGroupDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectGroupIds) {
+	public DataSet<ProjectGroupDT> findWithDatatablesCriterias(DatatablesCriterias criterias, String userId) {
 		Criteria allCrit = null;
-		if (projectGroupIds == null) {
+		if (userId == null) {
 			allCrit = Criteria.where("_id").exists(true);
-		} else if (projectGroupIds.isEmpty()) {
-			return new DataSet<ProjectGroupDT>(new ArrayList<>(), 0L, 0L);
 		} else {
-			allCrit = Criteria.where("_id").in(projectGroupIds);
+			allCrit = Criteria.where("members." + userId).exists(true).and("members." + userId).ne(Permission.NONE);
 		}
-		Criteria crit = MongoDatatables.getCriteria(criterias);
+		Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 
 		Query query = Query.query(crit);
 		MongoDatatables.sortQuery(query, criterias);

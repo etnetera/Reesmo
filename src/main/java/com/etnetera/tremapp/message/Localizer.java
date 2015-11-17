@@ -16,11 +16,11 @@ public class Localizer {
 	private MessageSource messageSource;
 	
 	public String localize(UserType userType, Locale locale) {
-		return messageSource.getMessage("user.type." + userType.name().toLowerCase(), null, locale);
+		return messageSource.getMessage("user.type.value." + userType.name().toLowerCase(), null, locale);
 	}
 	
 	public String localize(Permission permission, Locale locale) {
-		return messageSource.getMessage("permission." + permission.name().toLowerCase(), null, locale);
+		return messageSource.getMessage("member.permission.value." + permission.name().toLowerCase(), null, locale);
 	}
 	
 	public String localize(boolean bool, Locale locale) {

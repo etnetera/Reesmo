@@ -23,8 +23,8 @@ public class Result extends ElasticAuditedModel {
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	private String projectId;
 	
-	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
-	private String suiteId;
+	@Field(type = FieldType.String)
+	private String suite;
 	
 	@Field(type = FieldType.String)
 	private String milestone;
@@ -93,12 +93,12 @@ public class Result extends ElasticAuditedModel {
 		this.projectId = projectId;
 	}
 
-	public String getSuiteId() {
-		return suiteId;
+	public String getSuite() {
+		return suite;
 	}
 
-	public void setSuiteId(String suiteId) {
-		this.suiteId = suiteId;
+	public void setSuite(String suite) {
+		this.suite = suite;
 	}
 
 	public String getMilestone() {

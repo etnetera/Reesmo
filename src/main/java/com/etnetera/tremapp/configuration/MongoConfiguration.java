@@ -2,6 +2,7 @@ package com.etnetera.tremapp.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,7 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.etnetera.tremapp.Tremapp;
-import com.etnetera.tremapp.user.UserHelper;
+import com.etnetera.tremapp.user.UserManager;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 
@@ -31,6 +32,9 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 
     @Value("${mongodb.dbname}")
     private String dbName;
+    
+    @Autowired
+    private UserManager userManager;
 	
     @Bean
     public GridFsTemplate gridFsTemplate() {
@@ -57,7 +61,7 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 		return new AuditorAware<String>() {
 			@Override
 			public String getCurrentAuditor() {
-				return UserHelper.getUserId();
+				return userManager.getUserId();
 			}
 		};
 	}

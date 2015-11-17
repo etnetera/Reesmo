@@ -7,12 +7,13 @@
 <!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
 <link rel="stylesheet" th:href="@{/static/bootstrap/css/bootstrap.min.css}" href="../../../static/bootstrap/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
-<link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+<link rel="stylesheet" th:href="@{/static/font-awesome/css/font-awesome.min.css}" href="../../../static/font-awesome/css/font-awesome.min.css"/>
+<link rel="stylesheet" th:href="@{/static/ionicons/css/ionicons.min.css}" href="../../../static/ionicons/css/ionicons.min.css"/>
 <link rel="stylesheet" th:href="@{/static/plugins/datatables/dataTables.bootstrap.css}" href="../../../static/plugins/datatables/dataTables.bootstrap.css"/>
 <link rel="stylesheet" th:href="@{/static/dist/css/AdminLTE.css}" href="../../../static/dist/css/AdminLTE.css"/>
 <link rel="stylesheet" th:href="@{/static/dist/css/skins/skin-blue.css}" href="../../../static/dist/css/skins/skin-blue.css"/>
 <link rel="stylesheet" th:href="@{/static/app/css/main.css}" href="../../../static/app/css/main.css"/>
+<script th:src="@{/static/plugins/jQuery/jQuery-2.1.4.min.js}" src="../../../static/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -40,10 +41,10 @@
 		<div th:replace="fragments/layout/controlSidebar :: sidebar">Control sidebar</div>
 
 	</div>
-	<script th:src="@{/static/plugins/jQuery/jQuery-2.1.4.min.js}" src="../../../static/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 	<script th:src="@{/static/bootstrap/js/bootstrap.min.js}" src="../../../static/bootstrap/js/bootstrap.min.js"></script>
 	<script th:src="@{/static/plugins/datatables/jquery.dataTables.min.js}" src="../../../static/plugins/datatables/jquery.dataTables.min.js"></script>
 	<script th:src="@{/static/plugins/datatables/dataTables.bootstrap.min.js}" src="../../../static/plugins/datatables/dataTables.bootstrap.min.js"></script>
 	<script th:src="@{/static/dist/js/app.min.js}" src="../../../static/dist/js/app.min.js"></script>
+	<script th:src="@{/static/app/js/main.js}" src="../../../static/app/js/main.js"></script>
 </body>
 </html>
