@@ -27,6 +27,11 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	public Project findOneByKey(String key) {
 		return mongoTemplate.findOne(Query.query(Criteria.where("key").is(key)), Project.class);
 	}
+	
+	@Override
+	public List<Project> findByMember(String userId) {
+		return mongoTemplate.find(Query.query(Criteria.where("members." + userId).exists(true)), Project.class);
+	}
 
 	@Override
 	public DataSet<ProjectDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectIds) {

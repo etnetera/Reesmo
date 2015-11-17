@@ -22,7 +22,9 @@
 <body class="hold-transition skin-blue sidebar-mini">
 	<script th:inline="javascript">
 		var Tremapp = {
-			baseUrl: [[@{/}]]	
+			baseUrl: [[@{/}]],
+			csrfName: [[${_csrf.parameterName}]],
+			csrfValue: [[${_csrf.token}]]
 		};
 	</script>
 	<div class="wrapper">

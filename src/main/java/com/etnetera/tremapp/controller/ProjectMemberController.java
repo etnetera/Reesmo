@@ -19,6 +19,7 @@ import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.model.datatables.project.ProjectMemberDT;
 import com.etnetera.tremapp.model.datatables.project.ProjectMemberFromGroupsDT;
 import com.etnetera.tremapp.model.form.project.ProjectMemberAddCommand;
+import com.etnetera.tremapp.model.form.project.ProjectMemberRemoveCommand;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
@@ -72,7 +73,7 @@ public class ProjectMemberController implements MenuActivityController {
 	}
 
 	@Secured({ UserRole.ROLE_ADMIN })
-	@RequestMapping(value = "/project-member/add/{projectId}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/projects/member/add/{projectId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse addProjectMembers(@Valid ProjectMemberAddCommand addCommand,
 			BindingResult bindingResult, @PathVariable String projectId) {
 		Project project = projectRepository.findOne(projectId);
@@ -89,8 +90,30 @@ public class ProjectMemberController implements MenuActivityController {
 			User user = userRepository.findOne(userId);
 			if (user == null) continue;
 			project.getMembers().put(user.getId(), permission);
-			user.getProjectsPermissions().put(projectId, permission);
 			projectRepository.save(project);
+			userManager.updateUserProjectsPermissions(user);
+			userRepository.save(user);
+			i++;
+		}
+		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
+	}
+	
+	@Secured({ UserRole.ROLE_ADMIN })
+	@RequestMapping(value = "/projects/member/remove/{projectId}", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody JsonResponse removeProjectMembers(@Valid ProjectMemberRemoveCommand removeCommand,
+			BindingResult bindingResult, @PathVariable String projectId) {
+		Project project = projectRepository.findOne(projectId);
+		ControllerModel.exists(project, Project.class);
+		if (bindingResult.hasErrors()) {
+			return new JsonResponse(false, bindingResult.getAllErrors());
+		}
+		int i = 0;
+		for (String userId : removeCommand.getUserIds()) {
+			User user = userRepository.findOne(userId);
+			if (user == null) continue;
+			project.getMembers().remove(user.getId());
+			projectRepository.save(project);
+			userManager.updateUserProjectsPermissions(user);
 			userRepository.save(user);
 			i++;
 		}

@@ -24,6 +24,11 @@ public class ProjectGroupRepositoryImpl implements ProjectGroupRepositoryCustom 
 	private MongoOperations mongoTemplate;
 
 	@Override
+	public List<ProjectGroup> findByMember(String userId) {
+		return mongoTemplate.find(Query.query(Criteria.where("members." + userId).exists(true)), ProjectGroup.class);
+	}
+	
+	@Override
 	public DataSet<ProjectGroupDT> findWithDatatablesCriterias(DatatablesCriterias criterias, String userId) {
 		Criteria allCrit = null;
 		if (userId == null) {

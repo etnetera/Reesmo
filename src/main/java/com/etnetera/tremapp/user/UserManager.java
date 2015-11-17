@@ -1,7 +1,10 @@
 package com.etnetera.tremapp.user;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -9,11 +12,19 @@ import org.springframework.stereotype.Component;
 import com.etnetera.tremapp.http.exception.UnauthorizedException;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
+import com.etnetera.tremapp.repository.mongodb.project.ProjectGroupRepository;
+import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
 
 @Component
 public class UserManager {
 
 	private static UserManager instance;
+	
+	@Autowired
+	private ProjectRepository projectRepository;
+	
+	@Autowired
+	private ProjectGroupRepository projectGroupRepository;
 	
 	private UserManager() {
 		instance = this;
@@ -92,6 +103,33 @@ public class UserManager {
 	
 	public Authentication getAuthentication() {
 		return SecurityContextHolder.getContext().getAuthentication();
+	}
+	
+	public void updateUserProjectsPermissions(User user) {
+		Map<String, Permission> permissions = new HashMap<>();
+		projectRepository.findByMember(user.getId()).forEach(p -> {
+			Permission permission = p.getMembers().get(user.getId());
+			if (permission != null) {
+				permissions.put(p.getId(), permission);
+			}
+		});
+		
+		Map<String, Permission> groupPermissions = new HashMap<>();
+		projectGroupRepository.findByMember(user.getId()).forEach(pg -> {
+			Permission permission = pg.getMembers().get(user.getId());
+			if (permission != null) {
+				pg.getProjects().forEach(pId -> {
+					Permission existingPerm = groupPermissions.get(pId);
+					if (existingPerm == null || permission.isGreaterThan(existingPerm)) {
+						groupPermissions.put(pId, permission);
+					}
+				});
+			}
+		});
+		
+		// override group permissions with direct project permissions
+		groupPermissions.putAll(permissions);
+		user.setProjectsPermissions(groupPermissions);
 	}
 	
 }

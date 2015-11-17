@@ -8,38 +8,38 @@ import com.etnetera.tremapp.model.mongodb.user.User;
 
 abstract public class MemberDT {
 
-	protected String userId;
+	protected String id;
 	
-	protected String userLabel;
+	protected String label;
 	
-	protected String userUsername;
+	protected String username;
 	
-	protected String userType;
+	protected String type;
 	
 	protected String permission;
 	
 	public MemberDT(User user, Permission permission, Localizer localizer, Locale locale) {
-		this.userId = user.getId();
-		this.userLabel = user.getLabel();
-		this.userUsername = user.getUsername();
-		this.userType = localizer.localize(user.getType(), locale);
+		this.id = user.getId();
+		this.label = user.getLabel();
+		this.username = user.getUsername();
+		this.type = localizer.localize(user.getType(), locale);
 		this.permission = localizer.localize(permission, locale);
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getId() {
+		return id;
 	}
 
-	public String getUserLabel() {
-		return userLabel;
+	public String getLabel() {
+		return label;
 	}
 
-	public String getUserUsername() {
-		return userUsername;
+	public String getUsername() {
+		return username;
 	}
 
-	public String getUserType() {
-		return userType;
+	public String getType() {
+		return type;
 	}
 
 	public String getPermission() {

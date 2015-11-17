@@ -14,6 +14,8 @@ public interface ProjectRepositoryCustom {
 	
 	public Project findOneByKey(String key);
 	
+	public List<Project> findByMember(String userId);
+	
 	public DataSet<ProjectDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectIds);
 	
 }

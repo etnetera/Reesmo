@@ -90,8 +90,8 @@
 				<button id="btn-add-users" type="button" class="btn btn-success" th:text="#{page.projectdetail.addmembers.add}">Add selected users</button>
 				<label class="with-input">
 					<span th:text="#{page.projectdetail.addmembers.addAssignText}" class="padding-horizontal">and assign them</span>
-					<select class="form-control input-sm">
-						<option th:each="permission : ${T(com.etnetera.tremapp.model.mongodb.user.Permission).values()}" th:value="${permission}" th:text="#{'member.permission.value.' + ${permission.name().toLowerCase()}}"></option>
+					<select id="select-add-users-permission" class="form-control input-sm">
+						<option th:each="permission : ${T(com.etnetera.tremapp.model.mongodb.user.Permission).values()}" th:value="${permission.name().toLowerCase()}" th:text="#{'member.permission.value.' + ${permission.name().toLowerCase()}}"></option>
 					</select>
 					<span th:text="#{page.projectdetail.addmembers.addAssignTextPermission}" class="padding-horizontal">permission</span>
 				</label>
@@ -131,7 +131,8 @@
 					var $showAddUsersBtn = $('#btn-show-add-users'),
 						$removeUsersBtn = $('#btn-remove-users'),
 						$addUsersBtn = $('#btn-add-users'),
-						$addUsersBox = $('#box-add-users'),
+						$addUsersBox = $('#box-add-users')
+						$selectAddUsersPermission = $('#select-add-users-permission'),
 						$membersTable = $('#projectMembersTable'),
 						$usersTable = $('#usersTable');
 					
@@ -140,8 +141,44 @@
 					});
 					
 					$addUsersBtn.click(function(){
-						var rowsData = Tremapp.getSelectedRowsData($usersTable);
+						var rowsData = Tremapp.getSelectedRowsData($usersTable),
+							userIds = [];
 						
+						$.each(rowsData, function(i, rowData){
+							userIds.push(rowData.id);
+						});
+						
+						Tremapp.ajax({
+							url: [[@{/projects/member/add/{projectId}(projectId=${project.id})}]],
+							data: {
+								permission: $selectAddUsersPermission.val(),
+								userIds: userIds
+							}
+						}, function(addedCnt){
+							Tremapp.clearRowSelection($usersTable);
+							Tremapp.reloadTable($membersTable);
+							// TODO - show count
+						});
+					});
+					
+					$removeUsersBtn.click(function(){
+						var rowsData = Tremapp.getSelectedRowsData($membersTable),
+							userIds = [];
+						
+						$.each(rowsData, function(i, rowData){
+							userIds.push(rowData.id);
+						});
+						
+						Tremapp.ajax({
+							url: [[@{/projects/member/remove/{projectId}(projectId=${project.id})}]],
+							data: {
+								userIds: userIds
+							}
+						}, function(removedCnt){
+							Tremapp.clearRowSelection($membersTable);
+							Tremapp.reloadTable($membersTable);
+							// TODO - show count
+						});
 					});
 				});
 			</script>
