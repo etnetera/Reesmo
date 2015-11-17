@@ -10,12 +10,12 @@
 				class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
 	</ol>
 	<div layout:fragment="content">
-		<div class="box">
+		<div class="box box-primary">
 			<div class="box-body">
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<table id="results-table" dt:table="true" dt:url="@{/dt/results}" dt:serverside="true" dt:stateSave="true">
+							<table id="results-table" dt:table="true" dt:url="@{/dt/results}">
 								<thead>
 									<tr>
 										<th dt:property="label">Label</th>

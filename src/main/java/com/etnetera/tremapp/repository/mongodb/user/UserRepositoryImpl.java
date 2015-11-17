@@ -1,7 +1,11 @@
 package com.etnetera.tremapp.repository.mongodb.user;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -12,11 +16,18 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.etnetera.tremapp.common.ObjectWrapper;
 import com.etnetera.tremapp.message.Localizer;
-import com.etnetera.tremapp.model.datatables.UserDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectMemberDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectMemberFromGroupsDT;
+import com.etnetera.tremapp.model.datatables.user.UserDT;
+import com.etnetera.tremapp.model.mongodb.project.Project;
+import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
 import com.etnetera.tremapp.model.mongodb.user.ManualUser;
+import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
 import com.etnetera.tremapp.repository.mongodb.MongoDatatables;
+import com.etnetera.tremapp.repository.mongodb.project.ProjectGroupRepository;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 
@@ -30,7 +41,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Autowired
 	private ManualUserRepository manualUserRepository;
-	
+
+	@Autowired
+	private ProjectGroupRepository projectGroupRepository;
+
 	@Autowired
 	private Localizer localizer;
 
@@ -61,8 +75,66 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Override
 	public DataSet<UserDT> findWithDatatablesCriterias(DatatablesCriterias criterias, Locale locale) {
+		DataSet<User> users = findUsersWithDatatablesCriterias(criterias, null);
+
+		return new DataSet<UserDT>(
+				users.getRows().stream().map(u -> new UserDT(u, localizer, locale)).collect(Collectors.toList()),
+				users.getTotalRecords(), users.getTotalDisplayRecords());
+	}
+
+	@Override
+	public DataSet<ProjectMemberDT> findProjectMembersWithDatatablesCriterias(DatatablesCriterias criterias,
+			Project project, Locale locale) {
+		DataSet<User> users = findUsersWithDatatablesCriterias(criterias, project.getMembers().keySet());
+
+		return new DataSet<ProjectMemberDT>(users.getRows().stream().map(u -> {
+			return new ProjectMemberDT(u, project, project.getMembers().get(u.getId()), localizer, locale);
+		}).collect(Collectors.toList()), users.getTotalRecords(), users.getTotalDisplayRecords());
+	}
+
+	@Override
+	public DataSet<ProjectMemberFromGroupsDT> findProjectMembersFromGroupsWithDatatablesCriterias(
+			DatatablesCriterias criterias, Project project, Locale locale) {
+		// get all project groups with given project
+		List<ProjectGroup> projectGroups = projectGroupRepository.findByProjectId(project.getId());
+
+		// create unique list of involved users IDs (included in project groups)
+		Set<String> usersIds = new HashSet<>();
+		projectGroups.forEach(pg -> usersIds.addAll(pg.getMembers().keySet()));
+
+		// find all involved users in project groups
+		DataSet<User> users = findUsersWithDatatablesCriterias(criterias, usersIds);
+
+		return new DataSet<ProjectMemberFromGroupsDT>(users.getRows().stream().map(u -> {
+			ObjectWrapper<Permission> permWrapper = new ObjectWrapper<>(Permission.NONE);
+			// collect project groups which belongs to specific user, gathering most prioritized permission
+			List<ProjectGroup> memberProjectGroups = projectGroups.stream().filter(pg -> {
+				boolean in = u.getProjectGroupsPermissions().keySet().contains(pg.getId());
+				if (in) {
+					Permission projectGroupPermission = u.getProjectGroupsPermissions().getOrDefault(pg.getId(),
+							Permission.NONE);
+					if (projectGroupPermission.isGreaterThan(permWrapper.getValue())) {
+						permWrapper.setValue(projectGroupPermission);
+					}
+				}
+				return in;
+			}).collect(Collectors.toList());
+			return new ProjectMemberFromGroupsDT(u, project, permWrapper.getValue(), memberProjectGroups, localizer,
+					locale);
+		}).collect(Collectors.toList()), users.getTotalRecords(), users.getTotalDisplayRecords());
+	}
+
+	private DataSet<User> findUsersWithDatatablesCriterias(DatatablesCriterias criterias, Collection<String> userIds) {
+		Criteria allCrit = null;
+		if (userIds == null) {
+			allCrit = Criteria.where("_id").exists(true);
+		} else if (userIds.isEmpty()) {
+			return new DataSet<User>(new ArrayList<>(), 0L, 0L);
+		} else {
+			allCrit = Criteria.where("_id").in(userIds);
+		}
+
 		Criteria crit = MongoDatatables.getCriteria(criterias);
-		Criteria allCrit = Criteria.where("_id").exists(true);
 
 		Query query = Query.query(crit);
 		MongoDatatables.sortQuery(query, criterias);
@@ -73,8 +145,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		Long count = mongoTemplate.count(Query.query(allCrit), User.class);
 		Long countFiltered = mongoTemplate.count(Query.query(crit), User.class);
 
-		return new DataSet<UserDT>(users.stream().map(u -> new UserDT(u, localizer, locale)).collect(Collectors.toList()),
-				count, countFiltered);
+		return new DataSet<User>(users, count, countFiltered);
 	}
 
 }

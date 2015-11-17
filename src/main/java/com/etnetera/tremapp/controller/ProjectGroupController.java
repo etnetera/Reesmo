@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.etnetera.tremapp.http.ControllerModel;
-import com.etnetera.tremapp.model.datatables.ProjectGroupDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectGroupDT;
 import com.etnetera.tremapp.model.form.project.ProjectGroupCommand;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
+import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.mongodb.project.ProjectGroupRepository;
+import com.etnetera.tremapp.user.UserHelper;
+import com.etnetera.tremapp.user.UserRole;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
@@ -40,7 +44,7 @@ public class ProjectGroupController implements MenuActivityController {
 	@RequestMapping(value = "/dt/project-groups")
 	public @ResponseBody DatatablesResponse<ProjectGroupDT> findAllForDataTables(HttpServletRequest request) {
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ProjectGroupDT> projectGroups = projectGroupRepository.findWithDatatablesCriterias(criterias);
+		DataSet<ProjectGroupDT> projectGroups = projectGroupRepository.findWithDatatablesCriterias(criterias, UserHelper.getAllowedProjectGroupIds(Permission.BASIC));
 		return DatatablesResponse.build(projectGroups, criterias);
 	}
 	
@@ -48,10 +52,12 @@ public class ProjectGroupController implements MenuActivityController {
 	public String showProjectGroup(@PathVariable String projectGroupId, Model model) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
 		ControllerModel.exists(projectGroup, ProjectGroup.class);
+		UserHelper.checkProjectGroupPermission(projectGroupId, Permission.BASIC);
 		model.addAttribute("projectGroup", projectGroup);
 		return "page/projectGroup/projectGroupDetail";
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/project-groups/edit/{projectGroupId}", method = RequestMethod.GET)
 	public String editProjectGroup(@PathVariable String projectGroupId, Model model) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
@@ -63,6 +69,7 @@ public class ProjectGroupController implements MenuActivityController {
 		return "page/projectGroup/projectGroupEdit";
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/project-groups/edit/{projectGroupId}", method = RequestMethod.POST)
 	public String editProjectGroup(@Valid ProjectGroupCommand projectGroupCommand,
 			BindingResult bindingResult, @PathVariable String projectGroupId, Model model) {
@@ -77,6 +84,7 @@ public class ProjectGroupController implements MenuActivityController {
 		return "redirect:/project-groups/detail/" + projectGroup.getId();
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/project-groups/create", method = RequestMethod.GET)
 	public String createProjectGroup(Model model) {
 		ProjectGroupCommand projectGroupCommand = new ProjectGroupCommand();
@@ -84,6 +92,7 @@ public class ProjectGroupController implements MenuActivityController {
 		return "page/projectGroup/projectGroupCreate";
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/project-groups/create", method = RequestMethod.POST)
 	public String createProjectGroup(@Valid ProjectGroupCommand projectGroupCommand, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -95,6 +104,7 @@ public class ProjectGroupController implements MenuActivityController {
 		return "redirect:/project-groups/detail/" + projectGroup.getId();
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/project-groups/delete/{projectGroupId}", method = RequestMethod.GET)
 	public String deleteProjectGroup(@PathVariable String projectGroupId, Model model) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
@@ -103,6 +113,7 @@ public class ProjectGroupController implements MenuActivityController {
 		return "page/projectGroup/projectGroupDelete";
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/project-groups/delete/{projectGroupId}", method = RequestMethod.POST)
 	public String deleteProjectGroup(@PathVariable String projectGroupId) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);

@@ -1,5 +1,6 @@
-package com.etnetera.tremapp.model.datatables;
+package com.etnetera.tremapp.model.datatables.project;
 
+import com.etnetera.tremapp.model.datatables.AuditedModelDT;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
 
 public class ProjectGroupDT extends AuditedModelDT {

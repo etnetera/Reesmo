@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.etnetera.tremapp.http.ControllerModel;
-import com.etnetera.tremapp.model.datatables.ProjectDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectDT;
 import com.etnetera.tremapp.model.form.project.ProjectCommand;
 import com.etnetera.tremapp.model.form.project.ProjectCommandValidator;
 import com.etnetera.tremapp.model.mongodb.project.Project;
+import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
+import com.etnetera.tremapp.user.UserHelper;
+import com.etnetera.tremapp.user.UserRole;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
@@ -54,7 +58,7 @@ public class ProjectController implements MenuActivityController {
 	@RequestMapping(value = "/dt/projects")
 	public @ResponseBody DatatablesResponse<ProjectDT> findAllForDataTables(HttpServletRequest request) {
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ProjectDT> projects = projectRepository.findWithDatatablesCriterias(criterias);
+		DataSet<ProjectDT> projects = projectRepository.findWithDatatablesCriterias(criterias, UserHelper.getAllowedProjectIds(Permission.BASIC));
 		return DatatablesResponse.build(projects, criterias);
 	}
 	
@@ -62,10 +66,12 @@ public class ProjectController implements MenuActivityController {
 	public String showProject(@PathVariable String projectId, Model model) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
+		UserHelper.checkProjectPermission(projectId, Permission.BASIC);
 		model.addAttribute("project", project);
 		return "page/project/projectDetail";
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/projects/edit/{projectId}", method = RequestMethod.GET)
 	public String editProject(@PathVariable String projectId, Model model) {
 		Project project = projectRepository.findOne(projectId);
@@ -77,6 +83,7 @@ public class ProjectController implements MenuActivityController {
 		return "page/project/projectEdit";
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/projects/edit/{projectId}", method = RequestMethod.POST)
 	public String editProject(@Valid ProjectCommand projectCommand,
 			BindingResult bindingResult, @PathVariable String projectId, Model model) {
@@ -91,6 +98,7 @@ public class ProjectController implements MenuActivityController {
 		return "redirect:/projects/detail/" + project.getId();
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/projects/create", method = RequestMethod.GET)
 	public String createProject(Model model) {
 		ProjectCommand projectCommand = new ProjectCommand();
@@ -98,6 +106,7 @@ public class ProjectController implements MenuActivityController {
 		return "page/project/projectCreate";
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/projects/create", method = RequestMethod.POST)
 	public String createProject(@Valid ProjectCommand projectCommand, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -109,6 +118,7 @@ public class ProjectController implements MenuActivityController {
 		return "redirect:/projects/detail/" + project.getId();
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/projects/delete/{projectId}", method = RequestMethod.GET)
 	public String deleteProject(@PathVariable String projectId, Model model) {
 		Project project = projectRepository.findOne(projectId);
@@ -117,6 +127,7 @@ public class ProjectController implements MenuActivityController {
 		return "page/project/projectDelete";
 	}
 
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/projects/delete/{projectId}", method = RequestMethod.POST)
 	public String deleteProject(@PathVariable String projectId) {
 		Project project = projectRepository.findOne(projectId);

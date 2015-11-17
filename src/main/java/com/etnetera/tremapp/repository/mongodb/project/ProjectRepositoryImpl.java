@@ -1,5 +1,6 @@
 package com.etnetera.tremapp.repository.mongodb.project;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,7 +9,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.etnetera.tremapp.model.datatables.ProjectDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectDT;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.repository.mongodb.MongoDatatables;
 import com.github.dandelion.datatables.core.ajax.DataSet;
@@ -28,9 +29,17 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	}
 
 	@Override
-	public DataSet<ProjectDT> findWithDatatablesCriterias(DatatablesCriterias criterias) {
+	public DataSet<ProjectDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectIds) {
+		Criteria allCrit = null;
+		if (projectIds == null) {
+			allCrit = Criteria.where("_id").exists(true);
+		} else if (projectIds.isEmpty()) {
+			return new DataSet<ProjectDT>(new ArrayList<>(), 0L, 0L);
+		} else {
+			allCrit = Criteria.where("_id").in(projectIds);
+		}
+		
 		Criteria crit = MongoDatatables.getCriteria(criterias);
-		Criteria allCrit = Criteria.where("_id").exists(true);
 
 		Query query = Query.query(crit);
 		MongoDatatables.sortQuery(query, criterias);

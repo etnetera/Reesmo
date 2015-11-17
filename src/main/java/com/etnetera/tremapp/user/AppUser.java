@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.etnetera.tremapp.configuration.Initializer;
 import com.etnetera.tremapp.http.exception.UnauthorizedException;
 import com.etnetera.tremapp.model.mongodb.project.Project;
+import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
 import com.etnetera.tremapp.repository.mongodb.user.UserRepository;
@@ -132,6 +133,22 @@ public class AppUser implements UserDetails {
 	
 	public boolean isAllowedForProject(String projectId, Permission permission) {
 		return getUser().isAllowedForProject(projectId, permission);
+	}
+	
+	public void checkProjectGroupPermission(ProjectGroup projectGroup, Permission permission) {
+		getUser().checkProjectGroupPermission(projectGroup, permission);
+	}
+	
+	public void checkProjectGroupPermission(String projectGroupId, Permission permission) {
+		getUser().checkProjectGroupPermission(projectGroupId, permission);
+	}
+	
+	public boolean isAllowedForProjectGroup(ProjectGroup projectGroup, Permission permission) {
+		return getUser().isAllowedForProjectGroup(projectGroup, permission);
+	}
+	
+	public boolean isAllowedForProjectGroup(String projectGroupId, Permission permission) {
+		return getUser().isAllowedForProjectGroup(projectGroupId, permission);
 	}
 
 	@Override

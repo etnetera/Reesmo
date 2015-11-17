@@ -1,5 +1,6 @@
 package com.etnetera.tremapp.model.mongodb.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,7 +11,7 @@ import com.etnetera.tremapp.user.UserType;
 @Document(collection = "user")
 public class ApiUser extends User {
 	
-	private List<String> allowedIps;
+	private List<String> allowedIps = new ArrayList<>();
 
 	public List<String> getAllowedIps() {
 		return allowedIps;

@@ -1,8 +1,9 @@
-package com.etnetera.tremapp.model.datatables;
+package com.etnetera.tremapp.model.datatables.user;
 
 import java.util.Locale;
 
 import com.etnetera.tremapp.message.Localizer;
+import com.etnetera.tremapp.model.datatables.AuditedModelDT;
 import com.etnetera.tremapp.model.mongodb.user.User;
 
 public class UserDT extends AuditedModelDT {

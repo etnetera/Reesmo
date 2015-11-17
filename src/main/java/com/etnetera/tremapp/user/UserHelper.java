@@ -20,12 +20,24 @@ public class UserHelper {
 		requireAppUser().checkProjectPermission(projectId, permission);
 	}
 	
-	public static void checkViewPermission(View view, Permission permission) {
-		view.checkUserPermission(requireAppUser().getUser(), permission);
-	}
-	
 	public static boolean isAllowedForProject(String projectId, Permission permission) {
 		return requireAppUser().isAllowedForProject(projectId, permission);
+	}
+	
+	public static List<String> getAllowedProjectGroupIds(Permission permission) {
+		return requireAppUser().getUser().getAllowedProjectGroupsIds(permission);
+	}
+	
+	public static void checkProjectGroupPermission(String projectGroupId, Permission permission) {
+		requireAppUser().checkProjectGroupPermission(projectGroupId, permission);
+	}
+	
+	public static boolean isAllowedForProjectGroup(String projectGroupId, Permission permission) {
+		return requireAppUser().isAllowedForProjectGroup(projectGroupId, permission);
+	}
+	
+	public static void checkViewPermission(View view, Permission permission) {
+		view.checkUserPermission(requireAppUser().getUser(), permission);
 	}
 	
 	public static String getUserId() {

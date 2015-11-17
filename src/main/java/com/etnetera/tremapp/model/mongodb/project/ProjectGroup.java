@@ -1,5 +1,7 @@
 package com.etnetera.tremapp.model.mongodb.project;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +21,9 @@ public class ProjectGroup extends MongoAuditedModel {
 	
 	private String description;
 	
-	private List<String> projects;
+	private List<String> projects = new ArrayList<>();
 	
-	private Map<String, Permission> members;
+	private Map<String, Permission> members = new HashMap<>();
 
 	public String getId() {
 		return id;

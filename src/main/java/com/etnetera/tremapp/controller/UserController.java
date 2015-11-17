@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.http.exception.ForbiddenException;
-import com.etnetera.tremapp.model.datatables.UserDT;
+import com.etnetera.tremapp.model.datatables.user.UserDT;
 import com.etnetera.tremapp.model.form.user.EmailCommandValidator;
 import com.etnetera.tremapp.model.form.user.PasswordCommandValidator;
 import com.etnetera.tremapp.model.form.user.UserChangePasswordCommand;
@@ -40,7 +40,7 @@ import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 
-@Secured({ UserRole.ROLE_ADMIN })
+@Secured({UserRole.ROLE_ADMIN})
 @Controller
 public class UserController implements MenuActivityController {
 

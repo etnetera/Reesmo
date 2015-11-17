@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
+import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.user.UserType;
 
 @Component
@@ -16,6 +17,10 @@ public class Localizer {
 	
 	public String localize(UserType userType, Locale locale) {
 		return messageSource.getMessage("user.type." + userType.name().toLowerCase(), null, locale);
+	}
+	
+	public String localize(Permission permission, Locale locale) {
+		return messageSource.getMessage("permission." + permission.name().toLowerCase(), null, locale);
 	}
 	
 	public String localize(boolean bool, Locale locale) {

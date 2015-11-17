@@ -73,29 +73,29 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	}
 
 	@Override
-	public Page<Result> findBySuiteAndModifier(String suiteId, ListModifier modifier, List<String> allowedProjectIds) {
-		if (allowedProjectIds != null && allowedProjectIds.isEmpty()) {
+	public Page<Result> findBySuiteAndModifier(String suiteId, ListModifier modifier, List<String> projectIds) {
+		if (projectIds != null && projectIds.isEmpty()) {
 			return new PageImpl<>(new ArrayList<>());
 		}
 
 		AndFilterBuilder fB = modifier
 				.getFilterBuilder(new BoolFilterBuilder().must(new TermFilterBuilder("suiteId", suiteId)).cache(true));
-		if (allowedProjectIds != null) {
-			fB.add(new BoolFilterBuilder().must(new TermsFilterBuilder("projectId", allowedProjectIds)).cache(true));
+		if (projectIds != null) {
+			fB.add(new BoolFilterBuilder().must(new TermsFilterBuilder("projectId", projectIds)).cache(true));
 		}
 
 		return template.queryForPage(createSearchBuilderFromModifier(modifier, fB).build(), Result.class);
 	}
 
 	@Override
-	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier, List<String> allowedProjectIds) {
-		if (allowedProjectIds != null && allowedProjectIds.isEmpty()) {
+	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier, List<String> projectIds) {
+		if (projectIds != null && projectIds.isEmpty()) {
 			return new PageImpl<>(new ArrayList<>());
 		}
 
 		View view = viewRepository.findOne(viewId);
 		modifier = view.getModifier().join(modifier);
-		return findByModifier(modifier, allowedProjectIds);
+		return findByModifier(modifier, projectIds);
 	}
 
 	private NativeSearchQueryBuilder createSearchBuilderFromModifier(ListModifier modifier) {

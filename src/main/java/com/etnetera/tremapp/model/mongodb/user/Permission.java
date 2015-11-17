@@ -3,19 +3,24 @@ package com.etnetera.tremapp.model.mongodb.user;
 public enum Permission {
 
 	/**
+	 * No permission
+	 */
+	NONE(0),
+	
+	/**
 	 * Read-only access
 	 */
-	BASIC(0),
+	BASIC(10),
 	
 	/**
 	 * Read/write access
 	 */
-	EDITOR(10),
+	EDITOR(20),
 	
 	/**
 	 * Editor plus user management rights
 	 */
-	ADMIN(20);
+	ADMIN(30);
 	
 	private int priority;
 	

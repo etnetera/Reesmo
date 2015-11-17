@@ -1,5 +1,6 @@
 package com.etnetera.tremapp.model.mongodb.project;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.data.annotation.Id;
@@ -29,7 +30,7 @@ public class Project extends MongoAuditedModel {
 	
 	private String description;
 	
-	private Map<String, Permission> members;
+	private Map<String, Permission> members = new HashMap<>();
 
 	public String getId() {
 		return id;

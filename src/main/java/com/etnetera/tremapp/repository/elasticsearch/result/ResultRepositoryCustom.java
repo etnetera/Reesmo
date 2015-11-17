@@ -18,9 +18,9 @@ public interface ResultRepositoryCustom {
 	
 	public Page<Result> findByModifier(ListModifier modifier, List<String> allowedProjectIds);
 	
-	public Page<Result> findBySuiteAndModifier(String suiteId, ListModifier modifier, List<String> allowedProjectIds);
+	public Page<Result> findBySuiteAndModifier(String suiteId, ListModifier modifier, List<String> projectIds);
 	
-	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier, List<String> allowedProjectIds);
+	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier, List<String> projectIds);
 	
 	/**
 	 * Overrides default delete method, so attachments from GridFS

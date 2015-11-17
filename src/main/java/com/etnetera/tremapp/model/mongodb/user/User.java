@@ -1,6 +1,7 @@
 package com.etnetera.tremapp.model.mongodb.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.project.Project;
+import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
 import com.etnetera.tremapp.user.UserType;
 
 abstract public class User extends MongoAuditedModel {
@@ -39,7 +41,19 @@ abstract public class User extends MongoAuditedModel {
 	 */
 	private boolean superadmin;
 	
-	private Map<String, Permission> projectsPermissions;
+	/**
+	 * Compound project and project group permissions.
+	 * Key is project id.
+	 */
+	private Map<String, Permission> projectsPermissions = new HashMap<>();
+	
+	/**
+	 * Project group permissions.
+	 * Key is project group id.
+	 * It is used only for management purpose to show
+	 * allowed project groups for actual user.
+	 */
+	private Map<String, Permission> projectGroupsPermissions = new HashMap<>();
 	
 	public String getId() {
 		return id;
@@ -97,6 +111,14 @@ abstract public class User extends MongoAuditedModel {
 		this.projectsPermissions = projectsPermissions;
 	}
 	
+	public Map<String, Permission> getProjectGroupsPermissions() {
+		return projectGroupsPermissions;
+	}
+
+	public void setProjectGroupsPermissions(Map<String, Permission> projectGroupsPermissions) {
+		this.projectGroupsPermissions = projectGroupsPermissions;
+	}
+
 	public List<String> getAllowedProjectsIds(Permission permission) {
 		if (superadmin) {
 			return null;
@@ -133,6 +155,49 @@ abstract public class User extends MongoAuditedModel {
 		if (projectId != null && permission != null) {
 			for (Map.Entry<String, Permission> entry : getProjectsPermissions().entrySet()) {
 				if (entry.getKey().equals(projectId)) {
+					return entry.getValue().isGreaterThanOrEqual(permission);
+				}
+			}
+		}
+		return false;
+	}
+	
+	public List<String> getAllowedProjectGroupsIds(Permission permission) {
+		if (superadmin) {
+			return null;
+		}
+		List<String> projectGroupsIds = new ArrayList<>();
+		if (permission != null) {
+			for (Map.Entry<String, Permission> entry : getProjectGroupsPermissions().entrySet()) {
+				if (entry.getValue().isGreaterThanOrEqual(permission)) {
+					projectGroupsIds.add(entry.getKey());
+				}
+			}
+		}
+		return projectGroupsIds;
+	}
+	
+	public void checkProjectGroupPermission(ProjectGroup projectGroup, Permission permission) {
+		checkProjectGroupPermission(projectGroup.getId(), permission);
+	}
+	
+	public void checkProjectGroupPermission(String projectGroupId, Permission permission) {
+		if (!isAllowedForProjectGroup(projectGroupId, permission)) {
+			throw new ForbiddenException("User with id " + id + " has not " + permission + " permission for project group with id " + projectGroupId + ".");
+		}
+	}
+	
+	public boolean isAllowedForProjectGroup(ProjectGroup projectGroup, Permission permission) {
+		return isAllowedForProjectGroup(projectGroup.getId(), permission);
+	}
+	
+	public boolean isAllowedForProjectGroup(String projectGroupId, Permission permission) {
+		if (superadmin) {
+			return true;
+		}
+		if (projectGroupId != null && permission != null) {
+			for (Map.Entry<String, Permission> entry : getProjectGroupsPermissions().entrySet()) {
+				if (entry.getKey().equals(projectGroupId)) {
 					return entry.getValue().isGreaterThanOrEqual(permission);
 				}
 			}

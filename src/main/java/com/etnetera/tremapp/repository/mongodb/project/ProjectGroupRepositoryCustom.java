@@ -1,6 +1,8 @@
 package com.etnetera.tremapp.repository.mongodb.project;
 
-import com.etnetera.tremapp.model.datatables.ProjectGroupDT;
+import java.util.List;
+
+import com.etnetera.tremapp.model.datatables.project.ProjectGroupDT;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 
@@ -9,6 +11,6 @@ import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
  */
 public interface ProjectGroupRepositoryCustom {
 
-	public DataSet<ProjectGroupDT> findWithDatatablesCriterias(DatatablesCriterias criterias);
+	public DataSet<ProjectGroupDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectGroupIds);
 	
 }

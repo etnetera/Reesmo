@@ -1,5 +1,6 @@
 package com.etnetera.tremapp.model.mongodb.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.Interval;
@@ -47,7 +48,7 @@ public class View extends MongoAuditedModel {
 	/**
 	 * List of users ids with this view registered
 	 */
-	private List<String> users;
+	private List<String> users = new ArrayList<>();
 
 	public String getId() {
 		return id;
