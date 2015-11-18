@@ -18,7 +18,7 @@
 							th:src="@{/static/app/img/avatar-160x160.png}"
 							src="../../../static/app/img/avatar-160x160.png" alt="User profile picture"/>
 						<h3 class="profile-username text-center" th:text="${user.label}">User label</h3>
-						<p class="text-muted text-center" th:text="#{'user.type.' + ${#strings.toLowerCase(user.type)}}">type</p>
+						<p class="text-muted text-center" th:text="#{'user.type.value.' + ${#strings.toLowerCase(user.type)}}">type</p>
 						<a th:href="@{/user-profile/change-password}" href="#" class="btn btn-default btn-block"><b>Change password</b></a>
 						<a th:href="@{/user-profile/edit}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
 					</div>

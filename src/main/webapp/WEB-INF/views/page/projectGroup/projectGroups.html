@@ -23,8 +23,8 @@
 							<table id="projectGroupsTable" dt:table="true" dt:url="@{/dt/project-groups}">
 								<thead>
 									<tr>
-										<th dt:property="name" dt:renderFunction="Tremapp.projectGroupsTableRenderName">Name</th>
-										<th dt:property="description">Description</th>
+										<th dt:property="name" dt:renderFunction="Tremapp.projectGroupsTableRenderName" th:text="#{projectgroup.name}">Name</th>
+										<th dt:property="description" th:text="#{projectgroup.description}">Description</th>
 									</tr>
 								</thead>
 							</table>

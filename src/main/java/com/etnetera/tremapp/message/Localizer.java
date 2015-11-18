@@ -20,7 +20,7 @@ public class Localizer {
 	}
 	
 	public String localize(Permission permission, Locale locale) {
-		return messageSource.getMessage("member.permission.value." + permission.name().toLowerCase(), null, locale);
+		return messageSource.getMessage("user.permission.value." + permission.name().toLowerCase(), null, locale);
 	}
 	
 	public String localize(boolean bool, Locale locale) {

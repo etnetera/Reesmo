@@ -107,16 +107,16 @@ public class UserManager {
 	
 	public void updateUserProjectsPermissions(User user) {
 		Map<String, Permission> permissions = new HashMap<>();
-		projectRepository.findByMember(user.getId()).forEach(p -> {
-			Permission permission = p.getMembers().get(user.getId());
+		projectRepository.findByUser(user.getId()).forEach(p -> {
+			Permission permission = p.getUsers().get(user.getId());
 			if (permission != null) {
 				permissions.put(p.getId(), permission);
 			}
 		});
 		
 		Map<String, Permission> groupPermissions = new HashMap<>();
-		projectGroupRepository.findByMember(user.getId()).forEach(pg -> {
-			Permission permission = pg.getMembers().get(user.getId());
+		projectGroupRepository.findByUser(user.getId()).forEach(pg -> {
+			Permission permission = pg.getUsers().get(user.getId());
 			if (permission != null) {
 				pg.getProjects().forEach(pId -> {
 					Permission existingPerm = groupPermissions.get(pId);

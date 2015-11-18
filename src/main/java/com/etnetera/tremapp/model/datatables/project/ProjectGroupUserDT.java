@@ -8,13 +8,13 @@ import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
 
-public class ProjectGroupMemberDT extends MemberDT {
+public class ProjectGroupUserDT extends MemberDT {
 	
 	private String projectGroupId;
 	
 	private String projectGroupName;
 	
-	public ProjectGroupMemberDT(User user, ProjectGroup projectGroup, Permission permission, Localizer localizer, Locale locale) {
+	public ProjectGroupUserDT(User user, ProjectGroup projectGroup, Permission permission, Localizer localizer, Locale locale) {
 		super(user, permission, localizer, locale);
 		this.projectGroupId = projectGroup.getId();
 		this.projectGroupName = projectGroup.getName();

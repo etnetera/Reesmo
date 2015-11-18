@@ -27,24 +27,25 @@
 			<div th:replace="fragments/project/projectDetail :: details">Details</div>
 			<div th:replace="fragments/model/audit :: history (model=${project})">History</div>
 		</div>
+		<!-- Users -->
 		<div class="box">
 			<div class="box-header with-border">
-				<h3 class="box-title" th:text="#{page.projectdetail.members.title}">Members</h3>
+				<h3 class="box-title" th:text="#{page.projectdetail.users.title}">Users</h3>
 			</div>
 			<div class="box-body">
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<div dt:conf="projectMembersTable">
+							<div dt:conf="projectUsersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="projectMembersTable" dt:table="true" dt:url="@{/dt/projects/members/{projectId}(projectId=${project.id})}">
+							<table id="projectUsersTable" dt:table="true" dt:url="@{/dt/projects/users/{projectId}(projectId=${project.id})}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
 										<th dt:property="username" th:text="#{user.username}">Username</th>
 										<th dt:property="type" dt:searchable="false" dt:sortable="false" th:text="#{user.type}">Type</th>
-										<th dt:property="permission" dt:searchable="false" dt:sortable="false" th:text="#{member.permission}">Permission</th>
+										<th dt:property="permission" dt:searchable="false" dt:sortable="false" th:text="#{user.permission}">Permission</th>
 									</tr>
 								</thead>
 							</table>
@@ -53,13 +54,13 @@
 				</div>
 			</div>
 			<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" class="box-footer">
-				<button id="btn-show-add-users" type="button" class="btn btn-primary" th:text="#{page.projectdetail.members.add}">Add users</button>
-				<button id="btn-remove-users" type="button" class="btn btn-danger" th:text="#{page.projectdetail.members.remove}">Remove selected users</button>
+				<button id="btn-show-add-users" type="button" class="btn btn-primary" th:text="#{page.projectdetail.users.add}">Add users</button>
+				<button id="btn-remove-users" type="button" class="btn btn-danger" th:text="#{page.projectdetail.users.remove}">Remove selected users</button>
 			</div>
 		</div>
 		<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" id="box-add-users" class="box box-primary" style="display: none;">
 			<div class="box-header with-border">
-				<h3 class="box-title" th:text="#{page.projectdetail.addmembers.title}">Select users you want to add to this project</h3>
+				<h3 class="box-title" th:text="#{page.projectdetail.addusers.title}">Select users you want to add to this project</h3>
 				<div class="box-tools pull-right">
 					<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 				</div>
@@ -87,32 +88,33 @@
 				</div>
 			</div>
 			<div class="box-footer form-inline">
-				<button id="btn-add-users" type="button" class="btn btn-success" th:text="#{page.projectdetail.addmembers.add}">Add selected users</button>
+				<button id="btn-add-users" type="button" class="btn btn-success" th:text="#{page.projectdetail.addusers.add}">Add selected users</button>
 				<label class="with-input">
-					<span th:text="#{page.projectdetail.addmembers.addAssignText}" class="padding-horizontal">and assign them</span>
+					<span th:text="#{page.projectdetail.addusers.addAssignText}" class="padding-horizontal">and assign them</span>
 					<select id="select-add-users-permission" class="form-control input-sm">
-						<option th:each="permission : ${T(com.etnetera.tremapp.model.mongodb.user.Permission).values()}" th:value="${permission.name().toLowerCase()}" th:text="#{'member.permission.value.' + ${permission.name().toLowerCase()}}"></option>
+						<option th:each="permission : ${T(com.etnetera.tremapp.model.mongodb.user.Permission).values()}" th:value="${permission.name().toLowerCase()}" th:text="#{'user.permission.value.' + ${permission.name().toLowerCase()}}"></option>
 					</select>
-					<span th:text="#{page.projectdetail.addmembers.addAssignTextPermission}" class="padding-horizontal">permission</span>
+					<span th:text="#{page.projectdetail.addusers.addAssignTextPermission}" class="padding-horizontal">permission</span>
 				</label>
 			</div>
 		</div>
+		<!-- Users from groups -->
 		<div class="box">
 			<div class="box-header with-border">
-				<h3 class="box-title" th:text="#{page.projectdetail.membersfromgroups.title}">Group members</h3>
+				<h3 class="box-title" th:text="#{page.projectdetail.usersfromgroups.title}">Group users</h3>
 			</div>
 			<div class="box-body">
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<table id="projectMembersFromGroupsTable" dt:table="true" dt:url="@{/dt/projects/members-from-groups/{projectId}(projectId=${project.id})}">
+							<table id="projectUsersFromGroupsTable" dt:table="true" dt:url="@{/dt/projects/users-from-groups/{projectId}(projectId=${project.id})}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
 										<th dt:property="username" th:text="#{user.username}">Username</th>
 										<th dt:property="type" dt:searchable="false" dt:sortable="false" th:text="#{user.type}">Type</th>
-										<th dt:property="permission" dt:searchable="false" dt:sortable="false" th:text="#{member.permission}">Permission</th>
-										<th dt:property="projectGroupsNames" dt:searchable="false" dt:sortable="false" th:text="#{member.projectGroupsNames}">Project groups</th>
+										<th dt:property="permission" dt:searchable="false" dt:sortable="false" th:text="#{user.permission}">Permission</th>
+										<th dt:property="projectGroupsNames" dt:searchable="false" dt:sortable="false" th:text="#{user.projectGroupsNames}">Project groups</th>
 									</tr>
 								</thead>
 							</table>
@@ -127,13 +129,13 @@
 					return '<a href="' + Tremapp.baseUrl + 'users/detail/' + user.id + '">' + label + '</a>';
 				};
 				
-				$(document).ready(function(){
+				Tremapp.initProjectUsersManagement = function() {
 					var $showAddUsersBtn = $('#btn-show-add-users'),
 						$removeUsersBtn = $('#btn-remove-users'),
 						$addUsersBtn = $('#btn-add-users'),
 						$addUsersBox = $('#box-add-users')
 						$selectAddUsersPermission = $('#select-add-users-permission'),
-						$membersTable = $('#projectMembersTable'),
+						$projectUsersTable = $('#projectUsersTable'),
 						$usersTable = $('#usersTable');
 					
 					$showAddUsersBtn.click(function(){
@@ -149,20 +151,20 @@
 						});
 						
 						Tremapp.ajax({
-							url: [[@{/projects/member/add/{projectId}(projectId=${project.id})}]],
+							url: [[@{/projects/user/add/{projectId}(projectId=${project.id})}]],
 							data: {
 								permission: $selectAddUsersPermission.val(),
 								userIds: userIds
 							}
 						}, function(addedCnt){
 							Tremapp.clearRowSelection($usersTable);
-							Tremapp.reloadTable($membersTable);
+							Tremapp.reloadTable($projectUsersTable);
 							// TODO - show count
 						});
 					});
 					
 					$removeUsersBtn.click(function(){
-						var rowsData = Tremapp.getSelectedRowsData($membersTable),
+						var rowsData = Tremapp.getSelectedRowsData($projectUsersTable),
 							userIds = [];
 						
 						$.each(rowsData, function(i, rowData){
@@ -170,16 +172,20 @@
 						});
 						
 						Tremapp.ajax({
-							url: [[@{/projects/member/remove/{projectId}(projectId=${project.id})}]],
+							url: [[@{/projects/user/remove/{projectId}(projectId=${project.id})}]],
 							data: {
 								userIds: userIds
 							}
 						}, function(removedCnt){
-							Tremapp.clearRowSelection($membersTable);
-							Tremapp.reloadTable($membersTable);
+							Tremapp.clearRowSelection($projectUsersTable);
+							Tremapp.reloadTable($projectUsersTable);
 							// TODO - show count
 						});
 					});
+				}
+				
+				$(document).ready(function(){
+					Tremapp.initProjectUsersManagement();
 				});
 			</script>
 			<script th:case="${false}" th:inline="javascript">

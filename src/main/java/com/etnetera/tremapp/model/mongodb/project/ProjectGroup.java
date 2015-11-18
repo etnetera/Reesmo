@@ -25,7 +25,7 @@ public class ProjectGroup extends MongoAuditedModel {
 	
 	private List<String> projects = new ArrayList<>();
 	
-	private Map<String, Permission> members = new HashMap<>();
+	private Map<String, Permission> users = new HashMap<>();
 
 	public String getId() {
 		return id;
@@ -59,12 +59,12 @@ public class ProjectGroup extends MongoAuditedModel {
 		this.projects = projects;
 	}
 
-	public Map<String, Permission> getMembers() {
-		return members;
+	public Map<String, Permission> getUsers() {
+		return users;
 	}
 
-	public void setMembers(Map<String, Permission> members) {
-		this.members = members;
+	public void setUsers(Map<String, Permission> users) {
+		this.users = users;
 	}
 	
 	public void checkUserPermission(User user, Permission permission) {
@@ -84,7 +84,7 @@ public class ProjectGroup extends MongoAuditedModel {
 		if (permission == null) {
 			return false;
 		}
-		Permission userPermission = members.get(user.getId());
+		Permission userPermission = users.get(user.getId());
 		if (userPermission != null && userPermission.isGreaterThanOrEqual(permission)) {
 			return true;
 		}

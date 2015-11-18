@@ -2,16 +2,16 @@ package com.etnetera.tremapp.model.form.project;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 
-public class ProjectMemberAddCommand {
+public class ProjectUserAddCommand {
 
-	@NotNull
+	@NotEmpty
 	private String permission = Permission.NONE.name().toLowerCase();
 	
-	@NotNull
+	@NotEmpty
 	private List<String> userIds;
 
 	public String getPermission() {

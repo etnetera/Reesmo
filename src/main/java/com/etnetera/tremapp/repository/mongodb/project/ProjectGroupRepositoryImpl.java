@@ -24,8 +24,8 @@ public class ProjectGroupRepositoryImpl implements ProjectGroupRepositoryCustom 
 	private MongoOperations mongoTemplate;
 
 	@Override
-	public List<ProjectGroup> findByMember(String userId) {
-		return mongoTemplate.find(Query.query(Criteria.where("members." + userId).exists(true)), ProjectGroup.class);
+	public List<ProjectGroup> findByUser(String userId) {
+		return mongoTemplate.find(Query.query(Criteria.where("users." + userId).exists(true)), ProjectGroup.class);
 	}
 	
 	@Override
@@ -34,7 +34,7 @@ public class ProjectGroupRepositoryImpl implements ProjectGroupRepositoryCustom 
 		if (userId == null) {
 			allCrit = Criteria.where("_id").exists(true);
 		} else {
-			allCrit = Criteria.where("members." + userId).exists(true).and("members." + userId).ne(Permission.NONE);
+			allCrit = Criteria.where("users." + userId).exists(true).and("users." + userId).ne(Permission.NONE);
 		}
 		Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 

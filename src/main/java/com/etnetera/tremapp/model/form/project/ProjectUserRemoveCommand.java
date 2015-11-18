@@ -2,11 +2,11 @@ package com.etnetera.tremapp.model.form.project;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 
-public class ProjectMemberRemoveCommand {
+public class ProjectUserRemoveCommand {
 	
-	@NotNull
+	@NotEmpty
 	private List<String> userIds;
 
 	public List<String> getUserIds() {

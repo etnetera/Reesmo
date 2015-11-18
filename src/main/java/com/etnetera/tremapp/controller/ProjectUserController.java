@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.etnetera.tremapp.controller.json.JsonResponse;
 import com.etnetera.tremapp.http.ControllerModel;
-import com.etnetera.tremapp.model.datatables.project.ProjectMemberDT;
-import com.etnetera.tremapp.model.datatables.project.ProjectMemberFromGroupsDT;
-import com.etnetera.tremapp.model.form.project.ProjectMemberAddCommand;
-import com.etnetera.tremapp.model.form.project.ProjectMemberRemoveCommand;
+import com.etnetera.tremapp.model.datatables.project.ProjectUserDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectUserFromGroupsDT;
+import com.etnetera.tremapp.model.form.project.ProjectUserAddCommand;
+import com.etnetera.tremapp.model.form.project.ProjectUserRemoveCommand;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
@@ -32,7 +32,7 @@ import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 
 @Controller
-public class ProjectMemberController implements MenuActivityController {
+public class ProjectUserController {
 
 	@Autowired
     private UserManager userManager;
@@ -43,38 +43,33 @@ public class ProjectMemberController implements MenuActivityController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Override
-	public String getActiveMenu() {
-		return "projects";
-	}
-
-	@RequestMapping(value = "/dt/projects/members/{projectId}")
-	public @ResponseBody DatatablesResponse<ProjectMemberDT> findAllForDataTables(@PathVariable String projectId,
+	@RequestMapping(value = "/dt/projects/users/{projectId}")
+	public @ResponseBody DatatablesResponse<ProjectUserDT> findAllForDataTables(@PathVariable String projectId,
 			HttpServletRequest request, Locale locale) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
 		userManager.checkProjectPermission(project.getId(), Permission.BASIC);
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ProjectMemberDT> projects = userRepository.findProjectMembersWithDatatablesCriterias(criterias, project,
+		DataSet<ProjectUserDT> users = userRepository.findProjectUsersWithDatatablesCriterias(criterias, project,
 				locale);
-		return DatatablesResponse.build(projects, criterias);
+		return DatatablesResponse.build(users, criterias);
 	}
 
-	@RequestMapping(value = "/dt/projects/members-from-groups/{projectId}")
-	public @ResponseBody DatatablesResponse<ProjectMemberFromGroupsDT> findAllFromGroupsForDataTables(
+	@RequestMapping(value = "/dt/projects/users-from-groups/{projectId}")
+	public @ResponseBody DatatablesResponse<ProjectUserFromGroupsDT> findAllFromGroupsForDataTables(
 			@PathVariable String projectId, HttpServletRequest request, Locale locale) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
 		userManager.checkProjectPermission(project.getId(), Permission.BASIC);
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ProjectMemberFromGroupsDT> projects = userRepository
-				.findProjectMembersFromGroupsWithDatatablesCriterias(criterias, project, locale);
+		DataSet<ProjectUserFromGroupsDT> projects = userRepository
+				.findProjectUsersFromGroupsWithDatatablesCriterias(criterias, project, locale);
 		return DatatablesResponse.build(projects, criterias);
 	}
 
 	@Secured({ UserRole.ROLE_ADMIN })
-	@RequestMapping(value = "/projects/member/add/{projectId}", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody JsonResponse addProjectMembers(@Valid ProjectMemberAddCommand addCommand,
+	@RequestMapping(value = "/projects/user/add/{projectId}", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody JsonResponse addProjectUsers(@Valid ProjectUserAddCommand addCommand,
 			BindingResult bindingResult, @PathVariable String projectId) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
@@ -89,7 +84,7 @@ public class ProjectMemberController implements MenuActivityController {
 		for (String userId : addCommand.getUserIds()) {
 			User user = userRepository.findOne(userId);
 			if (user == null) continue;
-			project.getMembers().put(user.getId(), permission);
+			project.getUsers().put(user.getId(), permission);
 			projectRepository.save(project);
 			userManager.updateUserProjectsPermissions(user);
 			userRepository.save(user);
@@ -99,8 +94,8 @@ public class ProjectMemberController implements MenuActivityController {
 	}
 	
 	@Secured({ UserRole.ROLE_ADMIN })
-	@RequestMapping(value = "/projects/member/remove/{projectId}", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody JsonResponse removeProjectMembers(@Valid ProjectMemberRemoveCommand removeCommand,
+	@RequestMapping(value = "/projects/user/remove/{projectId}", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody JsonResponse removeProjectUsers(@Valid ProjectUserRemoveCommand removeCommand,
 			BindingResult bindingResult, @PathVariable String projectId) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
@@ -111,7 +106,7 @@ public class ProjectMemberController implements MenuActivityController {
 		for (String userId : removeCommand.getUserIds()) {
 			User user = userRepository.findOne(userId);
 			if (user == null) continue;
-			project.getMembers().remove(user.getId());
+			project.getUsers().remove(user.getId());
 			projectRepository.save(project);
 			userManager.updateUserProjectsPermissions(user);
 			userRepository.save(user);

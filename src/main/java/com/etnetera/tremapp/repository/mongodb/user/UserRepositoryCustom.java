@@ -2,9 +2,9 @@ package com.etnetera.tremapp.repository.mongodb.user;
 
 import java.util.Locale;
 
-import com.etnetera.tremapp.model.datatables.project.ProjectGroupMemberDT;
-import com.etnetera.tremapp.model.datatables.project.ProjectMemberDT;
-import com.etnetera.tremapp.model.datatables.project.ProjectMemberFromGroupsDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectGroupUserDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectUserDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectUserFromGroupsDT;
 import com.etnetera.tremapp.model.datatables.user.UserDT;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
@@ -23,10 +23,10 @@ public interface UserRepositoryCustom {
 	
 	public DataSet<UserDT> findWithDatatablesCriterias(DatatablesCriterias criterias, Locale locale);
 	
-	public DataSet<ProjectMemberDT> findProjectMembersWithDatatablesCriterias(DatatablesCriterias criterias, Project project, Locale locale);
+	public DataSet<ProjectUserDT> findProjectUsersWithDatatablesCriterias(DatatablesCriterias criterias, Project project, Locale locale);
 	
-	public DataSet<ProjectMemberFromGroupsDT> findProjectMembersFromGroupsWithDatatablesCriterias(DatatablesCriterias criterias, Project project, Locale locale);
+	public DataSet<ProjectUserFromGroupsDT> findProjectUsersFromGroupsWithDatatablesCriterias(DatatablesCriterias criterias, Project project, Locale locale);
 	
-	public DataSet<ProjectGroupMemberDT> findProjectGroupMembersWithDatatablesCriterias(DatatablesCriterias criterias, ProjectGroup projectGroup, Locale locale);
+	public DataSet<ProjectGroupUserDT> findProjectGroupUsersWithDatatablesCriterias(DatatablesCriterias criterias, ProjectGroup projectGroup, Locale locale);
 	
 }

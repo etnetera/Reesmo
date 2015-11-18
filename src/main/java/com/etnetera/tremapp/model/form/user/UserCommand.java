@@ -2,12 +2,12 @@ package com.etnetera.tremapp.model.form.user;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.etnetera.tremapp.model.mongodb.user.ApiUser;
@@ -29,7 +29,7 @@ public class UserCommand implements UsernameCommand, EmailCommand, PasswordComma
 
 	private boolean superadmin;
 	
-	@NotNull
+	@NotEmpty
 	private String type = UserType.MANUAL.name().toLowerCase();
 	
 	@Size(min = 4, max = 255)

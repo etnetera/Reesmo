@@ -30,7 +30,7 @@ public class Project extends MongoAuditedModel {
 	
 	private String description;
 	
-	private Map<String, Permission> members = new HashMap<>();
+	private Map<String, Permission> users = new HashMap<>();
 
 	public String getId() {
 		return id;
@@ -64,12 +64,12 @@ public class Project extends MongoAuditedModel {
 		this.description = description;
 	}
 
-	public Map<String, Permission> getMembers() {
-		return members;
+	public Map<String, Permission> getUsers() {
+		return users;
 	}
 
-	public void setMembers(Map<String, Permission> members) {
-		this.members = members;
+	public void setUsers(Map<String, Permission> users) {
+		this.users = users;
 	}
 	
 }

@@ -12,7 +12,7 @@ import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
  */
 public interface ProjectGroupRepositoryCustom {
 
-	public List<ProjectGroup> findByMember(String userId);
+	public List<ProjectGroup> findByUser(String userId);
 	
 	public DataSet<ProjectGroupDT> findWithDatatablesCriterias(DatatablesCriterias criterias, String userId);
 	

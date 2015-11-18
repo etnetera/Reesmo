@@ -1,6 +1,7 @@
 package com.etnetera.tremapp.repository.mongodb.project;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.etnetera.tremapp.model.datatables.project.ProjectDT;
+import com.etnetera.tremapp.model.datatables.project.ProjectGroupProjectDT;
 import com.etnetera.tremapp.model.mongodb.project.Project;
+import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
+import com.etnetera.tremapp.model.mongodb.user.User;
 import com.etnetera.tremapp.repository.mongodb.MongoDatatables;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
@@ -29,34 +33,51 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	}
 	
 	@Override
-	public List<Project> findByMember(String userId) {
-		return mongoTemplate.find(Query.query(Criteria.where("members." + userId).exists(true)), Project.class);
+	public List<Project> findByUser(String userId) {
+		return mongoTemplate.find(Query.query(Criteria.where("users." + userId).exists(true)), Project.class);
 	}
 
 	@Override
 	public DataSet<ProjectDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectIds) {
+		DataSet<Project> projects = findProjectsWithDatatablesCriterias(criterias, projectIds);
+
+		return new DataSet<ProjectDT>(
+				projects.getRows().stream().map(p -> new ProjectDT(p)).collect(Collectors.toList()),
+				projects.getTotalRecords(), projects.getTotalDisplayRecords());
+	}
+
+	@Override
+	public DataSet<ProjectGroupProjectDT> findProjectGroupProjectsWithDatatablesCriterias(DatatablesCriterias criterias,
+			ProjectGroup projectGroup) {
+		DataSet<Project> projects = findProjectsWithDatatablesCriterias(criterias, projectGroup.getProjects());
+
+		return new DataSet<ProjectGroupProjectDT>(projects.getRows().stream().map(p -> {
+			return new ProjectGroupProjectDT(p, projectGroup);
+		}).collect(Collectors.toList()), projects.getTotalRecords(), projects.getTotalDisplayRecords());
+	}
+	
+	private DataSet<Project> findProjectsWithDatatablesCriterias(DatatablesCriterias criterias, Collection<String> projectIds) {
 		Criteria allCrit = null;
 		if (projectIds == null) {
 			allCrit = Criteria.where("_id").exists(true);
 		} else if (projectIds.isEmpty()) {
-			return new DataSet<ProjectDT>(new ArrayList<>(), 0L, 0L);
+			return new DataSet<Project>(new ArrayList<>(), 0L, 0L);
 		} else {
 			allCrit = Criteria.where("_id").in(projectIds);
 		}
-		
+
 		Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 
 		Query query = Query.query(crit);
 		MongoDatatables.sortQuery(query, criterias);
 		MongoDatatables.paginateQuery(query, criterias);
 
-		List<Project> projects = mongoTemplate.find(query, Project.class);
+		List<Project> users = mongoTemplate.find(query, Project.class);
 
-		Long count = mongoTemplate.count(Query.query(allCrit), Project.class);
-		Long countFiltered = mongoTemplate.count(Query.query(crit), Project.class);
+		Long count = mongoTemplate.count(Query.query(allCrit), User.class);
+		Long countFiltered = mongoTemplate.count(Query.query(crit), User.class);
 
-		return new DataSet<ProjectDT>(projects.stream().map(p -> new ProjectDT(p)).collect(Collectors.toList()),
-				count, countFiltered);
+		return new DataSet<Project>(users, count, countFiltered);
 	}
 
 }
