@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.etnetera.tremapp.common.ObjectWrapper;
 import com.etnetera.tremapp.message.Localizer;
+import com.etnetera.tremapp.model.datatables.project.ProjectGroupMemberDT;
 import com.etnetera.tremapp.model.datatables.project.ProjectMemberDT;
 import com.etnetera.tremapp.model.datatables.project.ProjectMemberFromGroupsDT;
 import com.etnetera.tremapp.model.datatables.user.UserDT;
@@ -120,6 +121,16 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			}).collect(Collectors.toList());
 			return new ProjectMemberFromGroupsDT(u, project, permWrapper.getValue(), memberProjectGroups, localizer,
 					locale);
+		}).collect(Collectors.toList()), users.getTotalRecords(), users.getTotalDisplayRecords());
+	}
+	
+	@Override
+	public DataSet<ProjectGroupMemberDT> findProjectGroupMembersWithDatatablesCriterias(DatatablesCriterias criterias,
+			ProjectGroup projectGroup, Locale locale) {
+		DataSet<User> users = findUsersWithDatatablesCriterias(criterias, projectGroup.getMembers().keySet());
+
+		return new DataSet<ProjectGroupMemberDT>(users.getRows().stream().map(u -> {
+			return new ProjectGroupMemberDT(u, projectGroup, projectGroup.getMembers().get(u.getId()), localizer, locale);
 		}).collect(Collectors.toList()), users.getTotalRecords(), users.getTotalDisplayRecords());
 	}
 
