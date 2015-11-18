@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="box" class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title" th:text="#{page.userdetail.projects.title}">Projects</h3>
+		</div>
+		<div class="box-body">
+			<div class="dataTables_wrapper form-inline dt-bootstrap">
+				<div class="row">
+					<div class="col-sm-12">
+						<table id="userProjectsTable" dt:table="true" dt:url="@{/dt/users/projects/{userId}(userId=${user.id})}">
+							<thead>
+								<tr>
+									<th dt:property="name" dt:renderFunction="Tremapp.projectsTableRenderName" th:text="#{project.name}">Name</th>
+									<th dt:property="key" th:text="#{project.key}">Key</th>
+									<th dt:property="description" th:text="#{project.description}">Description</th>
+									<th dt:property="permission" dt:searchable="false" dt:sortable="false" th:text="#{user.permission}">Permission</th>
+								</tr>
+							</thead>
+						</table>
+						<script th:inline="javascript">
+							Tremapp.projectsTableRenderName = function(name, type, project) {
+								return '<a href="' + Tremapp.baseUrl + 'projects/detail/' + project.id + '">' + name + '</a>';
+							};
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

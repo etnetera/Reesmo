@@ -107,12 +107,12 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		DataSet<User> users = findUsersWithDatatablesCriterias(criterias, usersIds);
 
 		return new DataSet<ProjectUserFromGroupsDT>(users.getRows().stream().map(u -> {
-			ObjectWrapper<Permission> permWrapper = new ObjectWrapper<>(Permission.NONE);
+			ObjectWrapper<Permission> permWrapper = new ObjectWrapper<>();
 			// collect project groups which belongs to specific user, gathering most prioritized permission
 			List<ProjectGroup> userProjectGroups = projectGroups.stream().filter(pg -> {
 				Permission projectGroupPermission = pg.getUsers().get(u.getId());
 				if (projectGroupPermission != null) {
-					if (projectGroupPermission.isGreaterThan(permWrapper.getValue())) {
+					if (permWrapper.getValue() == null || projectGroupPermission.isGreaterThan(permWrapper.getValue())) {
 						permWrapper.setValue(projectGroupPermission);
 					}
 					return true;

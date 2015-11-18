@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.etnetera.tremapp.model.datatables.project.ProjectGroupDT;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
-import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.mongodb.MongoDatatables;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
@@ -34,7 +33,7 @@ public class ProjectGroupRepositoryImpl implements ProjectGroupRepositoryCustom 
 		if (userId == null) {
 			allCrit = Criteria.where("_id").exists(true);
 		} else {
-			allCrit = Criteria.where("users." + userId).exists(true).and("users." + userId).ne(Permission.NONE);
+			allCrit = Criteria.where("users." + userId).exists(true);
 		}
 		Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 

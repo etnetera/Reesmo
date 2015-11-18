@@ -9,7 +9,7 @@ import com.etnetera.tremapp.model.mongodb.user.Permission;
 public class ProjectUserAddCommand {
 
 	@NotEmpty
-	private String permission = Permission.NONE.name().toLowerCase();
+	private String permission = Permission.BASIC.name().toLowerCase();
 	
 	@NotEmpty
 	private List<String> userIds;

@@ -75,6 +75,9 @@ public class ProjectGroupProjectController {
 		userRepository.findAll(projectGroup.getUsers().keySet()).forEach(u -> {
 			userManager.updateUserProjectsPermissions(u);
 			userRepository.save(u);
+			if (userManager.isSameAsLogged(u)) {
+				userManager.updateUser(u);
+			}
 		});
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
 	}
@@ -99,6 +102,9 @@ public class ProjectGroupProjectController {
 		userRepository.findAll(projectGroup.getUsers().keySet()).forEach(u -> {
 			userManager.updateUserProjectsPermissions(u);
 			userRepository.save(u);
+			if (userManager.isSameAsLogged(u)) {
+				userManager.updateUser(u);
+			}
 		});
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
 	}

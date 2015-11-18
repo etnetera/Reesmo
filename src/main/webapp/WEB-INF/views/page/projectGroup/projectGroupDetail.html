@@ -19,8 +19,10 @@
 				<div class="box box-primary">
 					<div class="box-body box-profile">
 						<h3 class="profile-username text-center" th:text="${projectGroup.name}">Project group</h3>
-						<a th:href="@{/project-groups/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
-						<a th:href="@{/project-groups/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+						<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}">
+							<a th:href="@{/project-groups/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+							<a th:href="@{/project-groups/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -36,7 +38,7 @@
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<div dt:conf="projectGroupProjectsTable">
+							<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" dt:conf="projectGroupProjectsTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectGroupProjectsTable" dt:table="true" dt:url="@{/dt/project-groups/projects/{projectGroupId}(projectGroupId=${projectGroup.id})}">
@@ -97,7 +99,7 @@
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<div dt:conf="projectGroupUsersTable">
+							<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" dt:conf="projectGroupUsersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectGroupUsersTable" dt:table="true" dt:url="@{/dt/project-groups/users/{projectGroupId}(projectGroupId=${projectGroup.id})}">
@@ -152,9 +154,7 @@
 				<button id="btn-add-users" type="button" class="btn btn-success" th:text="#{page.projectgroupdetail.addusers.add}">Add selected users</button>
 				<label class="with-input">
 					<span th:text="#{page.projectgroupdetail.addusers.addAssignText}" class="padding-horizontal">and assign them</span>
-					<select id="select-add-users-permission" class="form-control input-sm">
-						<option th:each="permission : ${T(com.etnetera.tremapp.model.mongodb.user.Permission).values()}" th:value="${permission.name().toLowerCase()}" th:text="#{'user.permission.value.' + ${permission.name().toLowerCase()}}"></option>
-					</select>
+					<select th:replace="fragments/user/userMember :: selectPermission"></select>
 					<span th:text="#{page.projectgroupdetail.addusers.addAssignTextPermission}" class="padding-horizontal">permission</span>
 				</label>
 			</div>
@@ -166,6 +166,7 @@
 		</script>
 		<div th:switch="${#authentication.principal.hasAuthority('ROLE_ADMIN')}">
 			<script th:case="${true}" th:inline="javascript">
+				/*<![CDATA[*/
 				Tremapp.usersTableRenderLabel = function(label, type, user) {
 					return '<a href="' + Tremapp.baseUrl + 'users/detail/' + user.id + '">' + label + '</a>';
 				};
@@ -189,6 +190,7 @@
 						$.each(rowsData, function(i, rowData){
 							projectIds.push(rowData.id);
 						});
+						if (projectIds.length < 1) return;
 						
 						Tremapp.ajax({
 							url: [[@{/project-groups/project/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
@@ -209,6 +211,7 @@
 						$.each(rowsData, function(i, rowData){
 							projectIds.push(rowData.id);
 						});
+						if (projectIds.length < 1) return;
 						
 						Tremapp.ajax({
 							url: [[@{/project-groups/project/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
@@ -243,6 +246,7 @@
 						$.each(rowsData, function(i, rowData){
 							userIds.push(rowData.id);
 						});
+						if (userIds.length < 1) return;
 						
 						Tremapp.ajax({
 							url: [[@{/project-groups/user/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
@@ -264,6 +268,7 @@
 						$.each(rowsData, function(i, rowData){
 							userIds.push(rowData.id);
 						});
+						if (userIds.length < 1) return;
 						
 						Tremapp.ajax({
 							url: [[@{/project-groups/user/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
@@ -282,6 +287,7 @@
 					Tremapp.initProjectGroupProjectsManagement();
 					Tremapp.initProjectGroupUsersManagement();
 				});
+				/*]]>*/
 			</script>
 			<script th:case="${false}" th:inline="javascript">
 				Tremapp.usersTableRenderLabel = function(label, type, user) {

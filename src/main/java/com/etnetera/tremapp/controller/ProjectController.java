@@ -53,6 +53,7 @@ public class ProjectController implements MenuActivityController {
 		binder.addValidators(new ProjectCommandValidator(projectRepository, project));
 	}
 	
+	@Secured({UserRole.ROLE_ADMIN})
 	@RequestMapping(value = "/projects", method = RequestMethod.GET)
 	public String projects() {
 		return "page/project/projects";

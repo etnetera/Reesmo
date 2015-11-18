@@ -75,6 +75,9 @@ public class ProjectGroupUserController {
 			projectGroupRepository.save(projectGroup);
 			userManager.updateUserProjectsPermissions(user);
 			userRepository.save(user);
+			if (userManager.isSameAsLogged(user)) {
+				userManager.updateUser(user);
+			}
 			i++;
 		}
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
@@ -97,6 +100,9 @@ public class ProjectGroupUserController {
 			projectGroupRepository.save(projectGroup);
 			userManager.updateUserProjectsPermissions(user);
 			userRepository.save(user);
+			if (userManager.isSameAsLogged(user)) {
+				userManager.updateUser(user);
+			}
 			i++;
 		}
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);

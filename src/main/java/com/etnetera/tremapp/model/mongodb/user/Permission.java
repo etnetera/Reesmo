@@ -1,11 +1,6 @@
 package com.etnetera.tremapp.model.mongodb.user;
 
 public enum Permission {
-
-	/**
-	 * No permission
-	 */
-	NONE(0),
 	
 	/**
 	 * Read-only access

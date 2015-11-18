@@ -136,6 +136,29 @@ abstract public class User extends MongoAuditedModel {
 		return false;
 	}
 	
+	public void checkUserPermission(User user, Permission permission) {
+		if (!isAllowedForUser(user, permission)) {
+			throw new ForbiddenException("User with id " + user == null ? null
+					: user.getId() + " has not " + permission + " permission for user with id " + getId() + ".");
+		}
+	}
+
+	public boolean isAllowedForUser(User user, Permission permission) {
+		if (user == null) {
+			return false;
+		}
+		if (user.isSuperadmin()) {
+			return true;
+		}
+		if (permission == null) {
+			return false;
+		}
+		if (permission.isGreaterThan(Permission.EDITOR)) {
+			return false;
+		}
+		return user.getId().equals(getId());
+	}
+	
 	public abstract String getRole();
 	
 	public abstract UserType getType();

@@ -3,6 +3,7 @@ package com.etnetera.tremapp.repository.mongodb.project;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import com.etnetera.tremapp.message.Localizer;
 import com.etnetera.tremapp.model.datatables.project.ProjectDT;
 import com.etnetera.tremapp.model.datatables.project.ProjectGroupProjectDT;
+import com.etnetera.tremapp.model.datatables.user.UserProjectDT;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
 import com.etnetera.tremapp.model.mongodb.user.User;
@@ -26,6 +29,9 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	
 	@Autowired
 	private MongoOperations mongoTemplate;
+	
+	@Autowired
+	private Localizer localizer;
 
 	@Override
 	public Project findOneByKey(String key) {
@@ -56,6 +62,15 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 		}).collect(Collectors.toList()), projects.getTotalRecords(), projects.getTotalDisplayRecords());
 	}
 	
+	@Override
+	public DataSet<UserProjectDT> findUserProjectsWithDatatablesCriterias(DatatablesCriterias criterias, User user, Locale locale) {
+		DataSet<Project> projects = findProjectsWithDatatablesCriterias(criterias, user.getProjectsPermissions().keySet());
+
+		return new DataSet<UserProjectDT>(projects.getRows().stream().map(p -> {
+			return new UserProjectDT(p, user, user.getProjectsPermissions().get(p.getId()), localizer, locale);
+		}).collect(Collectors.toList()), projects.getTotalRecords(), projects.getTotalDisplayRecords());
+	}
+	
 	private DataSet<Project> findProjectsWithDatatablesCriterias(DatatablesCriterias criterias, Collection<String> projectIds) {
 		Criteria allCrit = null;
 		if (projectIds == null) {
@@ -68,14 +83,14 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 
 		Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 
+		Long count = mongoTemplate.count(Query.query(allCrit), User.class);
+		Long countFiltered = mongoTemplate.count(Query.query(crit), User.class);
+		
 		Query query = Query.query(crit);
 		MongoDatatables.sortQuery(query, criterias);
 		MongoDatatables.paginateQuery(query, criterias);
 
 		List<Project> users = mongoTemplate.find(query, Project.class);
-
-		Long count = mongoTemplate.count(Query.query(allCrit), User.class);
-		Long countFiltered = mongoTemplate.count(Query.query(crit), User.class);
 
 		return new DataSet<Project>(users, count, countFiltered);
 	}

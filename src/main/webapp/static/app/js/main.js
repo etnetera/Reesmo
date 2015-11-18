@@ -1,6 +1,7 @@
 Tremapp.initCompleteSelectableRowCallback = function(settings, json) {
 	$(settings.nTBody).on('click', 'tr', function(){
 		var $this = $(this);
+		if ($this.find('td:first').hasClass('dataTables_empty')) return;
 		if ($this.hasClass('selected')) {
 			$this.removeClass('selected');
 		} else {
@@ -12,7 +13,9 @@ Tremapp.initCompleteSelectableRowCallback = function(settings, json) {
 
 Tremapp.initCompleteSelectableRowsCallback = function(settings, json) {
 	$(settings.nTBody).on('click', 'tr', function(){
-		$(this).toggleClass('selected');
+		var $this = $(this);
+		if ($this.find('td:first').hasClass('dataTables_empty')) return;
+		$this.toggleClass('selected');
 	});
 };
 
