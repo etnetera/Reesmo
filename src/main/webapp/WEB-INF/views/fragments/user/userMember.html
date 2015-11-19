@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<select th:fragment="selectPermission" id="select-add-users-permission" class="form-control input-sm">
+	<select th:fragment="selectPermission (model)" id="select-add-users-permission" class="form-control input-sm">
 		<option th:value="basic" th:text="#{user.permission.value.basic}">Basic</option>
 		<option th:value="editor" th:text="#{user.permission.value.editor}">Editor</option>
-		<option th:if="${false}" th:each="permission : ${T(com.etnetera.tremapp.model.mongodb.user.Permission).values()}" th:value="${permission.name().toLowerCase()}" th:text="#{'user.permission.value.' + ${permission.name().toLowerCase()}}"></option>
+		<option th:if="${model.isAllowedForUser(#authentication.principal, 'ADMIN')}" th:value="admin" th:text="#{user.permission.value.admin}">Admin</option>
+		<option th:if="${model.isAllowedForUser(#authentication.principal, 'OWNER')}" th:value="owner" th:text="#{user.permission.value.owner}">Owner</option>
 	</select>
 </body>
 </html>

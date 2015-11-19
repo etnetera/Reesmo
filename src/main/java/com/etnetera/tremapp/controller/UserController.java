@@ -40,7 +40,6 @@ import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 
-@Secured({UserRole.ROLE_ADMIN})
 @Controller
 public class UserController implements MenuActivityController {
 
@@ -77,6 +76,7 @@ public class UserController implements MenuActivityController {
 		binder.addValidators(new UserChangePasswordCommandValidator(new PasswordCommandValidator(), user));
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public String users() {
 		return "page/user/users";
@@ -89,6 +89,7 @@ public class UserController implements MenuActivityController {
 		return DatatablesResponse.build(users, criterias);
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/detail/{userId}", method = RequestMethod.GET)
 	public String showUser(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
@@ -97,6 +98,7 @@ public class UserController implements MenuActivityController {
 		return "page/user/userDetail";
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/edit/{userId}", method = RequestMethod.GET)
 	public String editUser(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
@@ -108,6 +110,7 @@ public class UserController implements MenuActivityController {
 		return "page/user/userEdit";
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/edit/{userId}", method = RequestMethod.POST)
 	public String editUser(@Valid UserCommand userCommand,
 			BindingResult bindingResult, @PathVariable String userId, Model model) {
@@ -125,6 +128,7 @@ public class UserController implements MenuActivityController {
 		return "redirect:/users/detail/" + user.getId();
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/create/{type}", method = RequestMethod.GET)
 	public String createUser(@PathVariable String type, Model model) {
 		UserCommand userCommand = new UserCommand();
@@ -137,6 +141,7 @@ public class UserController implements MenuActivityController {
 		return "page/user/userCreate";
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/create/{type}", method = RequestMethod.POST)
 	public String createUser(@Valid UserCommand userCommand, BindingResult bindingResult, @PathVariable String type) {
 		if (bindingResult.hasErrors()) {
@@ -159,6 +164,7 @@ public class UserController implements MenuActivityController {
 		return "redirect:/users/detail/" + user.getId();
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/delete/{userId}", method = RequestMethod.GET)
 	public String deleteUser(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
@@ -170,6 +176,7 @@ public class UserController implements MenuActivityController {
 		return "page/user/userDelete";
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/delete/{userId}", method = RequestMethod.POST)
 	public String deleteUser(@PathVariable String userId) {
 		User user = userRepository.findOne(userId);
@@ -181,6 +188,7 @@ public class UserController implements MenuActivityController {
 		return "redirect:/users";
 	}
 	
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/change-password/{userId}", method = RequestMethod.GET)
 	public String changeUserPassword(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
@@ -190,6 +198,7 @@ public class UserController implements MenuActivityController {
 		return "page/user/userChangePassword";
 	}
 
+	@Secured({UserRole.ROLE_SUPERADMIN})
 	@RequestMapping(value = "/users/change-password/{userId}", method = RequestMethod.POST)
 	public String changeUserPassword(@Valid UserChangePasswordCommand userChangePasswordCommand,
 			BindingResult bindingResult, @PathVariable String userId, Model model) {

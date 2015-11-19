@@ -6,10 +6,10 @@ public class UserRole {
 	
 	public static final String MANUALUSER = "MANUALUSER";
 	public static final String APIUSER = "APIUSER";
-	public static final String ADMIN = "ADMIN";
+	public static final String SUPERADMIN = "SUPERADMIN";
 	
 	public static final String ROLE_MANUALUSER = ROLE_PREFIX + MANUALUSER;
 	public static final String ROLE_APIUSER = ROLE_PREFIX + APIUSER;
-	public static final String ROLE_ADMIN = ROLE_PREFIX + ADMIN;
+	public static final String ROLE_SUPERADMIN = ROLE_PREFIX + SUPERADMIN;
 	
 }

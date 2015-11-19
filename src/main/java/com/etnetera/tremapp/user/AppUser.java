@@ -2,13 +2,11 @@ package com.etnetera.tremapp.user;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.etnetera.tremapp.configuration.Initializer;
@@ -17,7 +15,7 @@ import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.model.mongodb.user.User;
 import com.etnetera.tremapp.repository.mongodb.user.UserRepository;
 
-public class AppUser implements UserDetails {
+public class AppUser implements UserDetails, IdentifiedUser {
 	
 	private static final long serialVersionUID = -1997854508838484884L;
 
@@ -31,6 +29,8 @@ public class AppUser implements UserDetails {
 	private String username;
 	
 	private String password;
+	
+	private boolean superadmin;
 	
 	private boolean enabled;
 	
@@ -81,6 +81,14 @@ public class AppUser implements UserDetails {
 		this.password = password;
 	}
 
+	public boolean isSuperadmin() {
+		return superadmin;
+	}
+
+	public void setSuperadmin(boolean superadmin) {
+		this.superadmin = superadmin;
+	}
+
 	@Override
 	public boolean isEnabled() {
 		return enabled;
@@ -107,14 +115,9 @@ public class AppUser implements UserDetails {
 		label = user.getLabel();
 		username = user.getUsername();
 		password = user.getPassword();
+		superadmin = user.isSuperadmin();
 		enabled = user.isEnabled();
-		
-		List<SimpleGrantedAuthority> auths = new ArrayList<>();
-		auths.add(new SimpleGrantedAuthority(user.getRole()));
-		if (user.isSuperadmin()) {
-			auths.add(new SimpleGrantedAuthority(UserRole.ROLE_ADMIN));
-		}
-		authorities = auths;
+		authorities = user.getAuthorities();
 	}
 	
 	public List<String> getAllowedProjectsIds(Permission permission) {

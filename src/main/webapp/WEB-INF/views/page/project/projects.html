@@ -10,7 +10,7 @@
 				class="fa fa-cube"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
 	</ol>
 	<div layout:fragment="content">
-		<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" class="row">
+		<div class="row">
 			<div class="col-sm-12">
 				<a th:href="@{/projects/create}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.projects.newproject}">New project</span></a>
 			</div>

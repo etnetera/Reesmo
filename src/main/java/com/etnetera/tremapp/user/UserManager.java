@@ -66,7 +66,7 @@ public class UserManager {
 	}
 	
 	public boolean isSuperadmin() {
-		return requireUser().isSuperadmin();
+		return requireAppUser().isSuperadmin();
 	}
 	
 	public User requireUser() {

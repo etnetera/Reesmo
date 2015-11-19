@@ -13,16 +13,14 @@
 			th:href="@{/project-groups/detail/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
 			th:text="${projectGroup.name}">Project group</a></li>
 	</ol>
-	<div layout:fragment="content">
+	<div layout:fragment="content" th:with="isProjectGroupAdmin=${projectGroup.isAllowedForUser(#authentication.principal, 'ADMIN')}">
 		<div class="row">
 			<div class="col-md-3">
 				<div class="box box-primary">
 					<div class="box-body box-profile">
 						<h3 class="profile-username text-center" th:text="${projectGroup.name}">Project group</h3>
-						<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}">
-							<a th:href="@{/project-groups/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
-							<a th:href="@{/project-groups/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
-						</div>
+						<a th:if="${isProjectGroupAdmin}" th:href="@{/project-groups/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+						<a th:if="${projectGroup.isAllowedForUser(#authentication.principal, 'OWNER')}" th:href="@{/project-groups/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
 					</div>
 				</div>
 			</div>
@@ -38,7 +36,7 @@
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" dt:conf="projectGroupProjectsTable">
+							<div th:if="${isProjectGroupAdmin}" dt:conf="projectGroupProjectsTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectGroupProjectsTable" dt:table="true" dt:url="@{/dt/project-groups/projects/{projectGroupId}(projectGroupId=${projectGroup.id})}">
@@ -54,12 +52,12 @@
 					</div>
 				</div>
 			</div>
-			<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" class="box-footer">
+			<div th:if="${isProjectGroupAdmin}" class="box-footer">
 				<button id="btn-show-add-projects" type="button" class="btn btn-primary" th:text="#{page.projectgroupdetail.projects.add}">Add projects</button>
 				<button id="btn-remove-projects" type="button" class="btn btn-danger" th:text="#{page.projectgroupdetail.projects.remove}">Remove selected projects</button>
 			</div>
 		</div>
-		<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" id="box-add-projects" class="box box-primary" style="display: none;">
+		<div th:if="${isProjectGroupAdmin}" id="box-add-projects" class="box box-primary" style="display: none;">
 			<div class="box-header with-border">
 				<h3 class="box-title" th:text="#{page.projectgroupdetail.addprojects.title}">Select projects you want to add to this project group</h3>
 				<div class="box-tools pull-right">
@@ -99,7 +97,7 @@
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" dt:conf="projectGroupUsersTable">
+							<div th:if="${isProjectGroupAdmin}" dt:conf="projectGroupUsersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectGroupUsersTable" dt:table="true" dt:url="@{/dt/project-groups/users/{projectGroupId}(projectGroupId=${projectGroup.id})}">
@@ -116,12 +114,12 @@
 					</div>
 				</div>
 			</div>
-			<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" class="box-footer">
+			<div th:if="${isProjectGroupAdmin}" class="box-footer">
 				<button id="btn-show-add-users" type="button" class="btn btn-primary" th:text="#{page.projectgroupdetail.users.add}">Add users</button>
 				<button id="btn-remove-users" type="button" class="btn btn-danger" th:text="#{page.projectgroupdetail.users.remove}">Remove selected users</button>
 			</div>
 		</div>
-		<div th:if="${#authentication.principal.hasAuthority('ROLE_ADMIN')}" id="box-add-users" class="box box-primary" style="display: none;">
+		<div th:if="${isProjectGroupAdmin}" id="box-add-users" class="box box-primary" style="display: none;">
 			<div class="box-header with-border">
 				<h3 class="box-title" th:text="#{page.projectgroupdetail.addusers.title}">Select users you want to add to this project group</h3>
 				<div class="box-tools pull-right">
@@ -154,7 +152,7 @@
 				<button id="btn-add-users" type="button" class="btn btn-success" th:text="#{page.projectgroupdetail.addusers.add}">Add selected users</button>
 				<label class="with-input">
 					<span th:text="#{page.projectgroupdetail.addusers.addAssignText}" class="padding-horizontal">and assign them</span>
-					<select th:replace="fragments/user/userMember :: selectPermission"></select>
+					<select th:replace="fragments/user/userMember :: selectPermission (model=${projectGroup})"></select>
 					<span th:text="#{page.projectgroupdetail.addusers.addAssignTextPermission}" class="padding-horizontal">permission</span>
 				</label>
 			</div>
@@ -164,130 +162,11 @@
 				return '<a href="' + Tremapp.baseUrl + 'projects/detail/' + project.id + '">' + name + '</a>';
 			};
 		</script>
-		<div th:switch="${#authentication.principal.hasAuthority('ROLE_ADMIN')}">
+		<div th:switch="${#authentication.principal.isSuperadmin()}">
 			<script th:case="${true}" th:inline="javascript">
-				/*<![CDATA[*/
 				Tremapp.usersTableRenderLabel = function(label, type, user) {
 					return '<a href="' + Tremapp.baseUrl + 'users/detail/' + user.id + '">' + label + '</a>';
 				};
-				
-				Tremapp.initProjectGroupProjectsManagement = function() {
-					var $showAddProjectsBtn = $('#btn-show-add-projects'),
-						$removeProjectsBtn = $('#btn-remove-projects'),
-						$addProjectsBtn = $('#btn-add-projects'),
-						$addProjectsBox = $('#box-add-projects')
-						$projectGroupProjectsTable = $('#projectGroupProjectsTable'),
-						$projectsTable = $('#projectsTable');
-					
-					$showAddProjectsBtn.click(function(){
-						$addProjectsBox.slideToggle("slow");
-					});
-					
-					$addProjectsBtn.click(function(){
-						var rowsData = Tremapp.getSelectedRowsData($projectsTable),
-							projectIds = [];
-						
-						$.each(rowsData, function(i, rowData){
-							projectIds.push(rowData.id);
-						});
-						if (projectIds.length < 1) return;
-						
-						Tremapp.ajax({
-							url: [[@{/project-groups/project/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
-							data: {
-								projectIds: projectIds
-							}
-						}, function(addedCnt){
-							Tremapp.clearRowSelection($projectsTable);
-							Tremapp.reloadTable($projectGroupProjectsTable);
-							// TODO - show count
-						});
-					});
-					
-					$removeProjectsBtn.click(function(){
-						var rowsData = Tremapp.getSelectedRowsData($projectGroupProjectsTable),
-							projectIds = [];
-						
-						$.each(rowsData, function(i, rowData){
-							projectIds.push(rowData.id);
-						});
-						if (projectIds.length < 1) return;
-						
-						Tremapp.ajax({
-							url: [[@{/project-groups/project/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
-							data: {
-								projectIds: projectIds
-							}
-						}, function(removedCnt){
-							Tremapp.clearRowSelection($projectGroupProjectsTable);
-							Tremapp.reloadTable($projectGroupProjectsTable);
-							// TODO - show count
-						});
-					});
-				};
-				
-				Tremapp.initProjectGroupUsersManagement = function() {
-					var $showAddUsersBtn = $('#btn-show-add-users'),
-						$removeUsersBtn = $('#btn-remove-users'),
-						$addUsersBtn = $('#btn-add-users'),
-						$addUsersBox = $('#box-add-users')
-						$selectAddUsersPermission = $('#select-add-users-permission'),
-						$projectGroupUsersTable = $('#projectGroupUsersTable'),
-						$usersTable = $('#usersTable');
-					
-					$showAddUsersBtn.click(function(){
-						$addUsersBox.slideToggle("slow");
-					});
-					
-					$addUsersBtn.click(function(){
-						var rowsData = Tremapp.getSelectedRowsData($usersTable),
-							userIds = [];
-						
-						$.each(rowsData, function(i, rowData){
-							userIds.push(rowData.id);
-						});
-						if (userIds.length < 1) return;
-						
-						Tremapp.ajax({
-							url: [[@{/project-groups/user/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
-							data: {
-								permission: $selectAddUsersPermission.val(),
-								userIds: userIds
-							}
-						}, function(addedCnt){
-							Tremapp.clearRowSelection($usersTable);
-							Tremapp.reloadTable($projectGroupUsersTable);
-							// TODO - show count
-						});
-					});
-					
-					$removeUsersBtn.click(function(){
-						var rowsData = Tremapp.getSelectedRowsData($projectGroupUsersTable),
-							userIds = [];
-						
-						$.each(rowsData, function(i, rowData){
-							userIds.push(rowData.id);
-						});
-						if (userIds.length < 1) return;
-						
-						Tremapp.ajax({
-							url: [[@{/project-groups/user/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
-							data: {
-								userIds: userIds
-							}
-						}, function(removedCnt){
-							Tremapp.clearRowSelection($projectGroupUsersTable);
-							Tremapp.reloadTable($projectGroupUsersTable);
-							// TODO - show count
-						});
-					});
-				};
-				
-				$(document).ready(function(){
-					Tremapp.initProjectGroupProjectsManagement();
-					Tremapp.initProjectGroupUsersManagement();
-				});
-				/*]]>*/
 			</script>
 			<script th:case="${false}" th:inline="javascript">
 				Tremapp.usersTableRenderLabel = function(label, type, user) {
@@ -295,6 +174,126 @@
 				};
 			</script>
 		</div>
+		<script th:if="${isProjectGroupAdmin}" th:inline="javascript">
+			/*<![CDATA[*/
+			Tremapp.initProjectGroupProjectsManagement = function() {
+				var $showAddProjectsBtn = $('#btn-show-add-projects'),
+					$removeProjectsBtn = $('#btn-remove-projects'),
+					$addProjectsBtn = $('#btn-add-projects'),
+					$addProjectsBox = $('#box-add-projects')
+					$projectGroupProjectsTable = $('#projectGroupProjectsTable'),
+					$projectsTable = $('#projectsTable');
+				
+				$showAddProjectsBtn.click(function(){
+					$addProjectsBox.slideToggle("slow");
+				});
+				
+				$addProjectsBtn.click(function(){
+					var rowsData = Tremapp.getSelectedRowsData($projectsTable),
+						projectIds = [];
+					
+					$.each(rowsData, function(i, rowData){
+						projectIds.push(rowData.id);
+					});
+					if (projectIds.length < 1) return;
+					
+					Tremapp.ajax({
+						url: [[@{/project-groups/project/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
+						data: {
+							projectIds: projectIds
+						}
+					}, function(addedCnt){
+						Tremapp.clearRowSelection($projectsTable);
+						Tremapp.reloadTable($projectGroupProjectsTable);
+						// TODO - show count
+					});
+				});
+				
+				$removeProjectsBtn.click(function(){
+					var rowsData = Tremapp.getSelectedRowsData($projectGroupProjectsTable),
+						projectIds = [];
+					
+					$.each(rowsData, function(i, rowData){
+						projectIds.push(rowData.id);
+					});
+					if (projectIds.length < 1) return;
+					
+					Tremapp.ajax({
+						url: [[@{/project-groups/project/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
+						data: {
+							projectIds: projectIds
+						}
+					}, function(removedCnt){
+						Tremapp.clearRowSelection($projectGroupProjectsTable);
+						Tremapp.reloadTable($projectGroupProjectsTable);
+						// TODO - show count
+					});
+				});
+			};
+			
+			Tremapp.initProjectGroupUsersManagement = function() {
+				var $showAddUsersBtn = $('#btn-show-add-users'),
+					$removeUsersBtn = $('#btn-remove-users'),
+					$addUsersBtn = $('#btn-add-users'),
+					$addUsersBox = $('#box-add-users')
+					$selectAddUsersPermission = $('#select-add-users-permission'),
+					$projectGroupUsersTable = $('#projectGroupUsersTable'),
+					$usersTable = $('#usersTable');
+				
+				$showAddUsersBtn.click(function(){
+					$addUsersBox.slideToggle("slow");
+				});
+				
+				$addUsersBtn.click(function(){
+					var rowsData = Tremapp.getSelectedRowsData($usersTable),
+						userIds = [];
+					
+					$.each(rowsData, function(i, rowData){
+						userIds.push(rowData.id);
+					});
+					if (userIds.length < 1) return;
+					
+					Tremapp.ajax({
+						url: [[@{/project-groups/user/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
+						data: {
+							permission: $selectAddUsersPermission.val(),
+							userIds: userIds
+						}
+					}, function(addedCnt){
+						Tremapp.clearRowSelection($usersTable);
+						Tremapp.reloadTable($projectGroupUsersTable);
+						// TODO - show count
+					});
+				});
+				
+				$removeUsersBtn.click(function(){
+					var rowsData = Tremapp.getSelectedRowsData($projectGroupUsersTable),
+						userIds = [];
+					
+					$.each(rowsData, function(i, rowData){
+						userIds.push(rowData.id);
+					});
+					if (userIds.length < 1) return;
+					
+					Tremapp.ajax({
+						url: [[@{/project-groups/user/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
+						data: {
+							userIds: userIds
+						}
+					}, function(removedCnt){
+						Tremapp.clearRowSelection($projectGroupUsersTable);
+						Tremapp.reloadTable($projectGroupUsersTable);
+						// TODO - show count
+					});
+				});
+			};
+			
+			$(document).ready(function(){
+				Tremapp.initProjectGroupProjectsManagement();
+				Tremapp.initProjectGroupUsersManagement();
+			});
+			/*]]>*/
+		</script>
 	</div>
 </body>
 </html>

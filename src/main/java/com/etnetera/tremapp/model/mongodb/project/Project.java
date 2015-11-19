@@ -7,8 +7,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
+import com.etnetera.tremapp.user.IdentifiedUser;
 
 @Document
 public class Project extends MongoAuditedModel {
@@ -70,6 +72,38 @@ public class Project extends MongoAuditedModel {
 
 	public void setUsers(Map<String, Permission> users) {
 		this.users = users;
+	}
+	
+	public void checkUserPermission(IdentifiedUser user, Permission permission) {
+		if (!isAllowedForUser(user, permission)) {
+			throw new ForbiddenException("User with id " + user == null ? null
+					: user.getId() + " has not " + permission + " permission for project with id " + getId() + ".");
+		}
+	}
+
+	public boolean isAllowedForUser(IdentifiedUser user, Permission permission) {
+		if (user == null) {
+			return false;
+		}
+		if (user.isSuperadmin()) {
+			return true;
+		}
+		if (permission == null) {
+			return false;
+		}
+		Permission userPermission = users.get(user.getId());
+		if (userPermission != null && userPermission.isGreaterThanOrEqual(permission)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void checkUserPermission(IdentifiedUser user, String permission) {
+		checkUserPermission(user, Permission.fromString(permission));
+	}
+	
+	public boolean isAllowedForUser(IdentifiedUser user, String permission) {
+		return isAllowedForUser(user, Permission.fromString(permission));
 	}
 	
 }

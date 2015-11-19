@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +23,6 @@ import com.etnetera.tremapp.repository.mongodb.project.ProjectGroupRepository;
 import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
 import com.etnetera.tremapp.repository.mongodb.user.UserRepository;
 import com.etnetera.tremapp.user.UserManager;
-import com.etnetera.tremapp.user.UserRole;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
@@ -55,12 +53,12 @@ public class ProjectGroupProjectController {
 		return DatatablesResponse.build(projects, criterias);
 	}
 
-	@Secured({ UserRole.ROLE_ADMIN })
 	@RequestMapping(value = "/project-groups/project/add/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse addProjectGroupProjects(@Valid ProjectGroupProjectAddCommand addCommand,
 			BindingResult bindingResult, @PathVariable String projectGroupId) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
 		ControllerModel.exists(projectGroup, ProjectGroup.class);
+		projectGroup.checkUserPermission(userManager.requireUser(), Permission.ADMIN);
 		if (bindingResult.hasErrors()) {
 			return new JsonResponse(false, bindingResult.getAllErrors());
 		}
@@ -68,6 +66,7 @@ public class ProjectGroupProjectController {
 		for (String projectId : addCommand.getProjectIds()) {
 			Project project = projectRepository.findOne(projectId);
 			if (project == null) continue;
+			if (!project.isAllowedForUser(userManager.requireUser(), Permission.ADMIN)) continue;
 			projectGroup.getProjects().add(project.getId());
 			projectGroupRepository.save(projectGroup);
 			i++;
@@ -82,12 +81,12 @@ public class ProjectGroupProjectController {
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
 	}
 	
-	@Secured({ UserRole.ROLE_ADMIN })
 	@RequestMapping(value = "/project-groups/project/remove/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse removeProjectGroupProjects(@Valid ProjectGroupProjectRemoveCommand removeCommand,
 			BindingResult bindingResult, @PathVariable String projectGroupId) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
 		ControllerModel.exists(projectGroup, ProjectGroup.class);
+		projectGroup.checkUserPermission(userManager.requireUser(), Permission.ADMIN);
 		if (bindingResult.hasErrors()) {
 			return new JsonResponse(false, bindingResult.getAllErrors());
 		}
@@ -95,6 +94,7 @@ public class ProjectGroupProjectController {
 		for (String projectId : removeCommand.getProjectIds()) {
 			Project project = projectRepository.findOne(projectId);
 			if (project == null) continue;
+			if (!project.isAllowedForUser(userManager.requireUser(), Permission.ADMIN)) continue;
 			projectGroup.getProjects().remove(project.getId());
 			projectGroupRepository.save(projectGroup);
 			i++;

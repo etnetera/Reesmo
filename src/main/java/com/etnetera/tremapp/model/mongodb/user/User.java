@@ -1,18 +1,24 @@
 package com.etnetera.tremapp.model.mongodb.user;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
+import com.etnetera.tremapp.user.IdentifiedUser;
+import com.etnetera.tremapp.user.UserRole;
 import com.etnetera.tremapp.user.UserType;
 
-abstract public class User extends MongoAuditedModel {
+abstract public class User extends MongoAuditedModel implements IdentifiedUser {
 
 	@Id
 	private String id;
@@ -44,6 +50,9 @@ abstract public class User extends MongoAuditedModel {
 	 * Key is project id.
 	 */
 	private Map<String, Permission> projectsPermissions = new HashMap<>();
+	
+	@Transient
+	private Collection<? extends GrantedAuthority> authorities;
 	
 	public String getId() {
 		return id;
@@ -136,14 +145,14 @@ abstract public class User extends MongoAuditedModel {
 		return false;
 	}
 	
-	public void checkUserPermission(User user, Permission permission) {
+	public void checkUserPermission(IdentifiedUser user, Permission permission) {
 		if (!isAllowedForUser(user, permission)) {
 			throw new ForbiddenException("User with id " + user == null ? null
 					: user.getId() + " has not " + permission + " permission for user with id " + getId() + ".");
 		}
 	}
 
-	public boolean isAllowedForUser(User user, Permission permission) {
+	public boolean isAllowedForUser(IdentifiedUser user, Permission permission) {
 		if (user == null) {
 			return false;
 		}
@@ -157,6 +166,37 @@ abstract public class User extends MongoAuditedModel {
 			return false;
 		}
 		return user.getId().equals(getId());
+	}
+	
+	public void checkUserPermission(IdentifiedUser user, String permission) {
+		checkUserPermission(user, Permission.fromString(permission));
+	}
+	
+	public boolean isAllowedForUser(IdentifiedUser user, String permission) {
+		return isAllowedForUser(user, Permission.fromString(permission));
+	}
+	
+	@Override
+	public User getUser() {
+		return this;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (authorities == null) {
+			List<SimpleGrantedAuthority> auths = new ArrayList<>();
+			auths.add(new SimpleGrantedAuthority(getRole()));
+			if (superadmin) {
+				auths.add(new SimpleGrantedAuthority(UserRole.ROLE_SUPERADMIN));
+			}
+			authorities = auths;
+		}
+		return authorities;
+	}
+
+	@Override
+	public boolean hasAuthority(String authority) {
+		return authority != null && getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(authority));
 	}
 	
 	public abstract String getRole();

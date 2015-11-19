@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.mongodb.MongoAuditedModel;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
-import com.etnetera.tremapp.model.mongodb.user.User;
+import com.etnetera.tremapp.user.IdentifiedUser;
 
 @Document
 public class ProjectGroup extends MongoAuditedModel {
@@ -67,14 +67,14 @@ public class ProjectGroup extends MongoAuditedModel {
 		this.users = users;
 	}
 	
-	public void checkUserPermission(User user, Permission permission) {
+	public void checkUserPermission(IdentifiedUser user, Permission permission) {
 		if (!isAllowedForUser(user, permission)) {
 			throw new ForbiddenException("User with id " + user == null ? null
 					: user.getId() + " has not " + permission + " permission for project group with id " + getId() + ".");
 		}
 	}
 
-	public boolean isAllowedForUser(User user, Permission permission) {
+	public boolean isAllowedForUser(IdentifiedUser user, Permission permission) {
 		if (user == null) {
 			return false;
 		}
@@ -89,6 +89,14 @@ public class ProjectGroup extends MongoAuditedModel {
 			return true;
 		}
 		return false;
+	}
+	
+	public void checkUserPermission(IdentifiedUser user, String permission) {
+		checkUserPermission(user, Permission.fromString(permission));
+	}
+	
+	public boolean isAllowedForUser(IdentifiedUser user, String permission) {
+		return isAllowedForUser(user, Permission.fromString(permission));
 	}
 	
 }

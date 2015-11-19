@@ -13,9 +13,14 @@ public enum Permission {
 	EDITOR(20),
 	
 	/**
-	 * Editor plus user management rights
+	 * Editor plus project management rights
 	 */
-	ADMIN(30);
+	ADMIN(30),
+	
+	/**
+	 * Admin plus project owner management and able to delete project
+	 */
+	OWNER(40);
 	
 	private int priority;
 	
@@ -24,11 +29,11 @@ public enum Permission {
 	}
 	
 	public boolean isGreaterThan(Permission permission) {
-		return priority > permission.priority;
+		return permission == null || priority > permission.priority;
 	}
 	
 	public boolean isGreaterThanOrEqual(Permission permission) {
-		return priority >= permission.priority;
+		return permission == null || priority >= permission.priority;
 	}
 	
 	public static Permission fromString(String value) {
