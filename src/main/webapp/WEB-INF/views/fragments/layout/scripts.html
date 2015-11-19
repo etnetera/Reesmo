@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<script th:fragment="first" th:inline="javascript">
+		var Tremapp = {
+			baseUrl: [[@{/}]],
+			csrfName: [[${_csrf.parameterName}]],
+			csrfValue: [[${_csrf.token}]]
+		};
+	</script>
+	<div th:fragment="last">
+		<script th:src="@{/static/bootstrap/js/bootstrap.min.js}" src="../../../../static/bootstrap/js/bootstrap.min.js"></script>
+		<script th:src="@{/static/plugins/datatables/jquery.dataTables.min.js}" src="../../../../static/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script th:src="@{/static/plugins/datatables/dataTables.bootstrap.min.js}" src="../../../../static/plugins/datatables/dataTables.bootstrap.min.js"></script>
+		<script th:src="@{/static/dist/js/app.min.js}" src="../../../../static/dist/js/app.min.js"></script>
+		<script th:src="@{/static/app/js/main.js}" src="../../../../static/app/js/main.js"></script>
+	</div>
+</body>
+</html>

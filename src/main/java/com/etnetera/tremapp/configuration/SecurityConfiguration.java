@@ -5,7 +5,6 @@ import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +19,7 @@ import com.etnetera.tremapp.user.UserRole;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, mode = AdviceMode.ASPECTJ)
 public class SecurityConfiguration {
 
 	@Autowired
@@ -28,14 +28,7 @@ public class SecurityConfiguration {
 	}
 
 	@Configuration
-	@EnableGlobalMethodSecurity(securedEnabled = true, mode = AdviceMode.ASPECTJ)
 	public static class ClientSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-		@Bean
-	    @Override
-	    public AuthenticationManager authenticationManagerBean() throws Exception {
-	        return super.authenticationManagerBean();
-	    }
 		
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
@@ -50,15 +43,8 @@ public class SecurityConfiguration {
 	}
 
 	@Configuration
-	@EnableGlobalMethodSecurity(securedEnabled = true, mode = AdviceMode.ASPECTJ)
 	@Order(1)
 	public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-		@Bean
-	    @Override
-	    public AuthenticationManager authenticationManagerBean() throws Exception {
-	        return super.authenticationManagerBean();
-	    }
 		
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
