@@ -39,7 +39,7 @@
 							<div th:if="${isProjectGroupAdmin}" dt:conf="projectGroupProjectsTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="projectGroupProjectsTable" dt:table="true" dt:url="@{/dt/project-groups/projects/{projectGroupId}(projectGroupId=${projectGroup.id})}">
+							<table id="projectGroupProjectsTable" th:class="${isProjectGroupAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project-groups/projects/{projectGroupId}(projectGroupId=${projectGroup.id})}">
 								<thead>
 									<tr>
 										<th dt:property="name" dt:renderFunction="Tremapp.projectsTableRenderName" th:text="#{project.name}">Name</th>
@@ -71,7 +71,7 @@
 							<div dt:conf="projectsTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="projectsTable" dt:table="true" dt:url="@{/dt/projects}">
+							<table id="projectsTable" th:class="${isProjectGroupAdmin}?'selectable add'" dt:table="true" dt:url="@{/dt/projects(permission='ADMIN')}">
 								<thead>
 									<tr>
 										<th dt:property="name" dt:renderFunction="Tremapp.projectsTableRenderName" th:text="#{project.name}">Name</th>
@@ -100,7 +100,7 @@
 							<div th:if="${isProjectGroupAdmin}" dt:conf="projectGroupUsersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="projectGroupUsersTable" dt:table="true" dt:url="@{/dt/project-groups/users/{projectGroupId}(projectGroupId=${projectGroup.id})}">
+							<table id="projectGroupUsersTable" th:class="${isProjectGroupAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project-groups/users/{projectGroupId}(projectGroupId=${projectGroup.id})}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
@@ -133,7 +133,7 @@
 							<div dt:conf="usersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="usersTable" dt:table="true" dt:url="@{/dt/users}">
+							<table id="usersTable" th:class="${isProjectGroupAdmin}?'selectable add'" dt:table="true" dt:url="@{/dt/users}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>

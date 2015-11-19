@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.etnetera.tremapp.http.ControllerModel;
@@ -57,9 +58,13 @@ public class ProjectController implements MenuActivityController {
 	}
 
 	@RequestMapping(value = "/dt/projects")
-	public @ResponseBody DatatablesResponse<ProjectDT> findAllForDataTables(HttpServletRequest request) {
+	public @ResponseBody DatatablesResponse<ProjectDT> findAllForDataTables(@RequestParam(required = false, defaultValue = "BASIC") String permission, HttpServletRequest request) {
+		Permission perm = Permission.fromString(permission);
+		if (perm == null) {
+			throw new IllegalArgumentException("Uknown permission " + permission);
+		}
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ProjectDT> projects = projectRepository.findWithDatatablesCriterias(criterias, userManager.getAllowedProjectIds(Permission.BASIC));
+		DataSet<ProjectDT> projects = projectRepository.findWithDatatablesCriterias(criterias, userManager.getAllowedProjectIds(perm));
 		return DatatablesResponse.build(projects, criterias);
 	}
 	

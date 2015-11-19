@@ -66,7 +66,8 @@ public class ProjectGroupUserController {
 		if (permission == null) {
 			throw new IllegalArgumentException("Uknown permission " + addCommand.getPermission());
 		}
-		Permission actualUserPermission = projectGroup.getUsers().get(userManager.requireUserId());
+		Permission actualUserPermission = userManager.isSuperadmin() ? Permission.OWNER
+				: projectGroup.getUsers().get(userManager.requireUserId());
 		if (permission.isGreaterThan(actualUserPermission)) {
 			throw new ForbiddenException("User with id " + userManager.requireUserId() + " has " + actualUserPermission
 					+ " permission for project group with id " + projectGroupId
@@ -79,6 +80,11 @@ public class ProjectGroupUserController {
 				continue;
 			if (userManager.isSameAsLogged(user) && !userManager.isSuperadmin()) {
 				// do not add yourself, unless you are superadmin
+				continue;
+			}
+			Permission userPermission = projectGroup.getUsers().get(userId);
+			if (userPermission != null && userPermission.isGreaterThan(actualUserPermission)) {
+				// do not ovewrite users with higher permission
 				continue;
 			}
 			projectGroup.getUsers().put(user.getId(), permission);
@@ -102,7 +108,8 @@ public class ProjectGroupUserController {
 		if (bindingResult.hasErrors()) {
 			return new JsonResponse(false, bindingResult.getAllErrors());
 		}
-		Permission actualUserPermission = projectGroup.getUsers().get(userManager.requireUserId());
+		Permission actualUserPermission = userManager.isSuperadmin() ? Permission.OWNER
+				: projectGroup.getUsers().get(userManager.requireUserId());
 		int i = 0;
 		for (String userId : removeCommand.getUserIds()) {
 			User user = userRepository.findOne(userId);

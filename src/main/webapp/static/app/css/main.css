@@ -15,8 +15,33 @@
 	height: 150px;
 }
 
-table.dataTable tbody tr.selected td {
+table.dataTable.selectable tbody tr td {
+	cursor: pointer;
+}
+
+table.dataTable.selectable tbody tr td.dataTables_empty {
+	cursor: auto;
+}
+
+table.dataTable.selectable tbody tr.selected td {
 	background-color: yellow;
+}
+
+table.dataTable.selectable.add tbody tr.selected td {
+	background-color: #00a65a;
+	color: #fff;
+	border: 1px solid #008d4c;
+}
+
+table.dataTable.selectable.remove tbody tr.selected td {
+	background-color: #dd4b39;
+	color: #fff;
+	border: 1px solid #d73925;
+}
+
+table.dataTable.selectable.add tbody tr.selected td a,
+table.dataTable.selectable.remove tbody tr.selected td a {
+	color: #fff;
 }
 
 label.with-input {

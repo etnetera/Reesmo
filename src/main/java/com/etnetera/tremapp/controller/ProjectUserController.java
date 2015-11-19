@@ -34,8 +34,8 @@ import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 public class ProjectUserController {
 
 	@Autowired
-    private UserManager userManager;
-	
+	private UserManager userManager;
+
 	@Autowired
 	private ProjectRepository projectRepository;
 
@@ -79,7 +79,8 @@ public class ProjectUserController {
 		if (permission == null) {
 			throw new IllegalArgumentException("Uknown permission " + addCommand.getPermission());
 		}
-		Permission actualUserPermission = project.getUsers().get(userManager.requireUserId());
+		Permission actualUserPermission = userManager.isSuperadmin() ? Permission.OWNER
+				: project.getUsers().get(userManager.requireUserId());
 		if (permission.isGreaterThan(actualUserPermission)) {
 			throw new ForbiddenException("User with id " + userManager.requireUserId() + " has " + actualUserPermission
 					+ " permission for project with id " + projectId
@@ -88,9 +89,15 @@ public class ProjectUserController {
 		int i = 0;
 		for (String userId : addCommand.getUserIds()) {
 			User user = userRepository.findOne(userId);
-			if (user == null) continue;
+			if (user == null)
+				continue;
 			if (userManager.isSameAsLogged(user) && !userManager.isSuperadmin()) {
 				// do not add yourself, unless you are superadmin
+				continue;
+			}
+			Permission userPermission = project.getUsers().get(userId);
+			if (userPermission != null && userPermission.isGreaterThan(actualUserPermission)) {
+				// do not ovewrite users with higher permission
 				continue;
 			}
 			project.getUsers().put(user.getId(), permission);
@@ -104,7 +111,7 @@ public class ProjectUserController {
 		}
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
 	}
-	
+
 	@RequestMapping(value = "/projects/user/remove/{projectId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse removeProjectUsers(@Valid ProjectUserRemoveCommand removeCommand,
 			BindingResult bindingResult, @PathVariable String projectId) {
@@ -114,11 +121,13 @@ public class ProjectUserController {
 		if (bindingResult.hasErrors()) {
 			return new JsonResponse(false, bindingResult.getAllErrors());
 		}
-		Permission actualUserPermission = project.getUsers().get(userManager.requireUserId());
+		Permission actualUserPermission = userManager.isSuperadmin() ? Permission.OWNER
+				: project.getUsers().get(userManager.requireUserId());
 		int i = 0;
 		for (String userId : removeCommand.getUserIds()) {
 			User user = userRepository.findOne(userId);
-			if (user == null) continue;
+			if (user == null)
+				continue;
 			if (userManager.isSameAsLogged(user) && !userManager.isSuperadmin()) {
 				// do not delete yourself, unless you are superadmin
 				continue;

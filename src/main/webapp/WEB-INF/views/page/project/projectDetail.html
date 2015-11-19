@@ -39,7 +39,7 @@
 							<div th:if="${isProjectAdmin}" dt:conf="projectUsersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="projectUsersTable" dt:table="true" dt:url="@{/dt/projects/users/{projectId}(projectId=${project.id})}">
+							<table id="projectUsersTable" th:class="${isProjectAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/projects/users/{projectId}(projectId=${project.id})}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
@@ -72,7 +72,7 @@
 							<div dt:conf="usersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="usersTable" dt:table="true" dt:url="@{/dt/users}">
+							<table id="usersTable" th:class="${isProjectAdmin}?'selectable add'" dt:table="true" dt:url="@{/dt/users}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
