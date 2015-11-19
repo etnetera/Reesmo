@@ -27,6 +27,9 @@ public class Result extends ElasticAuditedModel {
 	private String suite;
 	
 	@Field(type = FieldType.String)
+	private String suiteId;
+	
+	@Field(type = FieldType.String)
 	private String milestone;
 	
 	@Field(type = FieldType.String)
@@ -99,6 +102,14 @@ public class Result extends ElasticAuditedModel {
 
 	public void setSuite(String suite) {
 		this.suite = suite;
+	}
+
+	public String getSuiteId() {
+		return suiteId;
+	}
+
+	public void setSuiteId(String suiteId) {
+		this.suiteId = suiteId;
 	}
 
 	public String getMilestone() {

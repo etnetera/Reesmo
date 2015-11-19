@@ -28,12 +28,6 @@ public enum TestStatus {
 	 * A situation in which a test is run and all actual outcomes match the
 	 * expected outcomes. Compare with test failure and test error.
 	 */
-	PASSED, 
-	
-	/**
-	 * Special status indicating that test 
-	 * is not yet completely stored.
-	 */
-	DRAFT
+	PASSED;
 	
 }
