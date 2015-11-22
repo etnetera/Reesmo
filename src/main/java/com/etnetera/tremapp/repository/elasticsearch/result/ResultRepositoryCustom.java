@@ -2,13 +2,17 @@ package com.etnetera.tremapp.repository.elasticsearch.result;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.etnetera.tremapp.list.ListModifier;
+import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
+import com.github.dandelion.datatables.core.ajax.DataSet;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.mongodb.gridfs.GridFSDBFile;
 
 /**
@@ -77,5 +81,7 @@ public interface ResultRepositoryCustom {
 	 * @return
 	 */
 	public GridFSDBFile getAttachmentFile(ResultAttachment attachment);
+	
+	public DataSet<ResultDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectIds, Locale locale);
 	
 }

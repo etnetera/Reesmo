@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.project;
 
 import javax.validation.Valid;
 
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.model.form.project.ProjectGroupCommand;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
@@ -31,7 +32,12 @@ public class ProjectGroupController implements MenuActivityController {
 		return "projectGroupSettings";
 	}
 	
-	@RequestMapping(value = "/project-groups/detail/{projectGroupId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/project-group/home/{projectGroupId}", method = RequestMethod.GET)
+	public String projectGroupHome(@PathVariable String projectGroupId) {
+		return "redirect:/project-group/detail/" + projectGroupId;
+	}
+	
+	@RequestMapping(value = "/project-group/detail/{projectGroupId}", method = RequestMethod.GET)
 	public String showProjectGroup(@PathVariable String projectGroupId, Model model) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
 		ControllerModel.exists(projectGroup, ProjectGroup.class);
@@ -40,7 +46,7 @@ public class ProjectGroupController implements MenuActivityController {
 		return "page/projectGroup/projectGroupDetail";
 	}
 
-	@RequestMapping(value = "/project-groups/edit/{projectGroupId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/project-group/edit/{projectGroupId}", method = RequestMethod.GET)
 	public String editProjectGroup(@PathVariable String projectGroupId, Model model) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
 		ControllerModel.exists(projectGroup, ProjectGroup.class);
@@ -52,7 +58,7 @@ public class ProjectGroupController implements MenuActivityController {
 		return "page/projectGroup/projectGroupEdit";
 	}
 
-	@RequestMapping(value = "/project-groups/edit/{projectGroupId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/project-group/edit/{projectGroupId}", method = RequestMethod.POST)
 	public String editProjectGroup(@Valid ProjectGroupCommand projectGroupCommand,
 			BindingResult bindingResult, @PathVariable String projectGroupId, Model model) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
@@ -64,10 +70,10 @@ public class ProjectGroupController implements MenuActivityController {
 		}
 		projectGroupCommand.toProject(projectGroup);
 		projectGroupRepository.save(projectGroup);
-		return "redirect:/project-groups/detail/" + projectGroup.getId();
+		return "redirect:/project-group/detail/" + projectGroup.getId();
 	}
 
-	@RequestMapping(value = "/project-groups/delete/{projectGroupId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/project-group/delete/{projectGroupId}", method = RequestMethod.GET)
 	public String deleteProjectGroup(@PathVariable String projectGroupId, Model model) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
 		ControllerModel.exists(projectGroup, ProjectGroup.class);
@@ -76,7 +82,7 @@ public class ProjectGroupController implements MenuActivityController {
 		return "page/projectGroup/projectGroupDelete";
 	}
 
-	@RequestMapping(value = "/project-groups/delete/{projectGroupId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/project-group/delete/{projectGroupId}", method = RequestMethod.POST)
 	public String deleteProjectGroup(@PathVariable String projectGroupId) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
 		ControllerModel.exists(projectGroup, ProjectGroup.class);

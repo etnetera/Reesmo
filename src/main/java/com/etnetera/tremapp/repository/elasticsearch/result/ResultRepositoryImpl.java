@@ -3,7 +3,10 @@ package com.etnetera.tremapp.repository.elasticsearch.result;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -23,11 +26,16 @@ import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.etnetera.tremapp.list.ListModifier;
+import com.etnetera.tremapp.message.Localizer;
 import com.etnetera.tremapp.model.ModelAuditor;
+import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
 import com.etnetera.tremapp.model.mongodb.view.View;
+import com.etnetera.tremapp.repository.elasticsearch.ElasticsearchDatatables;
 import com.etnetera.tremapp.repository.mongodb.view.ViewRepository;
+import com.github.dandelion.datatables.core.ajax.DataSet;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
 
@@ -41,23 +49,26 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 
 	@Autowired
 	private ResultRepository resultRepository;
-	
+
 	@Autowired
 	private ViewRepository viewRepository;
-	
+
 	@Autowired
-    private GridFsTemplate gridFsTemplate;
-	
+	private GridFsTemplate gridFsTemplate;
+
 	@Autowired
 	private ModelAuditor modelAuditor;
 
+	@Autowired
+	private Localizer localizer;
+
 	@PostConstruct
 	private void init() {
-        if (!template.indexExists(Result.class)) {
-            template.createIndex(Result.class);
-        }
+		if (!template.indexExists(Result.class)) {
+			template.createIndex(Result.class);
+		}
 	}
-	
+
 	@Override
 	public Page<Result> findByModifier(ListModifier modifier, List<String> projectIds) {
 		if (projectIds == null) {
@@ -93,7 +104,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		modifier.getSortBuilders().forEach(sb -> builder.withSort(sb));
 		return builder;
 	}
-	
+
 	@Override
 	public void deleteResult(Result result) {
 		Assert.notNull(result, "Cannot delete 'null' result.");
@@ -110,8 +121,9 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 
 	@Override
 	public ResultAttachment createAttachment(Result result, MultipartFile file, String path) throws IOException {
-		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
-		
+		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(),
+				file.getContentType());
+
 		ResultAttachment attachment = new ResultAttachment();
 		attachment.setId(gridFile.getId().toString());
 		attachment.setName(gridFile.getFilename());
@@ -119,27 +131,29 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		attachment.setContentType(gridFile.getContentType());
 		attachment.setSize(gridFile.getLength());
 		modelAuditor.audit(attachment);
-		
+
 		result.addAttachment(attachment);
 		resultRepository.save(result);
-		
+
 		return attachment;
 	}
-	
+
 	@Override
-	public ResultAttachment updateAttachment(Result result, String attachmentId, MultipartFile file) throws IOException {
+	public ResultAttachment updateAttachment(Result result, String attachmentId, MultipartFile file)
+			throws IOException {
 		ResultAttachment attachment = result.getAttachment(attachmentId);
 		gridFsTemplate.delete(Query.query(Criteria.where("_id").is(attachment.getId())));
-		
-		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+
+		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(),
+				file.getContentType());
 		attachment.setId(gridFile.getId().toString());
 		attachment.setName(gridFile.getFilename());
 		attachment.setContentType(gridFile.getContentType());
 		attachment.setSize(gridFile.getLength());
 		modelAuditor.audit(attachment);
-		
+
 		resultRepository.save(result);
-		
+
 		return attachment;
 	}
 
@@ -154,6 +168,39 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	@Override
 	public GridFSDBFile getAttachmentFile(ResultAttachment attachment) {
 		return gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(attachment.getId())));
+	}
+
+	@Override
+	public DataSet<ResultDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectIds,
+			Locale locale) {
+		DataSet<Result> results = findResultsWithDatatablesCriterias(criterias, projectIds);
+		return new DataSet<ResultDT>(
+				results.getRows().stream().map(r -> new ResultDT(r, localizer, locale)).collect(Collectors.toList()),
+				results.getTotalRecords(), results.getTotalDisplayRecords());
+	}
+
+	private DataSet<Result> findResultsWithDatatablesCriterias(DatatablesCriterias criterias,
+			Collection<String> projectIds) {
+		FilterBuilder filterBuilder = null;
+		if (projectIds != null) {
+			if (projectIds.isEmpty()) {
+				return new DataSet<Result>(new ArrayList<>(), 0L, 0L);
+			} else {
+				filterBuilder = new BoolFilterBuilder().must(new TermsFilterBuilder("projectId", projectIds))
+						.cache(true);
+			}
+		}
+
+		NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder().withTypes("result");
+		if (filterBuilder != null) {
+			queryBuilder.withFilter(filterBuilder);
+		}
+		queryBuilder.withPageable(ElasticsearchDatatables.getPageable(criterias));
+		ElasticsearchDatatables.sortQueryBuilder(queryBuilder, criterias);
+
+		Page<Result> projects = template.queryForPage(queryBuilder.build(), Result.class);
+		return new DataSet<Result>(projects.getContent(), Long.valueOf(projects.getNumberOfElements()),
+				projects.getTotalElements());
 	}
 
 }

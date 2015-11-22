@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.project;
 
 import java.util.Locale;
 
@@ -41,7 +41,7 @@ public class ProjectGroupUserController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@RequestMapping(value = "/dt/project-groups/users/{projectGroupId}")
+	@RequestMapping(value = "/dt/project-group/users/{projectGroupId}")
 	public @ResponseBody DatatablesResponse<ProjectGroupUserDT> findAllForDataTables(
 			@PathVariable String projectGroupId, HttpServletRequest request, Locale locale) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
@@ -53,7 +53,7 @@ public class ProjectGroupUserController {
 		return DatatablesResponse.build(users, criterias);
 	}
 
-	@RequestMapping(value = "/project-groups/user/add/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/project-group/user/add/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse addProjectGroupUsers(@Valid ProjectGroupUserAddCommand addCommand,
 			BindingResult bindingResult, @PathVariable String projectGroupId) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
@@ -64,7 +64,7 @@ public class ProjectGroupUserController {
 		}
 		Permission permission = Permission.fromString(addCommand.getPermission());
 		if (permission == null) {
-			throw new IllegalArgumentException("Uknown permission " + addCommand.getPermission());
+			throw new IllegalArgumentException("Unknown permission " + addCommand.getPermission());
 		}
 		Permission actualUserPermission = userManager.isSuperadmin() ? Permission.OWNER
 				: projectGroup.getUsers().get(userManager.requireUserId());
@@ -99,7 +99,7 @@ public class ProjectGroupUserController {
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
 	}
 
-	@RequestMapping(value = "/project-groups/user/remove/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/project-group/user/remove/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse removeProjectGroupUsers(@Valid ProjectGroupUserRemoveCommand removeCommand,
 			BindingResult bindingResult, @PathVariable String projectGroupId) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/main">
 <head>
-<title th:text="#{page.users.title} - ${user.label} - #{page.useredit.title}">Users -
-	User - Edit</title>
+<title th:text="#{page.useredit.title} - ${user.label} - #{page.users.title}">Edit -
+	User - Users</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label} + ' - ' + #{page.useredit.title}">User - Edit</span> <small th:text="#{page.useredit.titledesc}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label}">User</span> - <span th:text="#{page.useredit.title}">Edit</span> <small th:text="#{page.useredit.titledesc}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/users}" href="#"><i class="fa fa-user"></i>
 				<span th:text="#{page.users.title}">Users</span></a></li>
 		<li><a
-			th:href="@{/users/detail/{userId}(userId=${user.id})}" href="#"
+			th:href="@{/user/home/{userId}(userId=${user.id})}" href="#"
 			th:text="${user.label}">User</a></li>
 		<li class="active"><a
-			th:href="@{/users/edit/{userId}(userId=${user.id})}" href="#"
+			th:href="@{/user/edit/{userId}(userId=${user.id})}" href="#"
 			th:text="#{page.useredit.title}">Edit</a></li>
 	</ol>
 	<div layout:fragment="content">

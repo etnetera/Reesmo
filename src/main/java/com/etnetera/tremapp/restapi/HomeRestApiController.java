@@ -8,7 +8,7 @@ import com.etnetera.tremapp.Tremapp;
 
 @RestController
 @RequestMapping(value = "/api", produces = "application/json")
-public class HomeRestApiController {
+public class HomeRestApiController extends AbstractRestController {
 	
 	@RequestMapping(value = "/info", method = RequestMethod.GET)
 	public Info info() {

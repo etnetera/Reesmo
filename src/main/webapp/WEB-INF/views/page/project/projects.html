@@ -7,12 +7,12 @@
 	<h1 layout:fragment="content-title"><i class="fa fa-cube"></i> <span th:text="#{page.projects.title}">Projects</span> <small th:text="#{page.projects.titledesc}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li class="active"><a th:href="@{/projects}" href="#"><i
-				class="fa fa-cube"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
+				class="fa fa-cubes"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
 	</ol>
 	<div layout:fragment="content">
 		<div class="row">
 			<div class="col-sm-12">
-				<a th:href="@{/projects/create}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.projects.newproject}">New project</span></a>
+				<a th:href="@{/project/create}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.projects.newproject}">New project</span></a>
 			</div>
 		</div>
 		<div class="box box-primary">
@@ -31,7 +31,7 @@
 							</table>
 							<script th:inline="javascript">
 								Tremapp.projectsTableRenderName = function(name, type, project) {
-									return '<a href="' + Tremapp.baseUrl + 'projects/detail/' + project.id + '">' + name + '</a>';
+									return '<a href="' + Tremapp.baseUrl + 'project/home/' + project.id + '">' + name + '</a>';
 								};
 							</script>
 						</div>

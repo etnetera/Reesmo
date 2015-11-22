@@ -9,7 +9,7 @@
 			<div class="dataTables_wrapper form-inline dt-bootstrap">
 				<div class="row">
 					<div class="col-sm-12">
-						<table id="userProjectsTable" dt:table="true" dt:url="@{/dt/users/projects/{userId}(userId=${user.id})}">
+						<table id="userProjectsTable" dt:table="true" dt:url="@{/dt/user/projects/{userId}(userId=${user.id})}">
 							<thead>
 								<tr>
 									<th dt:property="name" dt:renderFunction="Tremapp.projectsTableRenderName" th:text="#{project.name}">Name</th>
@@ -21,7 +21,7 @@
 						</table>
 						<script th:inline="javascript">
 							Tremapp.projectsTableRenderName = function(name, type, project) {
-								return '<a href="' + Tremapp.baseUrl + 'projects/detail/' + project.id + '">' + name + '</a>';
+								return '<a href="' + Tremapp.baseUrl + 'project/home/' + project.id + '">' + name + '</a>';
 							};
 						</script>
 					</div>

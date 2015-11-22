@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/main">
 <head>
-<title th:text="#{page.users.title} - ${user.label}">Users -
+<title th:text="#{page.userdetail.title} - ${user.label} - #{page.users.title}">Users -
 	User</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label}">User</span> <small th:text="#{page.userdetail.titledesc}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label}">User</span> - <span th:text="#{page.userdetail.title}">Detail</span> <small th:text="#{page.userdetail.titledesc}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/users}" href="#"><i class="fa fa-user"></i>
 				<span th:text="#{page.users.title}">Users</span></a></li>
+		<li><a 
+			th:href="@{/user/home/{userId}(userId=${user.id})}" href="#" 
+			th:text="${user.label}">User</a></li>
 		<li class="active"><a
 			th:href="@{/users/detail/{userId}(userId=${user.id})}" href="#"
-			th:text="${user.label}">User</a></li>
+			th:text="#{page.userdetail.title}">Detail</a></li>
 	</ol>
 	<div layout:fragment="content">
 		<div class="row">
@@ -23,9 +26,9 @@
 							src="../../../static/app/img/avatar-160x160.png" alt="User profile picture"/>
 						<h3 class="profile-username text-center" th:text="${user.label}">User label</h3>
 						<p class="text-muted text-center" th:text="#{'user.type.value.' + ${#strings.toLowerCase(user.type)}}">type</p>
-						<a th:href="@{/users/change-password/{userId}(userId=${user.id})}" href="#" class="btn btn-default btn-block"><b>Change password</b></a>
-						<a th:href="@{/users/edit/{userId}(userId=${user.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
-						<a th:if="${#authentication.principal.id} != ${user.id}" th:href="@{/users/delete/{userId}(userId=${user.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+						<a th:href="@{/user/change-password/{userId}(userId=${user.id})}" href="#" class="btn btn-default btn-block"><b>Change password</b></a>
+						<a th:href="@{/user/edit/{userId}(userId=${user.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+						<a th:if="${#authentication.principal.id} != ${user.id}" th:href="@{/user/delete/{userId}(userId=${user.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
 					</div>
 				</div>
 			</div>

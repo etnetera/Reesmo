@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/main">
 <head>
-<title th:text="#{page.users.title} - ${user.label} - #{page.userdelete.title}">Users -
-	User - Delete</title>
+<title th:text="#{page.userdelete.title} - ${user.label} - #{page.users.title}">Delete -
+	User - Users</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label} + ' - ' + #{page.userdelete.title}">User - Delete</span> <small th:text="#{page.userdelete.titledesc}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="${user.label}">User</span> - <span th:text="#{page.userdelete.title}">Delete</span> <small th:text="#{page.userdelete.titledesc}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/users}" href="#"><i class="fa fa-user"></i>
 				<span th:text="#{page.users.title}">Users</span></a></li>
 		<li><a
-			th:href="@{/users/detail/{userId}(userId=${user.id})}" href="#"
+			th:href="@{/user/home/{userId}(userId=${user.id})}" href="#"
 			th:text="${user.label}">User</a></li>
 		<li class="active"><a
-			th:href="@{/users/delete/{userId}(userId=${user.id})}" href="#"
+			th:href="@{/user/delete/{userId}(userId=${user.id})}" href="#"
 			th:text="#{page.userdelete.title}">Delete</a></li>
 	</ol>
 	<div layout:fragment="content">
@@ -23,7 +23,7 @@
 					<div class="box-header with-border">
 						<h3 class="box-title"><i class="fa fa-bullhorn"></i> <span th:text="#{page.userdelete.formtitle}">Read well</span></h3>
 					</div>
-					<form action="#" th:action="@{/users/delete/{userId}(userId=${user.id})}" method="post">
+					<form action="#" th:action="@{/user/delete/{userId}(userId=${user.id})}" method="post">
 						<div class="box-body">
 							<div class="callout callout-danger">
 								<h4 th:text="#{page.userdelete.dangertitle}">I am a danger callout!</h4>

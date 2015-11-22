@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/main">
 <head>
-<title th:text="#{page.users.title} - #{'page.usercreate' + ${userCommand.type} + '.title'}">Users - Create</title>
+<title th:text="#{'page.usercreate' + ${userCommand.type} + '.title'} - #{page.users.title}">Create - Users</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="#{'page.usercreate' + ${userCommand.type} + '.title'}">Create</span> <small th:text="#{'page.usercreate' + ${userCommand.type} + '.titledesc'}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-user"></i> <span th:text="#{page.users.title}">Users</span> - <span th:text="#{'page.usercreate' + ${userCommand.type} + '.title'}">Create</span> <small th:text="#{'page.usercreate' + ${userCommand.type} + '.titledesc'}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/users}" href="#"><i class="fa fa-user"></i>
 				<span th:text="#{page.users.title}">Users</span></a></li>
 		<li class="active"><a
-			th:href="@{/users/create/{type}(type=${userCommand.type})}" href="#"
+			th:href="@{/user/create/{type}(type=${userCommand.type})}" href="#"
 			th:text="#{'page.usercreate' + ${userCommand.type} + '.title'}">Create</a></li>
 	</ol>
 	<div layout:fragment="content">

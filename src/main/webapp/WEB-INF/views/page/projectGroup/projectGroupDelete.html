@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/projectGroup">
 <head>
-<title th:text="#{page.projectgroups.title} - ${projectGroup.name} - #{page.projectgroupdelete.title}">Projects -
-	Project group - Delete</title>
+<title th:text="#{page.projectgroupdelete.title} - ${projectGroup.name} - #{page.projectgroups.title}">Delete -
+	Project group - Project groups</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-cubes"></i> <span th:text="${projectGroup.name} + ' - ' + #{page.projectgroupdelete.title}">Project group - Delete</span> <small th:text="#{page.projectgroupdelete.titledesc}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-cubes"></i> <span th:text="${projectGroup.name}">Project group</span> - <span th:text="#{page.projectgroupdelete.title}">Delete</span> <small th:text="#{page.projectgroupdelete.titledesc}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/project-groups}" href="#"><i class="fa fa-cubes"></i>
 				<span th:text="#{page.projectgroups.title}">Project groups</span></a></li>
 		<li><a
-			th:href="@{/project-groups/detail/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
+			th:href="@{/project-group/home/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
 			th:text="${projectGroup.name}">Project group</a></li>
 		<li class="active"><a
-			th:href="@{/project-groups/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
+			th:href="@{/project-group/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
 			th:text="#{page.projectgroupdelete.title}">Delete</a></li>
 	</ol>
 	<div layout:fragment="content">
@@ -23,7 +23,7 @@
 					<div class="box-header with-border">
 						<h3 class="box-title"><i class="fa fa-bullhorn"></i> <span th:text="#{page.projectgroupdelete.formtitle}">Read well</span></h3>
 					</div>
-					<form action="#" th:action="@{/project-groups/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" method="post">
+					<form action="#" th:action="@{/project-group/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" method="post">
 						<div class="box-body">
 							<div class="callout callout-danger">
 								<h4 th:text="#{page.projectgroupdelete.dangertitle}">I am a danger callout!</h4>

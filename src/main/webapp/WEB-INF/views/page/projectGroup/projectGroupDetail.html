@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/projectGroup">
 <head>
-<title th:text="#{page.projectgroups.title} - ${projectGroup.name}">Project groups -
+<title th:text="#{page.projectgroupdetail.title} - ${projectGroup.name} - #{page.projectgroups.title}">Project groups -
 	Project group</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-cubes"></i> <span th:text="${projectGroup.name}">Project group</span> <small th:text="#{page.projectgroupdetail.titledesc}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-cubes"></i> <span th:text="${projectGroup.name}">Project group</span> - <span th:text="#{page.projectgroupdetail.title}">Detail</span> <small th:text="#{page.projectgroupdetail.titledesc}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/project-groups}" href="#"><i class="fa fa-cubes"></i>
 				<span th:text="#{page.projectgroups.title}">Project groups</span></a></li>
 		<li class="active"><a
-			th:href="@{/project-groups/detail/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
+			th:href="@{/project-group/home/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
 			th:text="${projectGroup.name}">Project group</a></li>
+		<li class="active"><a
+			th:href="@{/project-group/detail/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"
+			th:text="#{page.projectgroupdetail.title}">Detail</a></li>
 	</ol>
 	<div layout:fragment="content" th:with="isProjectGroupAdmin=${projectGroup.isAllowedForUser(#authentication.principal, 'ADMIN')}">
 		<div class="row">
@@ -19,8 +22,8 @@
 				<div class="box box-primary">
 					<div class="box-body box-profile">
 						<h3 class="profile-username text-center" th:text="${projectGroup.name}">Project group</h3>
-						<a th:if="${isProjectGroupAdmin}" th:href="@{/project-groups/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
-						<a th:if="${projectGroup.isAllowedForUser(#authentication.principal, 'OWNER')}" th:href="@{/project-groups/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+						<a th:if="${isProjectGroupAdmin}" th:href="@{/project-group/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+						<a th:if="${projectGroup.isAllowedForUser(#authentication.principal, 'OWNER')}" th:href="@{/project-group/delete/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
 					</div>
 				</div>
 			</div>
@@ -39,7 +42,7 @@
 							<div th:if="${isProjectGroupAdmin}" dt:conf="projectGroupProjectsTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="projectGroupProjectsTable" th:class="${isProjectGroupAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project-groups/projects/{projectGroupId}(projectGroupId=${projectGroup.id})}">
+							<table id="projectGroupProjectsTable" th:class="${isProjectGroupAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project-group/projects/{projectGroupId}(projectGroupId=${projectGroup.id})}">
 								<thead>
 									<tr>
 										<th dt:property="name" dt:renderFunction="Tremapp.projectsTableRenderName" th:text="#{project.name}">Name</th>
@@ -100,7 +103,7 @@
 							<div th:if="${isProjectGroupAdmin}" dt:conf="projectGroupUsersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="projectGroupUsersTable" th:class="${isProjectGroupAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project-groups/users/{projectGroupId}(projectGroupId=${projectGroup.id})}">
+							<table id="projectGroupUsersTable" th:class="${isProjectGroupAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project-group/users/{projectGroupId}(projectGroupId=${projectGroup.id})}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
@@ -159,13 +162,13 @@
 		</div>
 		<script th:inline="javascript">
 			Tremapp.projectsTableRenderName = function(name, type, project) {
-				return '<a href="' + Tremapp.baseUrl + 'projects/detail/' + project.id + '">' + name + '</a>';
+				return '<a href="' + Tremapp.baseUrl + 'project/home/' + project.id + '">' + name + '</a>';
 			};
 		</script>
 		<div th:switch="${#authentication.principal.isSuperadmin()}">
 			<script th:case="${true}" th:inline="javascript">
 				Tremapp.usersTableRenderLabel = function(label, type, user) {
-					return '<a href="' + Tremapp.baseUrl + 'users/detail/' + user.id + '">' + label + '</a>';
+					return '<a href="' + Tremapp.baseUrl + 'user/home/' + user.id + '">' + label + '</a>';
 				};
 			</script>
 			<script th:case="${false}" th:inline="javascript">
@@ -198,7 +201,7 @@
 					if (projectIds.length < 1) return;
 					
 					Tremapp.ajax({
-						url: [[@{/project-groups/project/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
+						url: [[@{/project-group/project/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
 						data: {
 							projectIds: projectIds
 						}
@@ -219,7 +222,7 @@
 					if (projectIds.length < 1) return;
 					
 					Tremapp.ajax({
-						url: [[@{/project-groups/project/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
+						url: [[@{/project-group/project/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
 						data: {
 							projectIds: projectIds
 						}
@@ -254,7 +257,7 @@
 					if (userIds.length < 1) return;
 					
 					Tremapp.ajax({
-						url: [[@{/project-groups/user/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
+						url: [[@{/project-group/user/add/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
 						data: {
 							permission: $selectAddUsersPermission.val(),
 							userIds: userIds
@@ -276,7 +279,7 @@
 					if (userIds.length < 1) return;
 					
 					Tremapp.ajax({
-						url: [[@{/project-groups/user/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
+						url: [[@{/project-group/user/remove/{projectGroupId}(projectGroupId=${projectGroup.id})}]],
 						data: {
 							userIds: userIds
 						}

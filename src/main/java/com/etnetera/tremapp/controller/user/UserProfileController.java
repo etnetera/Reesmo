@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.user;
 
 import javax.validation.Valid;
 

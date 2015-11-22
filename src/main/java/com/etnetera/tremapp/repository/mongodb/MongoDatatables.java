@@ -82,12 +82,10 @@ public class MongoDatatables {
 
 	public static Sort.Direction getSpringSortDirection(SortDirection sd) {
 		switch (sd) {
-		case ASC:
-			return Sort.Direction.ASC;
 		case DESC:
 			return Sort.Direction.DESC;
 		default:
-			return null;
+			return Sort.Direction.ASC;
 		}
 	}
 

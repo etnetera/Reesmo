@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.project;
 
 import java.util.Optional;
 
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.model.form.project.ProjectCommand;
 import com.etnetera.tremapp.model.form.project.ProjectCommandValidator;
@@ -45,7 +46,12 @@ public class ProjectController implements MenuActivityController {
 		binder.addValidators(new ProjectCommandValidator(projectRepository, project));
 	}
 	
-	@RequestMapping(value = "/projects/detail/{projectId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/project/home/{projectId}", method = RequestMethod.GET)
+	public String projectHome(@PathVariable String projectId) {
+		return "redirect:/project/detail/" + projectId;
+	}
+	
+	@RequestMapping(value = "/project/detail/{projectId}", method = RequestMethod.GET)
 	public String showProject(@PathVariable String projectId, Model model) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
@@ -54,7 +60,7 @@ public class ProjectController implements MenuActivityController {
 		return "page/project/projectDetail";
 	}
 
-	@RequestMapping(value = "/projects/edit/{projectId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/project/edit/{projectId}", method = RequestMethod.GET)
 	public String editProject(@PathVariable String projectId, Model model) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
@@ -66,7 +72,7 @@ public class ProjectController implements MenuActivityController {
 		return "page/project/projectEdit";
 	}
 
-	@RequestMapping(value = "/projects/edit/{projectId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/project/edit/{projectId}", method = RequestMethod.POST)
 	public String editProject(@Valid ProjectCommand projectCommand,
 			BindingResult bindingResult, @PathVariable String projectId, Model model) {
 		Project project = projectRepository.findOne(projectId);
@@ -78,10 +84,10 @@ public class ProjectController implements MenuActivityController {
 		}
 		projectCommand.toProject(project);
 		projectRepository.save(project);
-		return "redirect:/projects/detail/" + project.getId();
+		return "redirect:/project/detail/" + project.getId();
 	}
 
-	@RequestMapping(value = "/projects/delete/{projectId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/project/delete/{projectId}", method = RequestMethod.GET)
 	public String deleteProject(@PathVariable String projectId, Model model) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
@@ -90,7 +96,7 @@ public class ProjectController implements MenuActivityController {
 		return "page/project/projectDelete";
 	}
 
-	@RequestMapping(value = "/projects/delete/{projectId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/project/delete/{projectId}", method = RequestMethod.POST)
 	public String deleteProject(@PathVariable String projectId) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);

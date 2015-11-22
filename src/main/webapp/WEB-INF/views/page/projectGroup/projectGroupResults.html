@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/projectGroup">
+<head>
+<title th:text="#{page.projectgroupresults.title} - ${projectGroup.name} - #{page.projects.title}">Results -
+	Project group - Project groups</title>
+</head>
+<body>
+	<h1 layout:fragment="content-title"><i class="fa fa-check-square-o"></i> <span th:text="${projectGroup.name}">Project group</span> - <span th:text="#{page.projectgroupresults.title}">Results</span> <small th:text="#{page.projectgroupresults.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
+		<li><a th:href="@{/project-groups}" href="#"><i class="fa fa-cubes"></i>
+				<span th:text="#{page.projectgroups.title}">Project groups</span></a></li>
+		<li><a 
+			th:href="@{/project-group/home/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" 
+			th:text="${projectGroup.name}">Project group</a></li>
+		<li class="active"><a
+			th:href="@{/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#" 
+			th:text="#{page.projectgroupresults.title}">Results</a></li>
+	</ol>
+	<div layout:fragment="content">
+		<div class="box box-primary">
+			<div class="box-body">
+				<div class="dataTables_wrapper form-inline dt-bootstrap">
+					<div class="row">
+						<div class="col-sm-12">
+							<table id="projectGroupResultsTable" dt:table="true" dt:url="@{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}" dt:displayLength="100">
+								<thead>
+									<tr>
+										<th dt:property="name" dt:renderFunction="Tremapp.resultsTableRenderName" th:text="#{result.name}">Name</th>
+										<th dt:property="status" th:text="#{result.status}">Status</th>
+										<th dt:property="severity" th:text="#{result.severity}">Severity</th>
+										<th dt:property="startedAt" th:text="#{result.startedAt}">Started at</th>
+									</tr>
+								</thead>
+							</table>
+							<script th:inline="javascript">
+								Tremapp.resultsTableRenderName = function(name, type, result) {
+									return '<a href="' + Tremapp.baseUrl + 'result/' + result.id + '">' + name + '</a>';
+								};
+							</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

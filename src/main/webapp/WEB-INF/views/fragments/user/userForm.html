@@ -6,7 +6,7 @@
 			<div class="box-header with-border">
 				<h3 class="box-title" th:text="#{user.details}">Details</h3>
 			</div>
-			<form action="#" th:action="@{/users/edit/{userId}(userId=${user.id})}" th:object="${userCommand}" method="post">
+			<form action="#" th:action="@{/user/edit/{userId}(userId=${user.id})}" th:object="${userCommand}" method="post">
 				<input type="hidden" th:field="*{type}"/>
 				<div class="box-body">
 					<div class="row">
@@ -61,7 +61,7 @@
 			<div class="box-header with-border">
 				<h3 class="box-title" th:text="#{page.usercreate.formtitle}">Profile information</h3>
 			</div>
-			<form action="#" th:action="@{/users/create/{type}(type=${userCommand.type})}" th:object="${userCommand}" method="post">
+			<form action="#" th:action="@{/user/create/{type}(type=${userCommand.type})}" th:object="${userCommand}" method="post">
 				<input type="hidden" th:field="*{type}"/>
 				<div class="box-body">
 					<div class="row">
@@ -124,7 +124,7 @@
 			<div class="box-header with-border">
 				<h3 class="box-title" th:text="#{user.details}">Details</h3>
 			</div>
-			<form action="#" th:action="@{/users/change-password/{userId}(userId=${user.id})}" th:object="${userChangePasswordCommand}" method="post">
+			<form action="#" th:action="@{/user/change-password/{userId}(userId=${user.id})}" th:object="${userChangePasswordCommand}" method="post">
 				<div class="box-body">
 					<div class="row">
 						<div class="col-sm-12">

@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.project;
 
 import java.util.Locale;
 
@@ -42,7 +42,7 @@ public class ProjectUserController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@RequestMapping(value = "/dt/projects/users/{projectId}")
+	@RequestMapping(value = "/dt/project/users/{projectId}")
 	public @ResponseBody DatatablesResponse<ProjectUserDT> findAllForDataTables(@PathVariable String projectId,
 			HttpServletRequest request, Locale locale) {
 		Project project = projectRepository.findOne(projectId);
@@ -54,7 +54,7 @@ public class ProjectUserController {
 		return DatatablesResponse.build(users, criterias);
 	}
 
-	@RequestMapping(value = "/dt/projects/users-from-groups/{projectId}")
+	@RequestMapping(value = "/dt/project/users-from-groups/{projectId}")
 	public @ResponseBody DatatablesResponse<ProjectUserFromGroupsDT> findAllFromGroupsForDataTables(
 			@PathVariable String projectId, HttpServletRequest request, Locale locale) {
 		Project project = projectRepository.findOne(projectId);
@@ -66,7 +66,7 @@ public class ProjectUserController {
 		return DatatablesResponse.build(projects, criterias);
 	}
 
-	@RequestMapping(value = "/projects/user/add/{projectId}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/project/user/add/{projectId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse addProjectUsers(@Valid ProjectUserAddCommand addCommand,
 			BindingResult bindingResult, @PathVariable String projectId) {
 		Project project = projectRepository.findOne(projectId);
@@ -77,7 +77,7 @@ public class ProjectUserController {
 		}
 		Permission permission = Permission.fromString(addCommand.getPermission());
 		if (permission == null) {
-			throw new IllegalArgumentException("Uknown permission " + addCommand.getPermission());
+			throw new IllegalArgumentException("Unknown permission " + addCommand.getPermission());
 		}
 		Permission actualUserPermission = userManager.isSuperadmin() ? Permission.OWNER
 				: project.getUsers().get(userManager.requireUserId());
@@ -112,7 +112,7 @@ public class ProjectUserController {
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
 	}
 
-	@RequestMapping(value = "/projects/user/remove/{projectId}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/project/user/remove/{projectId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse removeProjectUsers(@Valid ProjectUserRemoveCommand removeCommand,
 			BindingResult bindingResult, @PathVariable String projectId) {
 		Project project = projectRepository.findOne(projectId);

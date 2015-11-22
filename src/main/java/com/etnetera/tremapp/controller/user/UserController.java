@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.user;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.http.exception.ForbiddenException;
 import com.etnetera.tremapp.model.datatables.user.UserDT;
@@ -88,9 +89,15 @@ public class UserController implements MenuActivityController {
 		DataSet<UserDT> users = userRepository.findWithDatatablesCriterias(criterias, locale);
 		return DatatablesResponse.build(users, criterias);
 	}
+	
+	@Secured({UserRole.ROLE_SUPERADMIN})
+	@RequestMapping(value = "/user/home/{userId}", method = RequestMethod.GET)
+	public String userHome(@PathVariable String userId) {
+		return "redirect:/user/detail/" + userId;
+	}
 
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/detail/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/detail/{userId}", method = RequestMethod.GET)
 	public String showUser(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
 		ControllerModel.exists(user, User.class);
@@ -99,7 +106,7 @@ public class UserController implements MenuActivityController {
 	}
 
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/edit/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/edit/{userId}", method = RequestMethod.GET)
 	public String editUser(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
 		ControllerModel.exists(user, User.class);
@@ -111,7 +118,7 @@ public class UserController implements MenuActivityController {
 	}
 
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/edit/{userId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/edit/{userId}", method = RequestMethod.POST)
 	public String editUser(@Valid UserCommand userCommand,
 			BindingResult bindingResult, @PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
@@ -125,16 +132,16 @@ public class UserController implements MenuActivityController {
 		if (userManager.isSameAsLogged(user)) {
 			userManager.updateUser(user);
 		}
-		return "redirect:/users/detail/" + user.getId();
+		return "redirect:/user/detail/" + user.getId();
 	}
 
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/create/{type}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/create/{type}", method = RequestMethod.GET)
 	public String createUser(@PathVariable String type, Model model) {
 		UserCommand userCommand = new UserCommand();
 		UserType userType = UserType.fromString(type);
 		if (userType == null) {
-			throw new IllegalArgumentException("Uknown user type " + type);
+			throw new IllegalArgumentException("Unknown user type " + type);
 		}
 		userCommand.setType(type);
 		model.addAttribute("userCommand", userCommand);
@@ -142,7 +149,7 @@ public class UserController implements MenuActivityController {
 	}
 
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/create/{type}", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/create/{type}", method = RequestMethod.POST)
 	public String createUser(@Valid UserCommand userCommand, BindingResult bindingResult, @PathVariable String type) {
 		if (bindingResult.hasErrors()) {
 			return "page/user/userCreate";
@@ -157,15 +164,15 @@ public class UserController implements MenuActivityController {
 			user = new ApiUser();
 			break;
 		default:
-			throw new IllegalArgumentException("Uknown user type " + userType);
+			throw new IllegalArgumentException("Unknown user type " + userType);
 		}
 		userCommand.toUser(user, true, false);
 		userRepository.save(user);
-		return "redirect:/users/detail/" + user.getId();
+		return "redirect:/user/detail/" + user.getId();
 	}
 
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/delete/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/delete/{userId}", method = RequestMethod.GET)
 	public String deleteUser(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
 		ControllerModel.exists(user, User.class);
@@ -177,7 +184,7 @@ public class UserController implements MenuActivityController {
 	}
 
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/delete/{userId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/delete/{userId}", method = RequestMethod.POST)
 	public String deleteUser(@PathVariable String userId) {
 		User user = userRepository.findOne(userId);
 		ControllerModel.exists(user, User.class);
@@ -189,7 +196,7 @@ public class UserController implements MenuActivityController {
 	}
 	
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/change-password/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/change-password/{userId}", method = RequestMethod.GET)
 	public String changeUserPassword(@PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
 		ControllerModel.exists(user, User.class);
@@ -199,7 +206,7 @@ public class UserController implements MenuActivityController {
 	}
 
 	@Secured({UserRole.ROLE_SUPERADMIN})
-	@RequestMapping(value = "/users/change-password/{userId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/change-password/{userId}", method = RequestMethod.POST)
 	public String changeUserPassword(@Valid UserChangePasswordCommand userChangePasswordCommand,
 			BindingResult bindingResult, @PathVariable String userId, Model model) {
 		User user = userRepository.findOne(userId);
@@ -213,7 +220,7 @@ public class UserController implements MenuActivityController {
 		if (userManager.isSameAsLogged(user)) {
 			userManager.updateUser(user);
 		}
-		return "redirect:/users/detail/" + user.getId();
+		return "redirect:/user/detail/" + user.getId();
 	}
 
 }

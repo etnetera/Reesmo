@@ -6,7 +6,7 @@
 			<div class="box-header with-border">
 				<h3 class="box-title" th:text="#{page.projectgroupedit.formtitle}">Information</h3>
 			</div>
-			<form action="#" th:action="@{/project-groups/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" th:object="${projectGroupCommand}" method="post">
+			<form action="#" th:action="@{/project-group/edit/{projectGroupId}(projectGroupId=${projectGroup.id})}" th:object="${projectGroupCommand}" method="post">
 				<div th:replace="fragments/projectGroup/projectGroupFormFields :: fields">Form</div>
 			</form>
 		</div>
@@ -17,7 +17,7 @@
 			<div class="box-header with-border">
 				<h3 class="box-title" th:text="#{page.projectgroupcreate.formtitle}">Information</h3>
 			</div>
-			<form action="#" th:action="@{/project-groups/create}" th:object="${projectGroupCommand}" method="post">
+			<form action="#" th:action="@{/project-group/create}" th:object="${projectGroupCommand}" method="post">
 				<div th:replace="fragments/projectGroup/projectGroupFormFields :: fields">Form</div>
 			</form>
 		</div>

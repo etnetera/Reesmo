@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/project">
 <head>
-<title th:text="#{page.projects.title} - ${project.name}">Projects -
-	Project</title>
+<title th:text="#{page.projectdetail.title} - ${project.name} - #{page.projects.title}">Detail -
+	Project - Projects</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-cube"></i> <span th:text="${project.name}">Project</span> <small th:text="#{page.projectdetail.titledesc}">small title</small></h1>
+	<h1 layout:fragment="content-title"><i class="fa fa-cog"></i> <span th:text="${project.name}">Project</span> - <span th:text="#{page.projectdetail.title}">Project</span> <small th:text="#{page.projectdetail.titledesc}">small title</small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
 				<span th:text="#{page.projects.title}">Projects</span></a></li>
-		<li class="active"><a
-			th:href="@{/projects/detail/{projectId}(projectId=${project.id})}" href="#"
+		<li><a 
+			th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#" 
 			th:text="${project.name}">Project</a></li>
+		<li class="active"><a
+			th:href="@{/project/detail/{projectId}(projectId=${project.id})}" href="#"
+			th:text="#{page.projectdetail.title}">Detail</a></li>
 	</ol>
 	<div layout:fragment="content" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}">
 		<div class="row">
@@ -19,8 +22,8 @@
 				<div class="box box-primary">
 					<div class="box-body box-profile">
 						<h3 class="profile-username text-center" th:text="${project.name}">Project</h3>
-						<a th:if="${isProjectAdmin}" th:href="@{/projects/edit/{projectId}(projectId=${project.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
-						<a th:if="${project.isAllowedForUser(#authentication.principal, 'OWNER')}" th:href="@{/projects/delete/{projectId}(projectId=${project.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+						<a th:if="${isProjectAdmin}" th:href="@{/project/edit/{projectId}(projectId=${project.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+						<a th:if="${project.isAllowedForUser(#authentication.principal, 'OWNER')}" th:href="@{/project/delete/{projectId}(projectId=${project.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
 					</div>
 				</div>
 			</div>
@@ -39,7 +42,7 @@
 							<div th:if="${isProjectAdmin}" dt:conf="projectUsersTable">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
 							</div>
-							<table id="projectUsersTable" th:class="${isProjectAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/projects/users/{projectId}(projectId=${project.id})}">
+							<table id="projectUsersTable" th:class="${isProjectAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project/users/{projectId}(projectId=${project.id})}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
@@ -105,7 +108,7 @@
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<table id="projectUsersFromGroupsTable" dt:table="true" dt:url="@{/dt/projects/users-from-groups/{projectId}(projectId=${project.id})}">
+							<table id="projectUsersFromGroupsTable" dt:table="true" dt:url="@{/dt/project/users-from-groups/{projectId}(projectId=${project.id})}">
 								<thead>
 									<tr>
 										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
@@ -124,7 +127,7 @@
 		<div th:switch="${#authentication.principal.isSuperadmin()}">
 			<script th:case="${true}" th:inline="javascript">
 				Tremapp.usersTableRenderLabel = function(label, type, user) {
-					return '<a href="' + Tremapp.baseUrl + 'users/detail/' + user.id + '">' + label + '</a>';
+					return '<a href="' + Tremapp.baseUrl + 'user/home/' + user.id + '">' + label + '</a>';
 				};
 			</script>
 			<script th:case="${false}" th:inline="javascript">
@@ -158,7 +161,7 @@
 					if (userIds.length < 1) return;
 					
 					Tremapp.ajax({
-						url: [[@{/projects/user/add/{projectId}(projectId=${project.id})}]],
+						url: [[@{/project/user/add/{projectId}(projectId=${project.id})}]],
 						data: {
 							permission: $selectAddUsersPermission.val(),
 							userIds: userIds
@@ -180,7 +183,7 @@
 					if (userIds.length < 1) return;
 					
 					Tremapp.ajax({
-						url: [[@{/projects/user/remove/{projectId}(projectId=${project.id})}]],
+						url: [[@{/project/user/remove/{projectId}(projectId=${project.id})}]],
 						data: {
 							userIds: userIds
 						}

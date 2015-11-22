@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.project;
 
 import java.util.Optional;
 
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.model.datatables.project.ProjectDT;
 import com.etnetera.tremapp.model.form.project.ProjectCommand;
 import com.etnetera.tremapp.model.form.project.ProjectCommandValidator;
@@ -60,21 +61,21 @@ public class ProjectsController implements MenuActivityController {
 	public @ResponseBody DatatablesResponse<ProjectDT> findAllForDataTables(@RequestParam(required = false, defaultValue = "BASIC") String permission, HttpServletRequest request) {
 		Permission perm = Permission.fromString(permission);
 		if (perm == null) {
-			throw new IllegalArgumentException("Uknown permission " + permission);
+			throw new IllegalArgumentException("Unknown permission " + permission);
 		}
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
 		DataSet<ProjectDT> projects = projectRepository.findWithDatatablesCriterias(criterias, userManager.getAllowedProjectIds(perm));
 		return DatatablesResponse.build(projects, criterias);
 	}
 
-	@RequestMapping(value = "/projects/create", method = RequestMethod.GET)
+	@RequestMapping(value = "/project/create", method = RequestMethod.GET)
 	public String createProject(Model model) {
 		ProjectCommand projectCommand = new ProjectCommand();
 		model.addAttribute("projectCommand", projectCommand);
 		return "page/project/projectCreate";
 	}
 
-	@RequestMapping(value = "/projects/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/project/create", method = RequestMethod.POST)
 	public String createProject(@Valid ProjectCommand projectCommand, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "page/project/projectCreate";

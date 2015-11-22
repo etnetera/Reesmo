@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.project;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -42,7 +42,7 @@ public class ProjectGroupProjectController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@RequestMapping(value = "/dt/project-groups/projects/{projectGroupId}")
+	@RequestMapping(value = "/dt/project-group/projects/{projectGroupId}")
 	public @ResponseBody DatatablesResponse<ProjectGroupProjectDT> findAllForDataTables(@PathVariable String projectGroupId,
 			HttpServletRequest request) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
@@ -53,7 +53,7 @@ public class ProjectGroupProjectController {
 		return DatatablesResponse.build(projects, criterias);
 	}
 
-	@RequestMapping(value = "/project-groups/project/add/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/project-group/project/add/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse addProjectGroupProjects(@Valid ProjectGroupProjectAddCommand addCommand,
 			BindingResult bindingResult, @PathVariable String projectGroupId) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);
@@ -81,7 +81,7 @@ public class ProjectGroupProjectController {
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
 	}
 	
-	@RequestMapping(value = "/project-groups/project/remove/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/project-group/project/remove/{projectGroupId}", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse removeProjectGroupProjects(@Valid ProjectGroupProjectRemoveCommand removeCommand,
 			BindingResult bindingResult, @PathVariable String projectGroupId) {
 		ProjectGroup projectGroup = projectGroupRepository.findOne(projectGroupId);

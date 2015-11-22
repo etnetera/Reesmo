@@ -26,7 +26,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 @RestController
 @RequestMapping(value = "/api")
-public class ResultAttachmentRestApiController {
+public class ResultAttachmentRestApiController extends AbstractRestController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultAttachmentRestApiController.class);
 

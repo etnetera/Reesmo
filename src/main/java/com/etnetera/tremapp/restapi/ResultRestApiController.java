@@ -1,6 +1,10 @@
 package com.etnetera.tremapp.restapi;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etnetera.tremapp.list.ListModifier;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
+import com.etnetera.tremapp.model.elasticsearch.result.ResultValidator;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.elasticsearch.result.ResultRepository;
@@ -18,7 +23,7 @@ import com.etnetera.tremapp.user.UserManager;
 
 @RestController
 @RequestMapping(value = "/api", produces = "application/json")
-public class ResultRestApiController {
+public class ResultRestApiController extends AbstractRestController {
 	
 	@Autowired
     private UserManager userManager;
@@ -29,15 +34,20 @@ public class ResultRestApiController {
 	@Autowired
 	private ProjectRepository projectRepository;
 	
+	@InitBinder(value = "result")
+	protected void initBinder(WebDataBinder binder) {		
+		binder.addValidators(new ResultValidator());
+	}
+	
 	@RequestMapping(value = "/results/create", method = RequestMethod.POST)
-	public Result createResult(@RequestBody Result result) {
+	public Result createResult(@RequestBody @Valid Result result) {
 		userManager.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
 		// save result without attachments
 		return resultRepository.saveResult(result, null);
 	}
 	
 	@RequestMapping(value = "/results/create/{projectKey}", method = RequestMethod.POST)
-	public Result createResult(@PathVariable String projectKey, @RequestBody Result result) {
+	public Result createResult(@RequestBody @Valid Result result, @PathVariable String projectKey) {
 		Project project = projectRepository.findOneByKey(projectKey);
 		userManager.checkProjectPermission(project.getId(), Permission.EDITOR);
 		result.setProjectId(project.getId());
@@ -53,7 +63,7 @@ public class ResultRestApiController {
 	}
 	
 	@RequestMapping(value = "/results/update/{resultId}", method = RequestMethod.POST)
-	public Result updateResult(@PathVariable String resultId, @RequestBody Result result) {
+	public Result updateResult(@RequestBody @Valid Result result, @PathVariable String resultId) {
 		Result persistedResult = resultRepository.findOne(resultId);
 		userManager.checkProjectPermission(persistedResult.getProjectId(), Permission.EDITOR);
 		if (result.getProjectId() == null)

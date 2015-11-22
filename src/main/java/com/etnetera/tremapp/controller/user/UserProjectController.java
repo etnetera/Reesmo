@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.user;
 
 import java.util.Locale;
 
@@ -33,7 +33,7 @@ public class UserProjectController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@RequestMapping(value = "/dt/users/projects/{userId}")
+	@RequestMapping(value = "/dt/user/projects/{userId}")
 	public @ResponseBody DatatablesResponse<UserProjectDT> findAllForDataTables(@PathVariable String userId,
 			HttpServletRequest request, Locale locale) {
 		// use logged user on id match

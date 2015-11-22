@@ -12,8 +12,8 @@
 	<div layout:fragment="content">
 		<div class="row">
 			<div class="col-sm-12">
-				<a th:href="@{/users/create/manual}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.users.newmanualuser}">New user</span></a>
-				<a th:href="@{/users/create/api}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.users.newapiuser}">New API user</span></a>
+				<a th:href="@{/user/create/manual}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.users.newmanualuser}">New user</span></a>
+				<a th:href="@{/user/create/api}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.users.newapiuser}">New API user</span></a>
 			</div>
 		</div>
 		<div class="box box-primary">
@@ -34,7 +34,7 @@
 							</table>
 							<script th:inline="javascript">
 								Tremapp.usersTableRenderLabel = function(label, type, user) {
-									return '<a href="' + Tremapp.baseUrl + 'users/detail/' + user.id + '">' + label + '</a>';
+									return '<a href="' + Tremapp.baseUrl + 'user/home/' + user.id + '">' + label + '</a>';
 								};
 							</script>
 						</div>

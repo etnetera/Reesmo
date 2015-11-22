@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.controller;
+package com.etnetera.tremapp.controller.project;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.model.datatables.project.ProjectGroupDT;
 import com.etnetera.tremapp.model.form.project.ProjectGroupCommand;
 import com.etnetera.tremapp.model.mongodb.project.ProjectGroup;
@@ -47,14 +48,14 @@ public class ProjectGroupsController implements MenuActivityController {
 		return DatatablesResponse.build(projectGroups, criterias);
 	}
 
-	@RequestMapping(value = "/project-groups/create", method = RequestMethod.GET)
+	@RequestMapping(value = "/project-group/create", method = RequestMethod.GET)
 	public String createProjectGroup(Model model) {
 		ProjectGroupCommand projectGroupCommand = new ProjectGroupCommand();
 		model.addAttribute("projectGroupCommand", projectGroupCommand);
 		return "page/projectGroup/projectGroupCreate";
 	}
 
-	@RequestMapping(value = "/project-groups/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/project-group/create", method = RequestMethod.POST)
 	public String createProjectGroup(@Valid ProjectGroupCommand projectGroupCommand, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "page/projectGroup/projectGroupCreate";
