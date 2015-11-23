@@ -40,7 +40,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div th:if="${isProjectGroupAdmin}" dt:conf="projectGroupProjectsTable">
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
+								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectGroupProjectsTable" th:class="${isProjectGroupAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project-group/projects/{projectGroupId}(projectGroupId=${projectGroup.id})}">
 								<thead>
@@ -72,7 +72,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div dt:conf="projectsTable">
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
+								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectsTable" th:class="${isProjectGroupAdmin}?'selectable add'" dt:table="true" dt:url="@{/dt/projects(permission='ADMIN')}">
 								<thead>
@@ -101,7 +101,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div th:if="${isProjectGroupAdmin}" dt:conf="projectGroupUsersTable">
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
+								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectGroupUsersTable" th:class="${isProjectGroupAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project-group/users/{projectGroupId}(projectGroupId=${projectGroup.id})}">
 								<thead>
@@ -134,7 +134,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div dt:conf="usersTable">
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
+								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="usersTable" th:class="${isProjectGroupAdmin}?'selectable add'" dt:table="true" dt:url="@{/dt/users}">
 								<thead>
@@ -162,13 +162,13 @@
 		</div>
 		<script th:inline="javascript">
 			Tremapp.projectsTableRenderName = function(name, type, project) {
-				return '<a href="' + Tremapp.baseUrl + 'project/home/' + project.id + '">' + name + '</a>';
+				return Tremapp.dataTables.renderLink('project/home/' + project.id, name);
 			};
 		</script>
 		<div th:switch="${#authentication.principal.isSuperadmin()}">
 			<script th:case="${true}" th:inline="javascript">
 				Tremapp.usersTableRenderLabel = function(label, type, user) {
-					return '<a href="' + Tremapp.baseUrl + 'user/home/' + user.id + '">' + label + '</a>';
+					return Tremapp.dataTables.renderLink('user/home/' + user.id, label);
 				};
 			</script>
 			<script th:case="${false}" th:inline="javascript">

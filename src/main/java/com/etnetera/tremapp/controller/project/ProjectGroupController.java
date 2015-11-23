@@ -34,7 +34,7 @@ public class ProjectGroupController implements MenuActivityController {
 	
 	@RequestMapping(value = "/project-group/home/{projectGroupId}", method = RequestMethod.GET)
 	public String projectGroupHome(@PathVariable String projectGroupId) {
-		return "redirect:/project-group/detail/" + projectGroupId;
+		return "redirect:/project-group/results/" + projectGroupId;
 	}
 	
 	@RequestMapping(value = "/project-group/detail/{projectGroupId}", method = RequestMethod.GET)

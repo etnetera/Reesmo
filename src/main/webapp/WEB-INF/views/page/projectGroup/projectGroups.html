@@ -30,7 +30,7 @@
 							</table>
 							<script th:inline="javascript">
 								Tremapp.projectGroupsTableRenderName = function(name, type, projectGroup) {
-									return '<a href="' + Tremapp.baseUrl + 'project-group/home/' + projectGroup.id + '">' + name + '</a>';
+									return Tremapp.dataTables.renderLink('project-group/home/' + projectGroup.id, name);
 								};
 							</script>
 						</div>

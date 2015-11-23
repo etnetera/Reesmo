@@ -34,7 +34,7 @@
 							</table>
 							<script th:inline="javascript">
 								Tremapp.usersTableRenderLabel = function(label, type, user) {
-									return '<a href="' + Tremapp.baseUrl + 'user/home/' + user.id + '">' + label + '</a>';
+									return Tremapp.dataTables.renderLink('user/home/' + user.id, label);
 								};
 							</script>
 						</div>

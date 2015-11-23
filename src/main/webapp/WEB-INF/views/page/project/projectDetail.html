@@ -40,7 +40,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div th:if="${isProjectAdmin}" dt:conf="projectUsersTable">
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
+								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectUsersTable" th:class="${isProjectAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project/users/{projectId}(projectId=${project.id})}">
 								<thead>
@@ -73,7 +73,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div dt:conf="usersTable">
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.initCompleteSelectableRowsCallback" />
+								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="usersTable" th:class="${isProjectAdmin}?'selectable add'" dt:table="true" dt:url="@{/dt/users}">
 								<thead>
@@ -127,7 +127,7 @@
 		<div th:switch="${#authentication.principal.isSuperadmin()}">
 			<script th:case="${true}" th:inline="javascript">
 				Tremapp.usersTableRenderLabel = function(label, type, user) {
-					return '<a href="' + Tremapp.baseUrl + 'user/home/' + user.id + '">' + label + '</a>';
+					return Tremapp.dataTables.renderLink('user/home/' + user.id, label);
 				};
 			</script>
 			<script th:case="${false}" th:inline="javascript">

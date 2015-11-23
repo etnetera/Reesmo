@@ -31,7 +31,7 @@
 							</table>
 							<script th:inline="javascript">
 								Tremapp.projectsTableRenderName = function(name, type, project) {
-									return '<a href="' + Tremapp.baseUrl + 'project/home/' + project.id + '">' + name + '</a>';
+									return Tremapp.dataTables.renderLink('project/home/' + project.id, name);
 								};
 							</script>
 						</div>
