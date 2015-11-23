@@ -50,6 +50,8 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 	public ViewResolver viewResolver() {
 		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
 		resolver.setTemplateEngine(templateEngine());
+		resolver.setContentType("text/html;charset=UTF-8");
+		resolver.setCharacterEncoding("UTF-8");
 		return resolver;
 	}
 
@@ -70,6 +72,7 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".html");
 		resolver.setTemplateMode("HTML5");
+		resolver.setCharacterEncoding("UTF-8");
 		resolver.setCacheable(false);
 		return resolver;
 	}

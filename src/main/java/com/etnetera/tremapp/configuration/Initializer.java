@@ -9,6 +9,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.etnetera.tremapp.Tremapp;
@@ -35,6 +36,12 @@ public class Initializer extends AbstractSecurityWebApplicationInitializer {
     	applicationContext = context;
         servletContext.addListener(new ContextLoaderListener(context));
         
+        // Character Encoding Filter
+        FilterRegistration characterEncodingFilter = servletContext.addFilter("CharacterEncodingFilter", CharacterEncodingFilter.class);
+        characterEncodingFilter.setInitParameter("encoding", "UTF-8");
+        characterEncodingFilter.setInitParameter("forceEncoding", "true");
+        characterEncodingFilter.addMappingForUrlPatterns(null, false, "/*");
+        
         // Register the Dandelion filter
         FilterRegistration.Dynamic dandelionFilter = servletContext.addFilter("DandelionFilter", new DandelionFilter());
         dandelionFilter.addMappingForUrlPatterns(null, false, "/*");
@@ -49,7 +56,7 @@ public class Initializer extends AbstractSecurityWebApplicationInitializer {
         dandelionServlet.addMapping("/dandelion-assets/*");
 	}
 
-    private AnnotationConfigWebApplicationContext createContext() {
+	private AnnotationConfigWebApplicationContext createContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation(CONFIG_LOCATION);
         return context;
