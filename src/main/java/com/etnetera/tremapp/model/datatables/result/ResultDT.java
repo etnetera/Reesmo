@@ -1,6 +1,5 @@
 package com.etnetera.tremapp.model.datatables.result;
 
-import java.util.Date;
 import java.util.Locale;
 
 import com.etnetera.tremapp.message.Localizer;
@@ -17,9 +16,11 @@ public class ResultDT extends AuditedModelDT {
 	
 	private String author;
 	
-	private Date startedAt;
+	private String startedAt;
 	
-	private Date endedAt;
+	private String endedAt;
+	
+	private Long length;
 	
 	private String status;
 	
@@ -35,8 +36,11 @@ public class ResultDT extends AuditedModelDT {
 		this.suite = result.getSuite();
 		this.name = result.getName();
 		this.author = result.getAuthor();
-		this.startedAt = result.getStartedAt();
-		this.endedAt = result.getEndedAt();
+		this.startedAt = result.getStartedAt() == null ? null : result.getStartedAt().toString();
+		this.endedAt = result.getEndedAt() == null ? null : result.getEndedAt().toString();
+		if (result.getStartedAt() != null && result.getEndedAt() != null) {
+			this.length = result.getEndedAt().getTime() - result.getStartedAt().getTime();
+		}
 		this.status = localizer.localize(result.getStatus(), locale);
 		this.severity = localizer.localize(result.getSeverity(), locale);
 		this.automated = localizer.localize(result.isAutomated(), locale);
@@ -59,12 +63,16 @@ public class ResultDT extends AuditedModelDT {
 		return author;
 	}
 
-	public Date getStartedAt() {
+	public String getStartedAt() {
 		return startedAt;
 	}
 
-	public Date getEndedAt() {
+	public String getEndedAt() {
 		return endedAt;
+	}
+
+	public Long getLength() {
+		return length;
 	}
 
 	public String getStatus() {
