@@ -44,6 +44,11 @@ table.dataTable.selectable.remove tbody tr.selected td a {
 	color: #fff;
 }
 
+table.dataTable.resultsTable .severity {
+	font-size: large;
+	font-weight: bold;
+}
+
 label.with-input {
 	font-weight: normal;
 	text-align: left;

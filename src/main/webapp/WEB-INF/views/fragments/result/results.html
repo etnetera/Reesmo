@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="table (id, url, withProject)">
+		<table th:id="${id}" class="resultsTable" dt:table="true" dt:url="${url}" dt:displayLength="50">
+			<thead>
+				<tr>
+					<th th:if="${withProject}" dt:property="projectId" dt:renderFunction="Tremapp.resultsTableRenderProject" th:text="#{result.project}">Project</th>
+					<th dt:property="name" dt:renderFunction="Tremapp.resultsTableRenderName" th:text="#{result.name}">Name</th>
+					<th dt:property="status" dt:renderFunction="Tremapp.dataTables.impl.result.renderStatus" th:text="#{result.status}">Status</th>
+					<th dt:property="severity" dt:renderFunction="Tremapp.dataTables.impl.result.renderSeverity" th:text="#{result.severity}">Severity</th>
+					<th dt:property="startedAt" dt:sortInitDirection="desc" th:text="#{result.startedAt}">Started at</th>
+					<th dt:property="length" dt:searchable="false" dt:sortable="false" th:text="#{result.length}">Length</th>
+				</tr>
+			</thead>
+		</table>
+		<script th:inline="javascript">
+			Tremapp.resultsTableRenderName = function(name, type, result) {
+				return Tremapp.dataTables.renderLink('result/' + result.id, name);
+			};
+			Tremapp.resultsTableRenderProject = function(project, type, result) {
+				return Tremapp.dataTables.renderLink('project/' + result.projectId, project);
+			};
+		</script>
+	</div>
+</body>
+</html>

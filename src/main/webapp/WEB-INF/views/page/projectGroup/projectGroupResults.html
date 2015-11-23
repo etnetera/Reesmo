@@ -22,22 +22,7 @@
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
-							<table id="projectGroupResultsTable" dt:table="true" dt:url="@{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}" dt:displayLength="100">
-								<thead>
-									<tr>
-										<th dt:property="name" dt:renderFunction="Tremapp.resultsTableRenderName" th:text="#{result.name}">Name</th>
-										<th dt:property="status" th:text="#{result.status}">Status</th>
-										<th dt:property="severity" th:text="#{result.severity}">Severity</th>
-										<th dt:property="startedAt" th:text="#{result.startedAt}">Started at</th>
-										<th dt:property="length" dt:searchable="false" dt:sortable="false" th:text="#{result.length}">Length</th>
-									</tr>
-								</thead>
-							</table>
-							<script th:inline="javascript">
-								Tremapp.resultsTableRenderName = function(name, type, result) {
-									return '<a href="' + Tremapp.baseUrl + 'result/' + result.id + '">' + name + '</a>';
-								};
-							</script>
+							<div th:replace="fragments/result/results :: table ('projectGroupResultsTable', @{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}, true)">Table</div>
 						</div>
 					</div>
 				</div>

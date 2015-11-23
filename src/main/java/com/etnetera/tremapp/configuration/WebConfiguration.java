@@ -10,6 +10,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -32,15 +33,16 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 	public static final long FILE_SIZE_LIMIT = 31457280l;
 
 	@Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("/static/", "/",
-                "classpath:/META-INF/web-resources/");
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("/");
-        registry.addResourceHandler("/robots.txt").addResourceLocations("/");
-    }
-	
+	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/static/**")
+				.addResourceLocations("/static/", "/", "classpath:/META-INF/web-resources/").resourceChain(true)
+				.addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"));
+		registry.addResourceHandler("/favicon.ico").addResourceLocations("/");
+		registry.addResourceHandler("/robots.txt").addResourceLocations("/");
+	}
+
 	@Bean
-	public static MultipartResolver multipartResolver() {
+	public MultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
 		multipartResolver.setMaxUploadSize(FILE_SIZE_LIMIT);
 		return multipartResolver;
@@ -76,7 +78,7 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 		resolver.setCacheable(false);
 		return resolver;
 	}
-	
+
 	@Bean
 	public MessageSource messageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();

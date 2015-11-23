@@ -24,7 +24,11 @@ public class ResultDT extends AuditedModelDT {
 	
 	private String status;
 	
+	private String statusValue;
+	
 	private String severity;
+	
+	private String severityValue;
 	
 	private String automated;
 	
@@ -42,7 +46,9 @@ public class ResultDT extends AuditedModelDT {
 			this.length = result.getEndedAt().getTime() - result.getStartedAt().getTime();
 		}
 		this.status = localizer.localize(result.getStatus(), locale);
+		this.statusValue = result.getStatus() == null ? null : result.getStatus().name();
 		this.severity = localizer.localize(result.getSeverity(), locale);
+		this.severityValue = result.getSeverity() == null ? null : result.getSeverity().name();
 		this.automated = localizer.localize(result.isAutomated(), locale);
 		this.projectId = result.getProjectId();
 	}
@@ -79,8 +85,16 @@ public class ResultDT extends AuditedModelDT {
 		return status;
 	}
 
+	public String getStatusValue() {
+		return statusValue;
+	}
+
 	public String getSeverity() {
 		return severity;
+	}
+
+	public String getSeverityValue() {
+		return severityValue;
 	}
 
 	public String getAutomated() {

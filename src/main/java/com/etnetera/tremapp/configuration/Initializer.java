@@ -11,6 +11,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 
 import com.etnetera.tremapp.Tremapp;
 import com.github.dandelion.core.web.DandelionFilter;
@@ -22,7 +23,6 @@ import com.github.dandelion.core.web.DandelionServlet;
 public class Initializer extends AbstractSecurityWebApplicationInitializer {
 
     private static final String CONFIG_LOCATION = Tremapp.PACKAGE + ".configuration";
-    private static final String MAPPING_URL = "/*";
 
     private static ApplicationContext applicationContext;
     
@@ -42,13 +42,17 @@ public class Initializer extends AbstractSecurityWebApplicationInitializer {
         characterEncodingFilter.setInitParameter("forceEncoding", "true");
         characterEncodingFilter.addMappingForUrlPatterns(null, false, "/*");
         
+        // Resource URL Encoding Filter
+        FilterRegistration resourceUrlEncodingFilter = servletContext.addFilter("resourceUrlEncodingFilter",  ResourceUrlEncodingFilter.class);
+        resourceUrlEncodingFilter.addMappingForUrlPatterns(null, true, "/*");
+        
         // Register the Dandelion filter
         FilterRegistration.Dynamic dandelionFilter = servletContext.addFilter("DandelionFilter", new DandelionFilter());
         dandelionFilter.addMappingForUrlPatterns(null, false, "/*");
         
         ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
         dispatcherServlet.setLoadOnStartup(1);
-        dispatcherServlet.addMapping(MAPPING_URL);
+        dispatcherServlet.addMapping("/*");
         
         // Register the Dandelion servlet
         ServletRegistration.Dynamic dandelionServlet = servletContext.addServlet("DandelionServlet", new DandelionServlet());
