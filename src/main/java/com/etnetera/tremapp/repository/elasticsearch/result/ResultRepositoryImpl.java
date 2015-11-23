@@ -6,7 +6,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.PostConstruct;
 
@@ -31,8 +35,10 @@ import com.etnetera.tremapp.model.ModelAuditor;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
+import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.view.View;
 import com.etnetera.tremapp.repository.elasticsearch.ElasticsearchDatatables;
+import com.etnetera.tremapp.repository.mongodb.project.ProjectRepository;
 import com.etnetera.tremapp.repository.mongodb.view.ViewRepository;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
@@ -49,6 +55,9 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 
 	@Autowired
 	private ResultRepository resultRepository;
+
+	@Autowired
+	private ProjectRepository projectRepository;
 
 	@Autowired
 	private ViewRepository viewRepository;
@@ -174,9 +183,16 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	public DataSet<ResultDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectIds,
 			Locale locale) {
 		DataSet<Result> results = findResultsWithDatatablesCriterias(criterias, projectIds);
-		return new DataSet<ResultDT>(
-				results.getRows().stream().map(r -> new ResultDT(r, localizer, locale)).collect(Collectors.toList()),
-				results.getTotalRecords(), results.getTotalDisplayRecords());
+
+		Set<String> foundProjectIds = results.getRows().stream().filter(r -> r.getProjectId() != null)
+				.map(r -> r.getProjectId()).collect(Collectors.toSet());
+		Map<String, Project> foundProjects = StreamSupport
+				.stream(projectRepository.findAll(foundProjectIds).spliterator(), false)
+				.collect(Collectors.toMap(Project::getId, Function.identity()));
+
+		return new DataSet<ResultDT>(results.getRows().stream()
+				.map(r -> new ResultDT(r, foundProjects.get(r.getProjectId()), localizer, locale))
+				.collect(Collectors.toList()), results.getTotalRecords(), results.getTotalDisplayRecords());
 	}
 
 	private DataSet<Result> findResultsWithDatatablesCriterias(DatatablesCriterias criterias,

@@ -37,7 +37,7 @@ public class SecurityConfiguration {
 
 		@Override
 		public void configure(WebSecurity web) throws Exception {
-			web.ignoring().antMatchers("/resources/**", "/favicon.ico", "/robots.txt");
+			web.ignoring().antMatchers("/static/**", "/favicon.ico", "/robots.txt");
 		}
 
 	}

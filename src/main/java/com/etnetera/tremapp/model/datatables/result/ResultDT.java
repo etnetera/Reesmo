@@ -5,6 +5,7 @@ import java.util.Locale;
 import com.etnetera.tremapp.message.Localizer;
 import com.etnetera.tremapp.model.datatables.AuditedModelDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
+import com.etnetera.tremapp.model.mongodb.project.Project;
 
 public class ResultDT extends AuditedModelDT {
 
@@ -34,7 +35,9 @@ public class ResultDT extends AuditedModelDT {
 	
 	private String projectId;
 	
-	public ResultDT(Result result, Localizer localizer, Locale locale) {
+	private String projectName;
+	
+	public ResultDT(Result result, Project project, Localizer localizer, Locale locale) {
 		super(result);
 		this.id = result.getId();
 		this.suite = result.getSuite();
@@ -51,6 +54,7 @@ public class ResultDT extends AuditedModelDT {
 		this.severityValue = result.getSeverity() == null ? null : result.getSeverity().name();
 		this.automated = localizer.localize(result.isAutomated(), locale);
 		this.projectId = result.getProjectId();
+		this.projectName = project == null ? null : project.getName();
 	}
 
 	public String getId() {
@@ -103,6 +107,10 @@ public class ResultDT extends AuditedModelDT {
 
 	public String getProjectId() {
 		return projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
 	}
 
 }
