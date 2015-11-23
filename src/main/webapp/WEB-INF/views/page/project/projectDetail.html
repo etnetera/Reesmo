@@ -152,7 +152,7 @@
 				});
 				
 				$addUsersBtn.click(function(){
-					var rowsData = Tremapp.getSelectedRowsData($usersTable),
+					var rowsData = Tremapp.dataTables.getSelectedRowsData($usersTable),
 						userIds = [];
 					
 					$.each(rowsData, function(i, rowData){
@@ -167,14 +167,14 @@
 							userIds: userIds
 						}
 					}, function(addedCnt){
-						Tremapp.clearRowSelection($usersTable);
-						Tremapp.reloadTable($projectUsersTable);
+						Tremapp.dataTables.clearRowSelection($usersTable);
+						Tremapp.dataTables.reloadTable($projectUsersTable);
 						// TODO - show count
 					});
 				});
 				
 				$removeUsersBtn.click(function(){
-					var rowsData = Tremapp.getSelectedRowsData($projectUsersTable),
+					var rowsData = Tremapp.dataTables.getSelectedRowsData($projectUsersTable),
 						userIds = [];
 					
 					$.each(rowsData, function(i, rowData){
@@ -188,8 +188,8 @@
 							userIds: userIds
 						}
 					}, function(removedCnt){
-						Tremapp.clearRowSelection($projectUsersTable);
-						Tremapp.reloadTable($projectUsersTable);
+						Tremapp.dataTables.clearRowSelection($projectUsersTable);
+						Tremapp.dataTables.reloadTable($projectUsersTable);
 						// TODO - show count
 					});
 				});

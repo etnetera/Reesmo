@@ -192,7 +192,7 @@
 				});
 				
 				$addProjectsBtn.click(function(){
-					var rowsData = Tremapp.getSelectedRowsData($projectsTable),
+					var rowsData = Tremapp.dataTables.getSelectedRowsData($projectsTable),
 						projectIds = [];
 					
 					$.each(rowsData, function(i, rowData){
@@ -206,14 +206,14 @@
 							projectIds: projectIds
 						}
 					}, function(addedCnt){
-						Tremapp.clearRowSelection($projectsTable);
-						Tremapp.reloadTable($projectGroupProjectsTable);
+						Tremapp.dataTables.clearRowSelection($projectsTable);
+						Tremapp.dataTables.reloadTable($projectGroupProjectsTable);
 						// TODO - show count
 					});
 				});
 				
 				$removeProjectsBtn.click(function(){
-					var rowsData = Tremapp.getSelectedRowsData($projectGroupProjectsTable),
+					var rowsData = Tremapp.dataTables.getSelectedRowsData($projectGroupProjectsTable),
 						projectIds = [];
 					
 					$.each(rowsData, function(i, rowData){
@@ -227,8 +227,8 @@
 							projectIds: projectIds
 						}
 					}, function(removedCnt){
-						Tremapp.clearRowSelection($projectGroupProjectsTable);
-						Tremapp.reloadTable($projectGroupProjectsTable);
+						Tremapp.dataTables.clearRowSelection($projectGroupProjectsTable);
+						Tremapp.dataTables.reloadTable($projectGroupProjectsTable);
 						// TODO - show count
 					});
 				});
@@ -248,7 +248,7 @@
 				});
 				
 				$addUsersBtn.click(function(){
-					var rowsData = Tremapp.getSelectedRowsData($usersTable),
+					var rowsData = Tremapp.dataTables.getSelectedRowsData($usersTable),
 						userIds = [];
 					
 					$.each(rowsData, function(i, rowData){
@@ -263,14 +263,14 @@
 							userIds: userIds
 						}
 					}, function(addedCnt){
-						Tremapp.clearRowSelection($usersTable);
-						Tremapp.reloadTable($projectGroupUsersTable);
+						Tremapp.dataTables.clearRowSelection($usersTable);
+						Tremapp.dataTables.reloadTable($projectGroupUsersTable);
 						// TODO - show count
 					});
 				});
 				
 				$removeUsersBtn.click(function(){
-					var rowsData = Tremapp.getSelectedRowsData($projectGroupUsersTable),
+					var rowsData = Tremapp.dataTables.getSelectedRowsData($projectGroupUsersTable),
 						userIds = [];
 					
 					$.each(rowsData, function(i, rowData){
@@ -284,8 +284,8 @@
 							userIds: userIds
 						}
 					}, function(removedCnt){
-						Tremapp.clearRowSelection($projectGroupUsersTable);
-						Tremapp.reloadTable($projectGroupUsersTable);
+						Tremapp.dataTables.clearRowSelection($projectGroupUsersTable);
+						Tremapp.dataTables.reloadTable($projectGroupUsersTable);
 						// TODO - show count
 					});
 				});
