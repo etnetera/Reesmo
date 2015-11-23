@@ -16,7 +16,8 @@
 		</table>
 		<script th:inline="javascript">
 			Tremapp.resultsTableRenderName = function(name, type, result) {
-				return Tremapp.dataTables.renderLink('result/home/' + result.id, name);
+				return name;
+				//return Tremapp.dataTables.renderLink('result/home/' + result.id, name);
 			};
 			Tremapp.resultsTableRenderProject = function(project, type, result) {
 				return Tremapp.dataTables.renderLink('project/home/' + result.projectId, project);
