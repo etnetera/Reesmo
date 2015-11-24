@@ -49,28 +49,90 @@ $.extend(Tremapp, {
 			
 			result: {
 				
+				_$box: null,
+				
+				_$nav: null,
+				
+				_$content: null,
+				
+				_boxCls: 'box',
+				
+				_resultNavTabCls: 'result-nav-tab',
+				
+				_resultTabCls: 'result-tab',
+				
+				init: function($box, dtSettings, dtJson) {
+					this._$box = $box;
+					this._$nav = $box.find('> .nav');
+					this._$content = $box.find('> .box-body');
+					
+					var that = this;
+					$(dtSettings.nTBody).on('click', 'a.display-result', function(e){
+						var $this = $(this);
+						that.displayResult({
+							id: $this.attr('data-result-id'),
+							name: $this.text(),
+							status: $this.attr('data-result-status')
+						});
+						e.preventDefault();
+					});
+					
+					this._$nav.on('click', 'a', function(e){
+						$(this).tab('show');
+						e.preventDefault();
+					});
+					
+					this._$nav.on('click', 'i.close-result', function(e){
+						var $this = $(this),
+							$a = $this.parent('a'),
+							$li = $a.parent('li'),
+							$tab = that._$content.find($a.attr('href')),
+							active = $li.hasClass('active');
+						
+						if (active) {
+							$li.prev('li').find('a').tab('show');
+						}
+						$li.remove();
+						$tab.remove();
+						
+						if (that.getDisplayedResultsCnt() < 1)
+							that.toggleResultTabs(false);
+						
+						e.preventDefault();
+					});
+				},
+				
 				renderStatus: function(status, type, result) {
-					var cls = null;
-					switch (result.statusValue) {
-						case 'FAILED':
-							cls = 'bg-red';
-							break;
-						case 'BROKEN':
-							cls = 'bg-yellow';
-							break;
-						case 'SKIPPED':
-							cls = 'bg-gray';
-							break;
-						case 'PASSED':
-							cls = 'bg-green';
-							break;
-					}
-					return '<span class="label ' + cls + '">' + status + '</span>';
+					return '<span class="label bg-' + Tremapp.dataTables.impl.result.getStatusColor(result.statusValue) + '">' + status + '</span>';
 				},
 				
 				renderSeverity: function(severity, type, result) {
+					var cls = Tremapp.dataTables.impl.result.getSeverityIconClass(result.severityValue);
+					return '<i class="severity fa ' + cls + '" title="' + severity + '"></i>';
+				},
+				
+				getStatusColor: function(status) {
+					var color = null;
+					switch (status) {
+						case 'FAILED':
+							color = 'red';
+							break;
+						case 'BROKEN':
+							color = 'yellow';
+							break;
+						case 'SKIPPED':
+							color = 'gray';
+							break;
+						case 'PASSED':
+							color = 'green';
+							break;
+					}
+					return color;
+				},
+				
+				getSeverityIconClass: function(severity) {
 					var cls = null;
-					switch (result.severityValue) {
+					switch (severity) {
 						case 'BLOCKER':
 							cls = 'fa-ban text-red';
 							break;
@@ -87,7 +149,49 @@ $.extend(Tremapp, {
 							cls = 'fa-long-arrow-down text-muted';
 							break;
 					}
-					return '<i class="severity fa ' + cls + '" title="' + severity + '"></i>';
+					return cls;
+				},
+				
+				displayResult: function(result) {
+					var $anchor = this.findResultNavTabAnchor(result);
+					if ($anchor.length < 1) {
+						// create result tab nav
+						var statusColor = this.getStatusColor(result.status);
+						if (statusColor == 'gray')
+							statusColor = 'muted';
+						
+						$anchor = $('<a href="#' + this.createResultTabId(result) + '"/>')
+							.append($('<span class="text-' + statusColor + '"/>').text(result.name))
+							.append($('<i class="fa fa-remove close-result"/>'));
+						this._$nav.append($('<li class="' + this._resultNavTabCls + '"/>').append($anchor));
+						
+						// create result tab
+						var $tab = $('<div class="tab-pane ' + this._resultTabCls + '" id="' + this.createResultTabId(result) + '"/>').text(result.name);
+						this._$content.append($tab);
+						
+						// TODO - load async result data
+						
+						if (this.getDisplayedResultsCnt() < 2)
+							this.toggleResultTabs(true);
+					}
+					$anchor.tab('show');
+				},
+				
+				getDisplayedResultsCnt: function() {
+					return this._$nav.find('li.' + this._resultNavTabCls).length;
+				},
+				
+				toggleResultTabs: function(show) {
+					this._$nav.toggle(!!show);
+					this._$box.toggleClass(this._boxCls, !show);
+				},
+				
+				findResultNavTabAnchor: function(result) {
+					return this._$nav.find('li.' + this._resultNavTabCls + ' > a[href=#' + this.createResultTabId(result) + ']');
+				},
+				
+				createResultTabId: function(result) {
+					return 'result-' + result.id;
 				}
 				
 			}

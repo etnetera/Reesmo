@@ -10,7 +10,7 @@
 				class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
 	</ol>
 	<div layout:fragment="content">
-		<div th:replace="fragments/result/resultList :: box ('resultsTable', @{/dt/results}, true)">Results</div>
+		<div th:replace="fragments/result/resultList :: box (@{/dt/results}, true)">Results</div>
 	</div>
 </body>
 </html>

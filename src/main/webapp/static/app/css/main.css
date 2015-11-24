@@ -54,3 +54,26 @@ label.with-input {
 	text-align: left;
 	white-space: nowrap;	
 }
+
+i.close-result {
+	cursor: pointer;
+	font-size: large;
+	padding-left: 5px;
+    margin-left: 5px;
+}
+
+.results-box.nav-tabs-custom > .nav-tabs > li > a:hover > i.close-result {
+	color: #444;
+}
+
+.results-box.nav-tabs-custom > .nav-tabs > li {
+	margin-right: 0px;
+}
+
+.results-box.nav-tabs-custom > ul.nav.nav-tabs > li:hover {
+	border-top-color: #d2d6de;
+}
+
+.results-box > ul.nav.nav-tabs > li.active:hover {
+	border-top-color: #3c8dbc;
+}
