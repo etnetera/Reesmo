@@ -17,17 +17,7 @@
 			th:text="#{page.projectgroupresults.title}">Results</a></li>
 	</ol>
 	<div layout:fragment="content">
-		<div class="box box-primary">
-			<div class="box-body">
-				<div class="dataTables_wrapper form-inline dt-bootstrap">
-					<div class="row">
-						<div class="col-sm-12">
-							<div th:replace="fragments/result/results :: table ('projectGroupResultsTable', @{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}, true)">Table</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div th:replace="fragments/result/resultList :: box ('projectGroupResultsTable', @{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}, true)">Results</div>
 	</div>
 </body>
 </html>

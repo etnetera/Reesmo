@@ -23,11 +23,35 @@ public class Result extends ElasticAuditedModel {
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	private String projectId;
 	
+	/**
+	 * Suite name.
+	 */
 	@Field(type = FieldType.String)
 	private String suite;
 	
-	@Field(type = FieldType.String)
+	/**
+	 * Unique suite run identifier. It should be unique
+	 * only for given suite. Best way is to use timestamp.
+	 */
+	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	private String suiteId;
+	
+	/**
+	 * Name for job, i.e. group of tests. It will usually be set 
+	 * in CI or build management tool and it indicates
+	 * job name which is running all the tests including
+	 * suites. For example in Teamcity it will be the name 
+	 * of Build, in Jenkins the name of Job.
+	 */
+	@Field(type = FieldType.String)
+	private String job;
+	
+	/**
+	 * Unique job run identifier. It should be unique
+	 * only for given job. Best way is to use timestamp.
+	 */
+	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+	private String jobId;
 	
 	@Field(type = FieldType.String)
 	private String milestone;
@@ -110,6 +134,22 @@ public class Result extends ElasticAuditedModel {
 
 	public void setSuiteId(String suiteId) {
 		this.suiteId = suiteId;
+	}
+
+	public String getTestGroup() {
+		return job;
+	}
+
+	public void setTestGroup(String testGroup) {
+		this.job = testGroup;
+	}
+
+	public String getTestGroupId() {
+		return jobId;
+	}
+
+	public void setTestGroupId(String testGroupId) {
+		this.jobId = testGroupId;
 	}
 
 	public String getMilestone() {

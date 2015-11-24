@@ -42,7 +42,6 @@ public class ResultValidator implements Validator {
 					}					
 				}
 			}
-			
 		}
 	} 
 

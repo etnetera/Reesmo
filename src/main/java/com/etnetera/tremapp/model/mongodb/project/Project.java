@@ -91,11 +91,7 @@ public class Project extends MongoAuditedModel {
 		if (permission == null) {
 			return false;
 		}
-		Permission userPermission = users.get(user.getId());
-		if (userPermission != null && userPermission.isGreaterThanOrEqual(permission)) {
-			return true;
-		}
-		return false;
+		return user.getUser().isAllowedForProject(id, permission);
 	}
 	
 	public void checkUserPermission(IdentifiedUser user, String permission) {
