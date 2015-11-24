@@ -38,7 +38,7 @@ public class ProjectGroupResultController implements MenuActivityController {
 	
 	@Override
 	public String getActiveMenu() {
-		return "projectResults";
+		return "projectGroupResults";
 	}
 	
 	@RequestMapping(value = "/project-group/results/{projectGroupId}", method = RequestMethod.GET)
