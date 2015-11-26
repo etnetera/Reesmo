@@ -136,20 +136,20 @@ public class Result extends ElasticAuditedModel {
 		this.suiteId = suiteId;
 	}
 
-	public String getTestGroup() {
+	public String getJob() {
 		return job;
 	}
 
-	public void setTestGroup(String testGroup) {
-		this.job = testGroup;
+	public void setJob(String job) {
+		this.job = job;
 	}
 
-	public String getTestGroupId() {
+	public String getJobId() {
 		return jobId;
 	}
 
-	public void setTestGroupId(String testGroupId) {
-		this.jobId = testGroupId;
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
 	}
 
 	public String getMilestone() {
