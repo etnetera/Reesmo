@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<span th:fragment="status (status)">
+		<span th:if="${status.name() == 'FAILED'}" class="label bg-red" th:text="#{result.status.value.failed}">Failed</span>
+		<span th:if="${status.name() == 'BROKEN'}" class="label bg-yellow" th:text="#{result.status.value.broken}">Broken</span>
+		<span th:if="${status.name() == 'SKIPPED'}" class="label bg-gray" th:text="#{result.status.value.skipped}">Skipped</span>
+		<span th:if="${status.name() == 'PASSED'}" class="label bg-green" th:text="#{result.status.value.passed}">Passed</span>
+	</span>
+	<span th:fragment="severity (severity)">
+		<i th:if="${severity.name() == 'BLOCKER'}" class="fa fa-ban text-red" th:title="#{result.severity.value.blocker}"></i>
+		<i th:if="${severity.name() == 'CRITICAL'}" class="fa fa-long-arrow-up text-red" th:title="#{result.severity.value.critical}"></i>
+		<i th:if="${severity.name() == 'NORMAL'}" class="fa fa-angle-double-up text-red" th:title="#{result.severity.value.normal}"></i>
+		<i th:if="${severity.name() == 'MINOR'}" class="fa fa-angle-double-down text-green" th:title="#{result.severity.value.minor}"></i>
+		<i th:if="${severity.name() == 'TRIVIAL'}" class="fa fa-long-arrow-down text-muted" th:title="#{result.severity.value.trivial}"></i>
+	</span>
+</body>
+</html>

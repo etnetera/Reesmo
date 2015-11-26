@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/project">
+<head>
+<title th:text="${result.name} - ${project.name} - #{page.projects.title}">Name - Result -
+	Project - Projects</title>
+</head>
+<body>
+	<h1 layout:fragment="content-title"><i class="fa fa-check-square-o"></i> <span th:text="${result.name}">Name</span> <small th:text="#{page.resultdetail.titledesc}">small title</small></h1>
+	<ol layout:fragment="content-breadcrumb">
+		<li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
+				<span th:text="#{page.projects.title}">Projects</span></a></li>
+		<li><a 
+			th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#" 
+			th:text="${project.name}">Project</a></li>
+		<li class="active"><a
+			th:href="@{/result/detail/{resultId}(resultId=${result.id})}" href="#"><span th:text="#{page.resultdetail.title}">Result</span></a></li>
+	</ol>
+	<div layout:fragment="content" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">
+					<span th:replace="fragments/result/resultParts :: status (${result.status})">Status</span>
+					<span th:text="${result.name}">Name</span>
+					<i th:replace="fragments/result/resultParts :: severity (${result.severity})"></i>
+				</h3>
+			</div>
+			<div class="box-box">
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>
