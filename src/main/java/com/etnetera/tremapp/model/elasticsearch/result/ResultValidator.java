@@ -17,13 +17,19 @@ public class ResultValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
+		Result result = (Result) target;
+		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "validator.NotEmpty.message");
-		ValidationUtils.rejectIfEmpty(errors, "startedAt", "validator.NotEmpty.message");
-		ValidationUtils.rejectIfEmpty(errors, "endedAt", "validator.NotEmpty.message");
 		ValidationUtils.rejectIfEmpty(errors, "status", "validator.NotEmpty.message");
 		ValidationUtils.rejectIfEmpty(errors, "severity", "validator.NotEmpty.message");
 		
-		Result result = (Result) target;
+		ValidationUtils.rejectIfEmpty(errors, "startedAt", "validator.NotEmpty.message");
+		if (result.getEndedAt() == null && result.getLength() == null) {
+			ValidationUtils.rejectIfEmpty(errors, "endedAt", "validator.NotEmpty.result.endedAt.message");
+		}
+		if (result.getLength() != null && result.getLength().compareTo(new Long(0)) < 0) {
+			errors.rejectValue("length", "validator.NoTNegative.message");
+		}
 		if (result.getStartedAt() != null && result.getEndedAt() != null && result.getStartedAt().after(result.getEndedAt())) {
 			errors.rejectValue("endedAt", "validator.GreateOrEqual.startedAt.message");
 		}

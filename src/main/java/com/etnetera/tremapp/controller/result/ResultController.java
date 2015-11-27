@@ -70,5 +70,17 @@ public class ResultController implements MenuActivityController {
 		model.addAttribute("project", project);
 		return "page/result/resultDetail";
 	}
+	
+	@RequestMapping(value = "/a/result/detail/{resultId}", method = RequestMethod.GET)
+	public String showResultDetail(@PathVariable String resultId, Model model) {
+		Result result = resultRepository.findOne(resultId);
+		ControllerModel.exists(result, Result.class);
+		userManager.checkProjectPermission(result.getProjectId(), Permission.BASIC);
+		Project project = projectRepository.findOne(result.getProjectId());
+		ControllerModel.exists(project, Project.class);
+		model.addAttribute("result", result);
+		model.addAttribute("project", project);
+		return "fragments/result/resultDetail :: detail (single=false)";
+	}
 
 }

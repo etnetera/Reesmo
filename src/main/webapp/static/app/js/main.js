@@ -51,20 +51,18 @@ $.extend(Tremapp, {
 				
 				_$box: null,
 				
-				_$nav: null,
+				_$boxDetail: null,
 				
-				_$content: null,
+				_$detail: null,
 				
-				_boxCls: 'box',
+				_withDetailCls: 'with-detail',
 				
-				_resultNavTabCls: 'result-nav-tab',
-				
-				_resultTabCls: 'result-tab',
+				_detailLoadingCls: 'loading',
 				
 				init: function($box, dtSettings, dtJson) {
 					this._$box = $box;
-					this._$nav = $box.find('> .nav');
-					this._$content = $box.find('> .box-body');
+					this._$boxDetail = this._$box.find('> .results-box-detail');
+					this._$detail = this._$boxDetail.find('> .result-detail');
 					
 					var that = this;
 					$(dtSettings.nTBody).on('click', 'a.display-result', function(e){
@@ -77,27 +75,8 @@ $.extend(Tremapp, {
 						e.preventDefault();
 					});
 					
-					this._$nav.on('click', 'a', function(e){
-						$(this).tab('show');
-						e.preventDefault();
-					});
-					
-					this._$nav.on('click', 'i.close-result', function(e){
-						var $this = $(this),
-							$a = $this.parent('a'),
-							$li = $a.parent('li'),
-							$tab = that._$content.find($a.attr('href')),
-							active = $li.hasClass('active');
-						
-						if (active) {
-							$li.prev('li').find('a').tab('show');
-						}
-						$li.remove();
-						$tab.remove();
-						
-						if (that.getDisplayedResultsCnt() < 1)
-							that.toggleResultTabs(false);
-						
+					this._$detail.on('click', 'i.close-result', function(e){
+						that.closeResult();
 						e.preventDefault();
 					});
 				},
@@ -153,45 +132,23 @@ $.extend(Tremapp, {
 				},
 				
 				displayResult: function(result) {
-					var $anchor = this.findResultNavTabAnchor(result);
-					if ($anchor.length < 1) {
-						// create result tab nav
-						var statusColor = this.getStatusColor(result.status);
-						if (statusColor == 'gray')
-							statusColor = 'muted';
-						
-						$anchor = $('<a href="#' + this.createResultTabId(result) + '"/>')
-							.append($('<span class="text-' + statusColor + '"/>').text(result.name))
-							.append($('<i class="fa fa-remove close-result"/>'));
-						this._$nav.append($('<li class="' + this._resultNavTabCls + '"/>').append($anchor));
-						
-						// create result tab
-						var $tab = $('<div class="tab-pane ' + this._resultTabCls + '" id="' + this.createResultTabId(result) + '"/>').text(result.name);
-						this._$content.append($tab);
-						
-						// TODO - load async result data
-						
-						if (this.getDisplayedResultsCnt() < 2)
-							this.toggleResultTabs(true);
-					}
-					$anchor.tab('show');
+					var that = this;
+					this._$detail.html('');
+					this._$box.addClass(this._detailLoadingCls + ' ' + this._withDetailCls);
+					Tremapp.ajax({
+						type: 'GET',
+						url: Tremapp.baseUrl + 'a/result/detail/' + result.id,
+						dataType: 'html'
+					}, function(html) {
+						that._$detail.html(html);
+						that._$box.removeClass(that._detailLoadingCls);
+					}, function() {
+						that._$box.removeClass(that._detailLoadingCls + ' ' + that._withDetailCls);
+					});
 				},
 				
-				getDisplayedResultsCnt: function() {
-					return this._$nav.find('li.' + this._resultNavTabCls).length;
-				},
-				
-				toggleResultTabs: function(show) {
-					this._$nav.toggle(!!show);
-					this._$box.toggleClass(this._boxCls, !show);
-				},
-				
-				findResultNavTabAnchor: function(result) {
-					return this._$nav.find('li.' + this._resultNavTabCls + ' > a[href=#' + this.createResultTabId(result) + ']');
-				},
-				
-				createResultTabId: function(result) {
-					return 'result-' + result.id;
+				closeResult: function() {
+					this._$box.removeClass(this._withDetailCls);
 				}
 				
 			}
@@ -248,16 +205,22 @@ $.extend(Tremapp, {
 			cache : false,
 			dataType : 'json',
 			success : function(JSON){
-				if (JSON.status == 'SUCCESS') {
+				if (typeof JSON == 'string') {
 					if (options.successCallback) {
-						options.successCallback(JSON.result);
+						options.successCallback(JSON);
 					}
 				} else {
-					if (options.errorCallback) {
-						options.errorCallback(JSON.result);
+					if (JSON.status == 'SUCCESS') {
+						if (options.successCallback) {
+							options.successCallback(JSON.result);
+						}
 					} else {
-						// TODO - show error messages
-						alert(JSON.result);
+						if (options.errorCallback) {
+							options.errorCallback(JSON.result);
+						} else {
+							// TODO - show error messages
+							alert(JSON.result);
+						}
 					}
 				}
 			},
@@ -283,6 +246,9 @@ $.extend(Tremapp, {
 					error = textStatus;
 				}
 		
+				if (errorCallback) {
+					errorCallback(status, JSON, xhr, textStatus, errorThrown);
+				}
 				if (errors[error]) {
 					errors[error](status, JSON, xhr, textStatus, errorThrown);
 				} else {

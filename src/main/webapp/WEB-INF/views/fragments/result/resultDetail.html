@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="detail (single)">
+		<div class="box-header with-border">
+			<h3 class="box-title">
+				<span th:replace="fragments/result/resultParts :: status (${result.status})">Status</span>
+				<span th:text="${result.name}">Name</span>
+				<i th:replace="fragments/result/resultParts :: severity (${result.severity})"></i>
+			</h3>
+			<div th:if="${single == false}" class="pull-right">
+				<i class="fa fa-expand expand-result clickable"></i>
+				<i class="fa fa-close close-result clickable"></i>
+			</div>
+		</div>
+		<div class="box-body">
+			
+		</div>
+	</div>
+</body>
+</html>

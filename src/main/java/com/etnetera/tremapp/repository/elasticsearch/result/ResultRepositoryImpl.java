@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -125,6 +126,10 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	@Override
 	public Result saveResult(Result result, List<ResultAttachment> attachments) {
 		result.setAttachments(attachments == null ? new ArrayList<>() : attachments);
+		if (result.getStartedAt() != null) {
+			if (result.getEndedAt() != null) result.setLength(result.getEndedAt().getTime() - result.getStartedAt().getTime());
+			else if (result.getLength() != null) result.setEndedAt(new Date(result.getStartedAt().getTime() + result.getLength()));
+		}
 		return resultRepository.save(result);
 	}
 
