@@ -8,4 +8,6 @@ public class Tremapp {
 	
 	public static final String ELASTICSEARCH_INDEX = "tremapp";
 	
+	public static final String NEWLINE = "\n";
+	
 }

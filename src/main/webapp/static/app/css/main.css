@@ -150,3 +150,11 @@ label.with-input {
 .result-detail .box-header .box-title {
 	font-size: 22px;
 }
+
+.result-error {
+	margin: 7px 0;
+	padding: 7px;
+	border-color: #EBCCD1;
+	color: #A94442;
+	background-color: #F2DEDE;
+}

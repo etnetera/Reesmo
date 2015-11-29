@@ -16,7 +16,51 @@
 			</div>
 		</div>
 		<div class="box-body">
-			
+			<div class="result-project">
+				<span th:text="#{result.project}">Project</span>: <span class="value" th:text="${project.name}">Project</span>
+			</div>
+			<div th:if="${!#strings.isEmpty(result.suite)}" class="result-suite">
+				<span th:text="#{result.suite}">Suite</span>: <span class="value" th:text="${result.suite}">Suite</span>
+				<small th:if="${!#strings.isEmpty(result.suiteId)}" th:text="${result.suiteId}">suiteid</small>
+			</div>
+			<div th:if="${!#strings.isEmpty(result.job)}" class="result-job">
+				<span th:text="#{result.job}">Job</span>: <span class="value" th:text="${result.job}">Job</span>
+				<small th:if="${!#strings.isEmpty(result.jobId)}" th:text="${result.jobId}">jobid</small>
+			</div>
+			<div th:if="${!#strings.isEmpty(result.milestone)}" class="result-milestone">
+				<span th:text="#{result.milestone}">Milestone</span>: <span class="value" th:text="${result.milestone}">Milestone</span>
+			</div>
+			<div th:if="${!#strings.isEmpty(result.description)}" class="result-description">
+				<span th:text="#{result.description}">Description</span>: <span class="value" th:text="${result.description}">Description</span>
+			</div>
+			<div th:if="${!#strings.isEmpty(result.environment)}" class="result-environment">
+				<span th:text="#{result.environment}">Environment</span>: <span class="value" th:text="${result.environment}">Environment</span>
+			</div>
+			<div th:if="${!#strings.isEmpty(result.author)}" class="result-author">
+				<span th:text="#{result.author}">Author</span>: <span class="value" th:text="${result.author}">Author</span>
+			</div>
+			<div class="result-length">
+				<span th:text="#{result.length}">Length</span>: <span class="value" th:text="${result.length}">100</span>
+				<small th:text="${result.startedAt}">2015-01-01 00:00:00</small><small> - </small><small th:text="${result.endedAt}">2015-01-01 00:01:00</small>
+			</div>
+			<div class="result-automated">
+				<span th:text="#{result.automated}">Automated</span>: <span class="value" th:text="${result.automated} ? #{true} : #{false}">Yes</span>
+			</div>
+			<div th:if="${result.labels != null and not #lists.isEmpty(result.labels)}" class="result-labels">
+				<span th:text="#{result.labels}">Labels</span>: <span class="value" th:text="${#strings.listJoin(result.labels, ', ')}">Label 1, Label 2</span>
+			</div>
+			<div th:if="${result.categories != null and not #lists.isEmpty(result.categories)}" class="result-categories">
+				<span th:text="#{result.categories}">Categories</span>: <span class="value" th:text="${#strings.listJoin(result.categories, ', ')}">Category 1, Category 2</span>
+			</div>
+			<div th:if="${result.types != null and not #lists.isEmpty(result.types)}" class="result-types">
+				<span th:text="#{result.types}">Types</span>: <span class="value" th:text="${#strings.listJoin(result.types, ', ')}">Type 1, Type 2</span>
+			</div>
+			<div th:if="${result.errors != null and not #lists.isEmpty(result.errors)}" class="result-errors">
+				<div th:each="err : ${result.errors}" class="result-error" th:with="lines=${#strings.listSplit(err, T(com.etnetera.tremapp.Tremapp).NEWLINE)}">
+					<div class="result-error-firstline" th:text="${lines[0]}" th:classappend="${lines.size() gt 1 ? 'clickable' : ''}">Error first line</div>
+					<div th:if="${lines.size() gt 1}" class="result-error-nextlines" th:text="${#strings.listJoin(lines.subList(1, lines.size()), T(com.etnetera.tremapp.Tremapp).NEWLINE)}">Next lines</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
