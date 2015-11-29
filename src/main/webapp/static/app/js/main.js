@@ -51,6 +51,8 @@ $.extend(Tremapp, {
 				
 				_$box: null,
 				
+				_$boxList: null,
+				
 				_$boxDetail: null,
 				
 				_$detail: null,
@@ -59,14 +61,18 @@ $.extend(Tremapp, {
 				
 				_detailLoadingCls: 'loading',
 				
+				_expandedCls: 'expanded',
+				
 				init: function($box, dtSettings, dtJson) {
 					this._$box = $box;
+					this._$boxList = this._$box.find('> .results-box-list');
 					this._$boxDetail = this._$box.find('> .results-box-detail');
 					this._$detail = this._$boxDetail.find('> .result-detail');
 					
 					var that = this;
 					$(dtSettings.nTBody).on('click', 'a.display-result', function(e){
 						var $this = $(this);
+						$this.blur();
 						that.displayResult({
 							id: $this.attr('data-result-id'),
 							name: $this.text(),
@@ -75,8 +81,21 @@ $.extend(Tremapp, {
 						e.preventDefault();
 					});
 					
+					this._$boxList.on('click', '.expand-overlay', function(e){
+						that.collapseResult();
+						e.preventDefault();
+					});
+					
 					this._$detail.on('click', 'i.close-result', function(e){
 						that.closeResult();
+						e.preventDefault();
+					});
+					this._$detail.on('click', 'i.expand-result', function(e){
+						that.expandResult();
+						e.preventDefault();
+					});
+					this._$detail.on('click', 'i.collapse-result', function(e){
+						that.collapseResult();
 						e.preventDefault();
 					});
 				},
@@ -134,6 +153,7 @@ $.extend(Tremapp, {
 				displayResult: function(result) {
 					var that = this;
 					this._$detail.html('');
+					this._$box.removeClass(this._expandedCls);
 					this._$box.addClass(this._detailLoadingCls + ' ' + this._withDetailCls);
 					Tremapp.ajax({
 						type: 'GET',
@@ -149,6 +169,14 @@ $.extend(Tremapp, {
 				
 				closeResult: function() {
 					this._$box.removeClass(this._withDetailCls);
+				},
+				
+				expandResult: function() {
+					this._$box.addClass(this._expandedCls);
+				},
+				
+				collapseResult: function() {
+					this._$box.removeClass(this._expandedCls);
 				}
 				
 			}

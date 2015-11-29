@@ -2,6 +2,7 @@
 <html>
 <body>
 	<div th:fragment="detail (single)">
+		<div th:if="${single == false}" class="left-border"></div>
 		<div class="box-header with-border">
 			<h3 class="box-title">
 				<span th:replace="fragments/result/resultParts :: status (${result.status})">Status</span>
@@ -10,6 +11,7 @@
 			</h3>
 			<div th:if="${single == false}" class="pull-right">
 				<i class="fa fa-expand expand-result clickable"></i>
+				<i class="fa fa-compress collapse-result clickable"></i>
 				<i class="fa fa-close close-result clickable"></i>
 			</div>
 		</div>
