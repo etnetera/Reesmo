@@ -208,7 +208,7 @@ public class TableFinalizerElProcessor extends AbstractElProcessor {
       // The config node (the one with the dt:conf attribute), if it exists
       Element configNode = (Element) RequestUtils.getFromRequest(DataTablesDialect.INTERNAL_NODE_CONFIG, request);
       if (configNode != null) {
-         // Fix to not remove already removed config element, otherwise configNode.getParent() == null and then NPE.
+         // FIX to not remove already removed config element, otherwise configNode.getParent() == null and then NPE.
     	 // configNode.getParent().removeChild(configNode);
          NestableNode parent = configNode.getParent();
          if (parent != null) {

@@ -141,7 +141,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		ResultAttachment attachment = new ResultAttachment();
 		attachment.setId(gridFile.getId().toString());
 		attachment.setName(gridFile.getFilename());
-		attachment.setPath(StringUtils.trimToNull(path));
+		attachment.setPath(path == null ? gridFile.getFilename() : StringUtils.trim(path));
 		attachment.setContentType(gridFile.getContentType());
 		attachment.setSize(gridFile.getLength());
 		modelAuditor.audit(attachment);

@@ -1,21 +1,32 @@
 package com.etnetera.tremapp.controller.result;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.HandlerMapping;
 
 import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
+import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.elasticsearch.result.ResultRepository;
@@ -24,9 +35,12 @@ import com.etnetera.tremapp.user.UserManager;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
+import com.mongodb.gridfs.GridFSDBFile;
 
 @Controller
 public class ResultController implements MenuActivityController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResultController.class);
 	
 	@Autowired
     private UserManager userManager;
@@ -81,6 +95,47 @@ public class ResultController implements MenuActivityController {
 		model.addAttribute("result", result);
 		model.addAttribute("project", project);
 		return "fragments/result/resultDetail :: detail (single=false)";
+	}
+	
+	@RequestMapping(value = "/result/attachment/view/{resultId}/**", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> viewResultAttachment(@PathVariable String resultId, HttpServletRequest request) {
+		return serveResultAttachment(resultId, request, false);
+	}
+	
+	@RequestMapping(value = "/result/attachment/download/{resultId}/**", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> downloadResultAttachment(@PathVariable String resultId, HttpServletRequest request) {
+		return serveResultAttachment(resultId, request, true);
+	}
+	
+	private ResponseEntity<byte[]> serveResultAttachment(@PathVariable String resultId, HttpServletRequest request, boolean download) {
+		Result result = resultRepository.findOne(resultId);
+		ControllerModel.exists(result, Result.class);
+		userManager.checkProjectPermission(result.getProjectId(), Permission.BASIC);
+		
+		String pattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+		String path = new AntPathMatcher().extractPathWithinPattern(pattern, request.getPathInfo());
+		ResultAttachment attachment = result.getAttachmentByPath(path);
+		if (attachment == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		GridFSDBFile file = resultRepository.getAttachmentFile(attachment);
+		if (file == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		try {
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.setContentType(MediaType.parseMediaType(file.getContentType()));
+			if (download) {
+				responseHeaders.setContentDispositionFormData(file.getFilename(), file.getFilename());
+			}
+			responseHeaders.setContentLength(file.getLength());
+			responseHeaders.setCacheControl("max-age=7200, must-revalidate");
+
+			return new ResponseEntity<>(IOUtils.toByteArray(file.getInputStream()), responseHeaders, HttpStatus.OK);
+		} catch (IOException e) {
+			LOGGER.error("Cannot read byte[] for file {}", file.getId(), e);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

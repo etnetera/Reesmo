@@ -15,7 +15,7 @@
 	cursor: pointer;
 }
 
-.navbar-nav>.user-menu>.dropdown-menu>li.user-header {
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header {
 	height: 150px;
 }
 
@@ -59,8 +59,14 @@ label.with-input {
 	white-space: nowrap;	
 }
 
+/* RESULTS */
+
 .results-box {
 	position: relative;
+}
+
+.results-box.with-detail {
+	min-height: 400px;
 }
 
 .results-box .results-box-list {
@@ -74,8 +80,10 @@ label.with-input {
 	width: 50%;
 }
 
+.results-box.with-detail .results-box-list table.resultsTable th:nth-child(3),
 .results-box.with-detail .results-box-list table.resultsTable th:nth-child(5),
 .results-box.with-detail .results-box-list table.resultsTable th:nth-child(6),
+.results-box.with-detail .results-box-list table.resultsTable td:nth-child(3),
 .results-box.with-detail .results-box-list table.resultsTable td:nth-child(5),
 .results-box.with-detail .results-box-list table.resultsTable td:nth-child(6) {
 	display: none;
@@ -109,6 +117,7 @@ label.with-input {
 	height: 100%;
 	background-color: #fff;
     z-index: 5;
+    overflow-y: scroll; 
 }
 
 .results-box.with-detail .results-box-detail {
@@ -151,10 +160,256 @@ label.with-input {
 	font-size: 22px;
 }
 
-.result-error {
-	margin: 7px 0;
-	padding: 7px;
-	border-color: #EBCCD1;
-	color: #A94442;
-	background-color: #F2DEDE;
+/* RESULT */
+
+/*.result-detail {
+	position: relative;
+}
+
+.result-detail .result-data {
+	float: left;
+	width: 100%;
+	position: relative;
+}
+
+.result-detail.with-att-preview .result-data {
+	float: left;
+	width: 50%;
+}
+
+.result-detail .result-data .expand-overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+	cursor: pointer;
+}
+
+.result-detail.with-att-preview.expanded .result-data .expand-overlay {
+	display: block;
+}
+
+.result-detail.with-att-preview.expanded .result-data:hover .expand-overlay {
+	background-color: #F4F4F4;
+	opacity: .4;
+}
+
+.result-detail .result-att-preview {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 50%;
+	height: 100%;
+	background-color: #fff;
+    z-index: 5;
+}
+
+.result-detail.with-att-preview .result-att-preview {
+	display: block;
+}
+
+.result-detail.with-att-preview.expanded .result-att-preview {
+    left: 10%;
+    width: 90%;
+}
+
+.result-detail .result-att-preview .left-border {
+	display: none;
+	position: absolute;
+	width: 1px;
+	top: 0;
+	bottom: 0;
+	left: -1px;
+	background-color: #000;
+}
+
+.result-detail.with-att-preview .result-att-preview .left-border {
+	display: block;
+}
+
+.result-detail .collapse-att-preview {
+	display: none;
+}
+
+.result-detail.expanded .collapse-att-preview {
+	display: inline-block;
+}
+
+.result-detail.expanded .expand-att-preview {
+	display: none;
+}
+
+.result-att-preview .box-header,
+.result-att-preview .box-header .box-title {
+	font-size: 22px;
+}
+
+.result-att-preview .box-header a.attachment-lnk {
+	font-size: 14px;
+}*/
+
+/* RESULT DATA */
+
+.result-value {
+	margin-top: 5px;
+}
+
+.result-value:first-child {
+	margin-top: 0;
+}
+
+.result-value .value-label {
+	color: #777;
+}
+
+.result-value .value {
+	color: #000;
+}
+
+.result-info {
+	margin-top: 5px;
+	padding: 10px;
+}
+
+.result-info .firstline,
+.result-info .nextlines {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.result-info .nextlines {
+	display: none;
+}
+
+.result-info.expanded .nextlines {
+	display: block;
+}
+
+.result-attachment {
+	padding: 5px 10px;
+	margin-top: 5px;
+	background-color: #F4F4F4;
+}
+
+.result-attachment:hover {
+	background-color: #d4d4d4;
+}
+
+.result-attachment a.view {
+	color: #333;
+	text-decoration: none;
+}
+
+/* PANES */
+
+body.panes-active {
+	overflow: hidden;
+}
+
+.panes.active {
+	position: fixed;
+    top: 45px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    width: auto;
+    z-index: 2000;
+    border: none;
+    margin: 0;
+}
+
+.panes > .panes-overlay {
+	display: none;
+	position: absolute;
+	top: -45px;
+	right: -15px;
+    bottom: -15px;
+    left: -15px;
+	background-color: rgba(0, 0, 0, .5);
+}
+
+.panes.active > .panes-overlay {
+	display: block;
+}
+
+.panes > .panes-killer {
+	display: none;
+	position: absolute;
+    top: -45px;
+    left: 0px;
+    font-size: 32px;
+    color: white;
+}
+
+.panes.active > .panes-killer {
+	display: block;
+}
+
+.panes.active > .pane-left,
+.panes.active > .pane-right {
+	position: absolute;
+    top: 0;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+.panes > .pane-right {
+	display: none;
+    left: 50%;
+    width: 50%;
+    border-left: 1px solid #ccc;
+}
+
+.panes.active > .pane-left {
+	width: 100%;
+}
+
+.panes.active.right-pane-on > .pane-right {
+	display: block;
+}
+
+.panes.active.right-pane-on > .pane-left {
+	width: 50%;
+}
+
+.panes.active.right-pane-on.right-pane-expanded > .pane-right {
+	left: 5%;
+	width: 95%;
+}
+
+.panes.active.right-pane-on.right-pane-expanded > .pane-left {
+	overflow: hidden;
+}
+
+.panes > .pane-left > .expand-overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.panes > .pane-left:hover > .expand-overlay {
+	background-color: #F4F4F4;
+	opacity: .4;
+}
+
+.panes.active.right-pane-on.right-pane-expanded > .pane-left > .expand-overlay {
+	display: block;
+}
+
+/* RESULT DETAIL */
+
+.result-detail .result-attachment-pane-controls .collapse-right-pane,
+.result-detail.right-pane-expanded .result-attachment-pane-controls .expand-right-pane {
+	display: none;
+}
+
+.result-detail.right-pane-expanded .result-attachment-pane-controls .collapse-right-pane {
+	display: inline;
 }

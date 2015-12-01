@@ -303,6 +303,10 @@ public class Result extends ElasticAuditedModel {
 		return attachments.stream().filter(a -> a.getId().equals(attachmentId)).findFirst().orElse(null);
 	}
 	
+	public ResultAttachment getAttachmentByPath(String path) {
+		return attachments.stream().filter(a -> a.getPath() == null ? false : a.getPath().equals(path)).findFirst().orElse(null);
+	}
+	
 	public ResultAttachment addAttachment(ResultAttachment attachment) {
 		attachments.add(attachment);
 		return attachment;

@@ -16,9 +16,15 @@
 			th:href="@{/result/detail/{resultId}(resultId=${result.id})}" href="#"><span th:text="#{page.resultdetail.title}">Result</span></a></li>
 	</ol>
 	<div layout:fragment="content" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}">
-		<div class="box box-primary result-detail">
+		<div id="result-detail" class="box box-primary result-detail panes">
 			<div th:replace="fragments/result/resultDetail :: detail (true)"></div>
 		</div>
+		<script th:inline="javascript">
+			$(function() {
+				//Tremapp.dataTables.impl.result.initDetail($('#result-detail'), [[${result.id}]]);
+				new Tremapp.ResultDetailPanes($('#result-detail'), [[${result.id}]]).init();
+			});
+		</script>
 	</div>
 </body>
 </html>

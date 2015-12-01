@@ -1,22 +1,6 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<div th:fragment="detail (single)">
-		<div class="box-header with-border">
-			<h3 class="box-title">
-				<span th:replace=":: status (${result.status})">Status</span>
-				<span th:text="${result.name}">Name</span>
-				<i th:replace=":: severity (${result.severity})"></i>
-			</h3>
-			<div th:if="${single == false}" class="pull-right">
-				<i class="fa fa-expand expand-detail clickable"></i>
-				<i class="fa fa-close close-detail clickable"></i>
-			</div>
-		</div>
-		<div class="box-body">
-			
-		</div>
-	</div>
 	<span th:fragment="status (status)">
 		<span th:if="${status.name() == 'FAILED'}" class="label bg-red" th:text="#{result.status.value.failed}">Failed</span>
 		<span th:if="${status.name() == 'BROKEN'}" class="label bg-yellow" th:text="#{result.status.value.broken}">Broken</span>
@@ -29,6 +13,12 @@
 		<i th:if="${severity.name() == 'NORMAL'}" class="fa fa-angle-double-up text-red" th:title="#{result.severity.value.normal}"></i>
 		<i th:if="${severity.name() == 'MINOR'}" class="fa fa-angle-double-down text-green" th:title="#{result.severity.value.minor}"></i>
 		<i th:if="${severity.name() == 'TRIVIAL'}" class="fa fa-long-arrow-down text-muted" th:title="#{result.severity.value.trivial}"></i>
+	</span>
+	<span th:fragment="attachmentIcon (kind, contentType)" th:switch="${kind}">
+		<i th:case="'image'" class="fa fa-file-image-o" th:title="${contentType}"></i>
+		<i th:case="'text'" class="fa fa-file-text-o" th:title="${contentType}"></i>
+		<i th:case="'html'" class="fa fa-globe" th:title="${contentType}"></i>
+		<i th:case="*" class="fa fa-file-o" th:title="${contentType}"></i>
 	</span>
 </body>
 </html>
