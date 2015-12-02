@@ -299,6 +299,7 @@ Tremapp.Panes = Class.extend(function(){
 	this.minimize = function() {
 		this.$body.removeClass(this.bodyMaximizedCls);
 		this.$panes.removeClass([this.maximizedCls, this.activeCls, this.rightPaneOnCls].join(' '));
+		this.childPanes && this.childPanes.minimize();
 	};
 	
 	this.maximize = function() {
@@ -323,6 +324,7 @@ Tremapp.Panes = Class.extend(function(){
 	
 	this.closeRightPane = function() {
 		this.$panes.removeClass(this.rightPaneOnCls);
+		this.childPanes && this.childPanes.closeRightPane();
 	};
 	
 	this.expandRightPane = function() {
@@ -332,6 +334,10 @@ Tremapp.Panes = Class.extend(function(){
 	this.collapseRightPane = function() {
 		this.$panes.removeClass(this.rightPaneExpandedCls);
 		this.childPanes && this.childPanes.closeRightPane();
+	};
+	
+	this.isRightPaneExpanded = function() {
+		return this.$panes.hasClass(this.rightPaneExpandedCls);
 	};
 	
 });
@@ -400,9 +406,14 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 	
 	this.resultId;
 	
+	this.attLoadingCls = 'loading';
+	
+	this.$attBody;
+	
 	this.constructor = function($panes, resultId, parentPanes) {
 		this.super($panes, parentPanes);
 		this.resultId = resultId;
+		this.$attBody = this.$rightPane.find('.box-body');
 	};
 	
 	this.bindEvents = function() {
@@ -423,30 +434,62 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 			that.displayRightPane($this);
 			e.preventDefault();
 		});
+		
+		this.$attBody.on('click', 'img.result-att-img', function(e){
+			if (that.isRightPaneExpanded()) that.collapseRightPane();
+			else that.expandRightPane();
+			e.preventDefault();
+		});
+	};
+	
+	this.minimize = function() {
+		this.super.minimize();
+		this.$attBody.html('');
 	};
 	
 	this.displayRightPane = function($att) {
 		var that = this,
 			$header = this.$rightPane.find('.box-header'),
-			$body = this.$rightPane.find('.box-body'),
 			$viewLnk = $att.find('a.view'),
-			path = $viewLnk.find('> span').text();
+			path = $viewLnk.find('> span').text(),
+			kind = $att.find('.result-attachment-inner').attr('data-att-kind');
 		
-		$body.html('');
-		$header.find('.attachment-name').text($att.attr('data-att-name'));
-		$header.find('.attachment-lnk').text(path).attr('href', $viewLnk.attr('href'));
-		this.super.displayRightPane();
-		
-		/*Tremapp.ajax({
-			type: 'GET',
-			url: Tremapp.baseUrl + 'a/result/attachment/view/' + this._detailId + '/' + path,
-			dataType: 'html'
-		}, function(html) {
-			$body.html(html);
-			that._$detail.removeClass(that._loadingCls);
-		}, function() {
-			that._$detail.removeClass(that._loadingCls + ' ' + that._withAttPreviewCls);
-		});*/
+		if (kind == 'image' || kind == 'txt' || kind == 'html') {
+			this.$attBody.html('');
+			this.$attBody.addClass(this.attLoadingCls);
+			$header.find('.attachment-name').text($att.attr('data-att-name'));
+			$header.find('.attachment-lnk').text(path).attr('href', $viewLnk.attr('href'));
+			this.super.displayRightPane();
+			
+			if (kind == 'image') {
+				this.$attBody.html('').append($('<img class="result-att-img"/>').attr('src', $viewLnk.attr('href')));
+			} else {
+				Tremapp.ajax({
+					type: 'GET',
+					url: Tremapp.baseUrl + 'a/result/attachment/view/' + this.resultId + '/' + path,
+					dataType: 'html'
+				}, function(html) {
+					that.$attBody.html(html);
+					if (that.$attBody.find('pre.prettyprint').length > 0) {
+						prettyPrint(function(){
+							that.$attBody.removeClass(that.attLoadingCls);
+						}, that.$attBody.get(0));
+					} else {
+						that.$attBody.removeClass(that.attLoadingCls);
+					}
+				}, function() {
+					that.$attBody.removeClass(this.attLoadingCls);
+					that.closeRightPane();
+				});
+			}
+		} else {
+			window.open($viewLnk.attr('href'));
+		}
+	};
+	
+	this.closeRightPane = function() {
+		this.super.closeRightPane();
+		this.$attBody.html('');
 	};
 	
 	this.toggleInfo = function($info) {

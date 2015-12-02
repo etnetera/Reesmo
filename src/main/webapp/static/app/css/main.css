@@ -250,3 +250,20 @@ body.panes-maximized {
 	text-decoration: none;
 }
 
+.result-att-preview .box-body {
+	text-align: center;
+}
+
+.result-att-preview .box-body .result-att-img {
+	max-width: 100%;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	cursor: zoom-in;
+	border: 1px solid #f4f4f4;
+}
+
+.result-detail.right-pane-expanded .result-att-preview .box-body .result-att-img {
+	cursor: zoom-out;
+}
+

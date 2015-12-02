@@ -24,6 +24,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.http.ControllerModel;
+import com.etnetera.tremapp.http.exception.NotFoundException;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
@@ -105,6 +106,36 @@ public class ResultController implements MenuActivityController {
 	@RequestMapping(value = "/result/attachment/download/{resultId}/**", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> downloadResultAttachment(@PathVariable String resultId, HttpServletRequest request) {
 		return serveResultAttachment(resultId, request, true);
+	}
+	
+	@RequestMapping(value = "/a/result/attachment/view/{resultId}/**", method = RequestMethod.GET)
+	public String viewResultAttachmentDetail(@PathVariable String resultId, Model model, HttpServletRequest request) {
+		Result result = resultRepository.findOne(resultId);
+		ControllerModel.exists(result, Result.class);
+		userManager.checkProjectPermission(result.getProjectId(), Permission.BASIC);
+		
+		String pattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+		String path = new AntPathMatcher().extractPathWithinPattern(pattern, request.getPathInfo());
+		ResultAttachment attachment = result.getAttachmentByPath(path);
+		ControllerModel.exists(attachment, ResultAttachment.class);
+		
+		if (!attachment.getContentType().contains("text")) {
+			throw new IllegalArgumentException("Inline view for content type " + attachment.getContentType() + " is not supported!");
+		}
+		
+		GridFSDBFile file = resultRepository.getAttachmentFile(attachment);
+		ControllerModel.exists(file, GridFSDBFile.class);
+		
+		model.addAttribute("result", result);
+		model.addAttribute("attachment", attachment);
+		model.addAttribute("file", file);
+		try {
+			model.addAttribute("fileString", IOUtils.toString(file.getInputStream()));
+		} catch (IOException e) {
+			LOGGER.error("Cannot read byte[] for file {}", file.getId(), e);
+			throw new NotFoundException("File does not exists!");
+		}
+		return "fragments/result/resultAttachmentDetail :: detail";
 	}
 	
 	private ResponseEntity<byte[]> serveResultAttachment(@PathVariable String resultId, HttpServletRequest request, boolean download) {
