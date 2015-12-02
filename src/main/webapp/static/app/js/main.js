@@ -430,7 +430,7 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 		
 		var that = this;
 		
-		this.$leftPane.on('click', 'div.result-info.clickable', function(e){
+		this.$leftPane.on('click', 'div.result-info .nextlines-trigger', function(e){
 			that.toggleInfo($(this));
 			e.preventDefault();
 		});
@@ -500,8 +500,8 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 		this.$attBody.html('');
 	};
 	
-	this.toggleInfo = function($info) {
-		$info.toggleClass('expanded');
+	this.toggleInfo = function($trigger) {
+		$trigger.parent().toggleClass('expanded');
 	};
 	
 });
