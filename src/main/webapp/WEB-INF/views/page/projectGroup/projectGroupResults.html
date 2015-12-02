@@ -17,7 +17,7 @@
 			th:text="#{page.projectgroupresults.title}">Results</a></li>
 	</ol>
 	<div layout:fragment="content">
-		<div th:replace="fragments/result/resultList :: box (@{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}, true)">Results</div>
+		<div th:replace="fragments/result/resultList :: box ('projectGroupResultsBox' + ${projectGroup.id}, @{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}, true)">Results</div>
 	</div>
 </body>
 </html>

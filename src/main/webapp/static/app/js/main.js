@@ -50,8 +50,7 @@ $.extend(Tremapp, {
 			result: {
 				
 				init: function(settings, json) {
-					Tremapp.dataTables.impl.result2.initList($(settings.nTable).parents('.results-box:first'), settings, json);
-					new Tremapp.Panes($(settings.nTable).parents('.results-box:first'), settings, json);
+					new Tremapp.ResultListPanes($(settings.nTable).parents('.panes:first'), settings, json).init();
 				},
 				
 				renderName: function(name, type, result) {
@@ -110,195 +109,6 @@ $.extend(Tremapp, {
 							break;
 					}
 					return cls;
-				}
-				
-			},
-			
-			result2: {
-				
-				_$box: null,
-				
-				_$boxList: null,
-				
-				_$boxDetail: null,
-				
-				_$detail: null,
-				
-				_$attPreview: null,
-				
-				_detailId: null,
-				
-				_withDetailCls: 'with-detail',
-				
-				_withAttPreviewCls: 'with-att-preview',
-				
-				_loadingCls: 'loading',
-				
-				_expandedCls: 'expanded',
-				
-				initList: function($box, dtSettings, dtJson) {
-					this._$box = $box;
-					this._$boxList = this._$box.find('> .results-box-list');
-					this._$boxDetail = this._$box.find('> .results-box-detail');
-					this._$detail = this._$boxDetail.find('> .result-detail');
-					
-					this.bindListEvents(dtSettings, dtJson);
-					this.bindDetailEvents();
-				},
-				
-				initDetail: function($detail, id) {
-					this._detailId = id;
-					this._$detail = $detail;
-					
-					this.bindDetailEvents();
-					this.bindDetailAsyncEvents();
-				},
-				
-				bindListEvents: function(dtSettings, dtJson) {
-					var that = this;
-					$(dtSettings.nTBody).on('click', 'a.display-result', function(e){
-						var $this = $(this);
-						$this.blur();
-						that.displayResult({
-							id: $this.attr('data-result-id'),
-							name: $this.text(),
-							status: $this.attr('data-result-status')
-						});
-						e.preventDefault();
-					});
-					
-					this._$boxList.on('click', '.expand-overlay', function(e){
-						that.collapseResult();
-						e.preventDefault();
-					});
-					
-					this._$detail.on('click', 'i.close-result', function(e){
-						that.closeResult();
-						e.preventDefault();
-					});
-					this._$detail.on('click', 'i.expand-result', function(e){
-						that.expandResult();
-						e.preventDefault();
-					});
-					this._$detail.on('click', 'i.collapse-result', function(e){
-						that.collapseResult();
-						e.preventDefault();
-					});
-				},
-				
-				bindDetailEvents: function() {
-					var that = this;
-					this._$detail.on('click', 'div.result-info.clickable', function(e){
-						that.toggleInfo($(this));
-						e.preventDefault();
-					});
-					
-					this._$detail.on('click', 'div.result-attachment', function(e){
-						if (e && e.target && ($(e.target).hasClass('download') || $(e.target).parent().hasClass('download'))) return;
-						var $this = $(this);
-						$this.blur();
-						that.displayAttachmentPreview($this);
-						e.preventDefault();
-					});
-					
-					this._$detail.on('click', '.expand-overlay', function(e){
-						that.collapseAttPreview();
-						e.preventDefault();
-					});
-				},
-				
-				bindDetailAsyncEvents: function() {
-					this._$attPreview = this._$detail.find('> .result-att-preview');
-					
-					var that = this;
-					this._$attPreview.on('click', 'i.close-att-preview', function(e){
-						that.closeAttPreview();
-						e.preventDefault();
-					});
-					this._$attPreview.on('click', 'i.expand-att-preview', function(e){
-						that.expandAttPreview();
-						e.preventDefault();
-					});
-					this._$attPreview.on('click', 'i.collapse-att-preview', function(e){
-						that.collapseAttPreview();
-						e.preventDefault();
-					});
-				},
-				
-				displayResult: function(result) {
-					var that = this;
-					this._detailId = result.id;
-					this._$detail.html('');
-					this._$box.removeClass(this._expandedCls);
-					this._$detail.removeClass(this._withAttPreviewCls);
-					this._$box.addClass(this._loadingCls + ' ' + this._withDetailCls);
-					Tremapp.ajax({
-						type: 'GET',
-						url: Tremapp.baseUrl + 'a/result/detail/' + result.id,
-						dataType: 'html'
-					}, function(html) {
-						that._$detail.html(html);
-						that.bindDetailAsyncEvents();
-						that._$box.removeClass(that._loadingCls);
-					}, function() {
-						that._$box.removeClass(that._loadingCls + ' ' + that._withDetailCls);
-					});
-				},
-				
-				closeResult: function() {
-					this._$box.removeClass(this._withDetailCls);
-				},
-				
-				expandResult: function() {
-					this._$box.addClass(this._expandedCls);
-				},
-				
-				collapseResult: function() {
-					this._$box.removeClass(this._expandedCls);
-					this._$detail.removeClass(this._withAttPreviewCls);
-				},
-				
-				toggleInfo: function($info) {
-					$info.toggleClass(this._expandedCls);
-				},
-				
-				displayAttachmentPreview: function($att) {
-					var that = this,
-						$header = this._$attPreview.find('.box-header'),
-						$body = this._$attPreview.find('.box-body'),
-						$viewLnk = $att.find('a.view'),
-						path = $viewLnk.find('> span').text();
-					
-					$body.html('');
-					$header.find('.attachment-name').text($att.attr('data-att-name'));
-					$header.find('.attachment-lnk').text(path).attr('href', $viewLnk.attr('href'));
-					this._$detail.removeClass(this._expandedCls);
-					this._$detail.addClass(this._loadingCls + ' ' + this._withAttPreviewCls);
-					this._$box && this._$box.addClass(this._expandedCls);
-					
-					/*Tremapp.ajax({
-						type: 'GET',
-						url: Tremapp.baseUrl + 'a/result/attachment/view/' + this._detailId + '/' + path,
-						dataType: 'html'
-					}, function(html) {
-						$body.html(html);
-						that._$detail.removeClass(that._loadingCls);
-					}, function() {
-						that._$detail.removeClass(that._loadingCls + ' ' + that._withAttPreviewCls);
-					});*/
-				},
-				
-				closeAttPreview: function() {
-					this._$detail.removeClass(this._withAttPreviewCls);
-					this._$box && this._$box.removeClass(this._expandedCls);
-				},
-				
-				expandAttPreview: function() {
-					this._$detail.addClass(this._expandedCls);
-				},
-				
-				collapseAttPreview: function() {
-					this._$detail.removeClass(this._expandedCls);
 				}
 				
 			}
@@ -428,9 +238,11 @@ Tremapp.Panes = Class.extend(function(){
 	
 	this.childPanes;
 	
+	this.maximizedCls = 'maximized';
+	
 	this.activeCls = 'active';
 	
-	this.bodyActiveCls = 'panes-active';
+	this.bodyMaximizedCls = 'panes-maximized';
 	
 	this.rightPaneOnCls = 'right-pane-on';
 	
@@ -451,10 +263,16 @@ Tremapp.Panes = Class.extend(function(){
 	
 	this.bindEvents = function() {
 		var that = this;
-		this.$panes.on('click', '> .panes-killer', function(e){
-			that.deactivate();
-			e.preventDefault();
-		});
+		if (!this.parentPanes) {
+			this.$panes.on('click', '> .panes-minimizer', function(e){
+				that.minimize();
+				e.preventDefault();
+			});
+			this.$panes.on('click', '> .panes-maximizer', function(e){
+				that.maximize();
+				e.preventDefault();
+			});
+		}
 		
 		this.$leftPane.on('click', '> .expand-overlay', function(e){
 			that.collapseRightPane();
@@ -478,17 +296,29 @@ Tremapp.Panes = Class.extend(function(){
 		});
 	};
 	
-	this.deactivate = function() {
-		this.$body.removeClass(this.bodyActiveCls);
-		this.$panes.removeClass(this.activeCls + ' ' + this.rightPaneOnCls);
+	this.minimize = function() {
+		this.$body.removeClass(this.bodyMaximizedCls);
+		this.$panes.removeClass([this.maximizedCls, this.activeCls, this.rightPaneOnCls].join(' '));
+	};
+	
+	this.maximize = function() {
+		this.$body.addClass(this.bodyMaximizedCls);
+		this.$panes.removeClass(this.rightPaneOnCls);
+		this.$panes.addClass([this.maximizedCls, this.activeCls].join(' '));
 	};
 	
 	this.displayRightPane = function() {
 		this.childPanes && this.childPanes.closeRightPane();
 		this.$panes.removeClass(this.rightPaneExpandedCls);
-		this.$panes.addClass(this.activeCls + ' ' + this.rightPaneOnCls);
-		this.parentPanes && this.parentPanes.expandRightPane();
-		!this.parentPanes && this.$body.addClass(this.bodyActiveCls);
+		
+		var addCls = [this.activeCls, this.rightPaneOnCls];
+		if (!this.parentPanes) {
+			addCls.push(this.maximizedCls);
+			this.$body.addClass(this.bodyMaximizedCls);
+		} else {
+			this.parentPanes.expandRightPane();
+		}
+		this.$panes.addClass(addCls.join(' '));
 	};
 	
 	this.closeRightPane = function() {
@@ -501,6 +331,67 @@ Tremapp.Panes = Class.extend(function(){
 	
 	this.collapseRightPane = function() {
 		this.$panes.removeClass(this.rightPaneExpandedCls);
+		this.childPanes && this.childPanes.closeRightPane();
+	};
+	
+});
+
+Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
+	
+	this.resultId;
+	
+	this.dtSettings;
+	
+	this.dtJson;
+	
+	this.$detail;
+	
+	this.detailLoadingCls = 'loading';
+	
+	this.constructor = function($panes, dtSettings, dtJson) {
+		this.super($panes);
+		this.dtSettings = dtSettings;
+		this.dtJson = dtJson;
+		this.$detail = this.$rightPane.find('.result-detail');
+	};
+	
+	this.bindEvents = function() {
+		this.super.bindEvents();
+		this.bindRightPaneEvents('.result-detail-pane-controls');
+		
+		var that = this;
+		
+		$(this.dtSettings.nTBody).on('click', 'a.display-result', function(e){
+			var $this = $(this);
+			$this.blur();
+			that.displayRightPane({
+				id: $this.attr('data-result-id'),
+				name: $this.text(),
+				status: $this.attr('data-result-status')
+			});
+			e.preventDefault();
+		});
+	};
+	
+	this.displayRightPane = function(result) {
+		var that = this;
+		this.$detail.html('');
+		this.$detail.addClass(this.detailLoadingCls);
+		this.super.displayRightPane();
+		
+		Tremapp.ajax({
+			type: 'GET',
+			url: Tremapp.baseUrl + 'a/result/detail/' + result.id,
+			dataType: 'html'
+		}, function(html) {
+			that.$detail.html(html);
+			that.childPanes = new Tremapp.ResultDetailPanes(that.$detail, result.id, that);
+			that.childPanes.init();
+			that.$detail.removeClass(that.detailLoadingCls);
+		}, function() {
+			that.$detail.removeClass(that.detailLoadingCls);
+			that.closeRightPane();
+		});
 	};
 	
 });
@@ -509,8 +400,8 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 	
 	this.resultId;
 	
-	this.constructor = function($panes, resultId) {
-		this.super($panes);
+	this.constructor = function($panes, resultId, parentPanes) {
+		this.super($panes, parentPanes);
 		this.resultId = resultId;
 	};
 	

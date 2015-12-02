@@ -59,100 +59,136 @@ label.with-input {
 	white-space: nowrap;	
 }
 
-/* RESULTS */
+/* PANES */
 
-.results-box {
-	position: relative;
+body.panes-maximized {
+	overflow: hidden;
 }
 
-.results-box.with-detail {
-	min-height: 400px;
+.panes.maximized {
+	position: fixed;
+    top: 45px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    width: auto;
+    z-index: 2000;
+    border: none;
+    margin: 0;
 }
 
-.results-box .results-box-list {
-	float: left;
+.panes > .panes-overlay {
+	display: none;
+	position: absolute;
+	top: -45px;
+	right: -15px;
+    bottom: -15px;
+    left: -15px;
+	background-color: #3c8dbc;
+}
+
+.panes.maximized > .panes-overlay {
+	display: block;
+}
+
+.panes > .panes-minimizer {
+	display: none;
+	position: absolute;
+    top: -45px;
+    left: 0px;
+    font-size: 32px;
+    color: white;
+}
+
+.panes.maximized > .panes-minimizer {
+	display: block;
+}
+
+.panes.active > .pane-left,
+.panes.active > .pane-right {
+	position: absolute;
+    top: 0;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #fff;
+}
+
+.panes > .pane-right {
+	display: none;
+    left: 50%;
+    width: 50%;
+    border-left: 1px solid #ccc;
+}
+
+.panes.active > .pane-left {
 	width: 100%;
-	position: relative;
 }
 
-.results-box.with-detail .results-box-list {
-	float: left;
+.panes.active.right-pane-on > .pane-right {
+	display: block;
+}
+
+.panes.active.right-pane-on > .pane-left {
 	width: 50%;
 }
 
-.results-box.with-detail .results-box-list table.resultsTable th:nth-child(3),
-.results-box.with-detail .results-box-list table.resultsTable th:nth-child(5),
-.results-box.with-detail .results-box-list table.resultsTable th:nth-child(6),
-.results-box.with-detail .results-box-list table.resultsTable td:nth-child(3),
-.results-box.with-detail .results-box-list table.resultsTable td:nth-child(5),
-.results-box.with-detail .results-box-list table.resultsTable td:nth-child(6) {
-	display: none;
+.panes.active.right-pane-on.right-pane-expanded > .pane-right {
+	left: 5%;
+	width: 95%;
 }
 
-.results-box .results-box-list .expand-overlay {
+.panes.active.right-pane-on.right-pane-expanded > .pane-left {
+	overflow: hidden;
+}
+
+.panes > .pane-left > .expand-overlay {
 	display: none;
 	position: absolute;
 	top: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 3;
 	cursor: pointer;
 }
 
-.results-box.with-detail.expanded .results-box-list .expand-overlay {
-	display: block;
-}
-
-.results-box.with-detail.expanded .results-box-list:hover .expand-overlay {
+.panes > .pane-left:hover > .expand-overlay {
 	background-color: #F4F4F4;
 	opacity: .4;
 }
 
-.results-box .results-box-detail {
-	display: none;
-	position: absolute;
-	top: 0;
-	left: 50%;
-	width: 50%;
-	height: 100%;
-	background-color: #fff;
-    z-index: 5;
-    overflow-y: scroll; 
-}
-
-.results-box.with-detail .results-box-detail {
+.panes.active.right-pane-on.right-pane-expanded > .pane-left > .expand-overlay {
 	display: block;
 }
 
-.results-box.with-detail.expanded .results-box-detail {
-    left: 10%;
-    width: 90%;
-}
+/* RESULT LIST */
 
-.results-box .results-box-detail .left-border {
-	display: none;
-	position: absolute;
-	width: 1px;
-	top: 0;
-	bottom: 0;
-	left: -1px;
-	background-color: #000;
-}
-
-.results-box.with-detail .results-box-detail .left-border {
-	display: block;
-}
-
-.results-box .collapse-result {
+.results-box.active.right-pane-on table.resultsTable th:nth-child(3),
+.results-box.active.right-pane-on table.resultsTable th:nth-child(5),
+.results-box.active.right-pane-on table.resultsTable th:nth-child(6),
+.results-box.active.right-pane-on table.resultsTable td:nth-child(3),
+.results-box.active.right-pane-on table.resultsTable td:nth-child(5),
+.results-box.active.right-pane-on table.resultsTable td:nth-child(6) {
 	display: none;
 }
 
-.results-box.expanded .collapse-result {
-	display: inline-block;
+.results-box .result-detail-pane-controls .collapse-right-pane,
+.results-box.right-pane-expanded .result-detail-pane-controls .expand-right-pane {
+	display: none;
 }
 
-.results-box.expanded .expand-result {
+.results-box.active.right-pane-expanded .result-detail-pane-controls .collapse-right-pane {
+	display: inline;
+}
+
+/* RESULT DETAIL PANES */
+
+.result-detail .result-attachment-pane-controls .collapse-right-pane,
+.result-detail.right-pane-expanded .result-attachment-pane-controls .expand-right-pane {
 	display: none;
+}
+
+.result-detail.active.right-pane-expanded .result-attachment-pane-controls .collapse-right-pane {
+	display: inline;
 }
 
 .result-detail .box-header,
@@ -160,98 +196,9 @@ label.with-input {
 	font-size: 22px;
 }
 
-/* RESULT */
-
-/*.result-detail {
-	position: relative;
-}
-
-.result-detail .result-data {
-	float: left;
-	width: 100%;
-	position: relative;
-}
-
-.result-detail.with-att-preview .result-data {
-	float: left;
-	width: 50%;
-}
-
-.result-detail .result-data .expand-overlay {
-	display: none;
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 3;
-	cursor: pointer;
-}
-
-.result-detail.with-att-preview.expanded .result-data .expand-overlay {
-	display: block;
-}
-
-.result-detail.with-att-preview.expanded .result-data:hover .expand-overlay {
-	background-color: #F4F4F4;
-	opacity: .4;
-}
-
-.result-detail .result-att-preview {
-	display: none;
-	position: absolute;
-	top: 0;
-	left: 50%;
-	width: 50%;
-	height: 100%;
-	background-color: #fff;
-    z-index: 5;
-}
-
-.result-detail.with-att-preview .result-att-preview {
-	display: block;
-}
-
-.result-detail.with-att-preview.expanded .result-att-preview {
-    left: 10%;
-    width: 90%;
-}
-
-.result-detail .result-att-preview .left-border {
-	display: none;
-	position: absolute;
-	width: 1px;
-	top: 0;
-	bottom: 0;
-	left: -1px;
-	background-color: #000;
-}
-
-.result-detail.with-att-preview .result-att-preview .left-border {
-	display: block;
-}
-
-.result-detail .collapse-att-preview {
-	display: none;
-}
-
-.result-detail.expanded .collapse-att-preview {
-	display: inline-block;
-}
-
-.result-detail.expanded .expand-att-preview {
-	display: none;
-}
-
-.result-att-preview .box-header,
-.result-att-preview .box-header .box-title {
-	font-size: 22px;
-}
-
-.result-att-preview .box-header a.attachment-lnk {
+.result-att-preview .attachment-lnk {
 	font-size: 14px;
-}*/
-
-/* RESULT DATA */
+}
 
 .result-value {
 	margin-top: 5px;
@@ -303,113 +250,3 @@ label.with-input {
 	text-decoration: none;
 }
 
-/* PANES */
-
-body.panes-active {
-	overflow: hidden;
-}
-
-.panes.active {
-	position: fixed;
-    top: 45px;
-    right: 15px;
-    bottom: 15px;
-    left: 15px;
-    width: auto;
-    z-index: 2000;
-    border: none;
-    margin: 0;
-}
-
-.panes > .panes-overlay {
-	display: none;
-	position: absolute;
-	top: -45px;
-	right: -15px;
-    bottom: -15px;
-    left: -15px;
-	background-color: rgba(0, 0, 0, .5);
-}
-
-.panes.active > .panes-overlay {
-	display: block;
-}
-
-.panes > .panes-killer {
-	display: none;
-	position: absolute;
-    top: -45px;
-    left: 0px;
-    font-size: 32px;
-    color: white;
-}
-
-.panes.active > .panes-killer {
-	display: block;
-}
-
-.panes.active > .pane-left,
-.panes.active > .pane-right {
-	position: absolute;
-    top: 0;
-    height: 100%;
-    overflow-y: auto;
-    background-color: #fff;
-}
-
-.panes > .pane-right {
-	display: none;
-    left: 50%;
-    width: 50%;
-    border-left: 1px solid #ccc;
-}
-
-.panes.active > .pane-left {
-	width: 100%;
-}
-
-.panes.active.right-pane-on > .pane-right {
-	display: block;
-}
-
-.panes.active.right-pane-on > .pane-left {
-	width: 50%;
-}
-
-.panes.active.right-pane-on.right-pane-expanded > .pane-right {
-	left: 5%;
-	width: 95%;
-}
-
-.panes.active.right-pane-on.right-pane-expanded > .pane-left {
-	overflow: hidden;
-}
-
-.panes > .pane-left > .expand-overlay {
-	display: none;
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	cursor: pointer;
-}
-
-.panes > .pane-left:hover > .expand-overlay {
-	background-color: #F4F4F4;
-	opacity: .4;
-}
-
-.panes.active.right-pane-on.right-pane-expanded > .pane-left > .expand-overlay {
-	display: block;
-}
-
-/* RESULT DETAIL */
-
-.result-detail .result-attachment-pane-controls .collapse-right-pane,
-.result-detail.right-pane-expanded .result-attachment-pane-controls .expand-right-pane {
-	display: none;
-}
-
-.result-detail.right-pane-expanded .result-attachment-pane-controls .collapse-right-pane {
-	display: inline;
-}

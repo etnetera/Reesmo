@@ -21,7 +21,6 @@
 		</div>
 		<script th:inline="javascript">
 			$(function() {
-				//Tremapp.dataTables.impl.result.initDetail($('#result-detail'), [[${result.id}]]);
 				new Tremapp.ResultDetailPanes($('#result-detail'), [[${result.id}]]).init();
 			});
 		</script>
