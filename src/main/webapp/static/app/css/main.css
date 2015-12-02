@@ -191,10 +191,10 @@ body.panes-maximized {
 
 /* RESULT LIST */
 
-.results-box.active.right-pane-on table.resultsTable th:nth-child(3),
+.results-box.active.right-pane-on table.resultsTable th:nth-child(4),
 .results-box.active.right-pane-on table.resultsTable th:nth-child(5),
 .results-box.active.right-pane-on table.resultsTable th:nth-child(6),
-.results-box.active.right-pane-on table.resultsTable td:nth-child(3),
+.results-box.active.right-pane-on table.resultsTable td:nth-child(4),
 .results-box.active.right-pane-on table.resultsTable td:nth-child(5),
 .results-box.active.right-pane-on table.resultsTable td:nth-child(6) {
 	display: none;

@@ -41,7 +41,7 @@
 					<span class="value-label" th:text="#{result.author} + ':'">Author</span> <span class="value" th:text="${result.author}">Author</span>
 				</div>
 				<div class="result-value result-length">
-					<span class="value-label" th:text="#{result.length} + ':'">Length</span> <span class="value" th:text="${result.length}">100</span>
+					<span class="value-label" th:text="#{result.length} + ':'">Length</span> <span class="value" th:text="${result.length} + ' ms'">100 ms</span>
 					<small th:text="${result.startedAt}">2015-01-01 00:00:00</small><small> - </small><small th:text="${result.endedAt}">2015-01-01 00:01:00</small>
 				</div>
 				<div class="result-value result-automated">

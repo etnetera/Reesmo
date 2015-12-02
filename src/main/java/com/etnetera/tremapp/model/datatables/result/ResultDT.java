@@ -21,7 +21,7 @@ public class ResultDT extends AuditedModelDT {
 	
 	private String endedAt;
 	
-	private Long length;
+	private String length;
 	
 	private String status;
 	
@@ -46,7 +46,7 @@ public class ResultDT extends AuditedModelDT {
 		this.startedAt = result.getStartedAt() == null ? null : result.getStartedAt().toString();
 		this.endedAt = result.getEndedAt() == null ? null : result.getEndedAt().toString();
 		if (result.getStartedAt() != null && result.getEndedAt() != null) {
-			this.length = result.getEndedAt().getTime() - result.getStartedAt().getTime();
+			this.length = String.valueOf(result.getEndedAt().getTime() - result.getStartedAt().getTime()) + " ms";
 		}
 		this.status = localizer.localize(result.getStatus(), locale);
 		this.statusValue = result.getStatus() == null ? null : result.getStatus().name();
@@ -81,7 +81,7 @@ public class ResultDT extends AuditedModelDT {
 		return endedAt;
 	}
 
-	public Long getLength() {
+	public String getLength() {
 		return length;
 	}
 

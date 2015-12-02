@@ -16,8 +16,8 @@
 									<tr>
 										<th dt:property="name" dt:renderFunction="Tremapp.dataTables.impl.result.renderName" th:text="#{result.name}">Name</th>
 										<th dt:property="status" dt:renderFunction="Tremapp.dataTables.impl.result.renderStatus" th:text="#{result.status}">Status</th>
-										<th dt:property="severity" dt:renderFunction="Tremapp.dataTables.impl.result.renderSeverity" th:text="#{result.severity}">Severity</th>
 										<th dt:property="length" th:text="#{result.length}">Length</th>
+										<th dt:property="severity" dt:renderFunction="Tremapp.dataTables.impl.result.renderSeverity" th:text="#{result.severity}">Severity</th>
 										<th dt:property="startedAt" dt:sortInitDirection="desc" th:text="#{result.startedAt}">Started at</th>
 										<th th:if="${withProject}" dt:property="projectName" dt:searchable="false" dt:sortable="false" dt:renderFunction="Tremapp.dataTables.impl.result.renderProject" th:text="#{result.project}">Project</th>
 									</tr>
