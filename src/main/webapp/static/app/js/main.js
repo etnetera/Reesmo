@@ -309,7 +309,7 @@ Tremapp.Panes = Class.extend(function(){
 	};
 	
 	this.displayRightPane = function() {
-		this.childPanes && this.childPanes.closeRightPane();
+		this.childPanes && this.childPanes.isRightPaneOpened() && this.childPanes.closeRightPane();
 		this.$panes.removeClass(this.rightPaneExpandedCls);
 		
 		var addCls = [this.activeCls, this.rightPaneOnCls];
@@ -325,6 +325,7 @@ Tremapp.Panes = Class.extend(function(){
 	this.closeRightPane = function() {
 		this.$panes.removeClass(this.rightPaneOnCls);
 		this.childPanes && this.childPanes.closeRightPane();
+		this.parentPanes && this.parentPanes.isRightPaneExpanded() && this.parentPanes.collapseRightPane();
 	};
 	
 	this.expandRightPane = function() {
@@ -333,7 +334,11 @@ Tremapp.Panes = Class.extend(function(){
 	
 	this.collapseRightPane = function() {
 		this.$panes.removeClass(this.rightPaneExpandedCls);
-		this.childPanes && this.childPanes.closeRightPane();
+		this.childPanes && this.childPanes.isRightPaneOpened() && this.childPanes.closeRightPane();
+	};
+	
+	this.isRightPaneOpened = function() {
+		return this.$panes.hasClass(this.rightPaneOnCls);
 	};
 	
 	this.isRightPaneExpanded = function() {
