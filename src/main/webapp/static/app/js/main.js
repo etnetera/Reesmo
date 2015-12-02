@@ -50,7 +50,8 @@ $.extend(Tremapp, {
 			result: {
 				
 				init: function(settings, json) {
-					new Tremapp.ResultListPanes($(settings.nTable).parents('.panes:first'), settings, json).init();
+					var $panes = $(settings.nTable).parents('.panes:first');
+					new Tremapp.ResultListPanes($panes, settings, json, $('#' + $panes.attr('id') + '-panes-title').html()).init();
 				},
 				
 				renderName: function(name, type, result) {
@@ -248,13 +249,15 @@ Tremapp.Panes = Class.extend(function(){
 	
 	this.rightPaneExpandedCls = 'right-pane-expanded';
 	
-	this.constructor = function($panes, parentPanes, childPanes) {
+	this.constructor = function($panes, parentPanes, childPanes, title) {
 		this.$body = $('body');
 		this.$panes = $panes;
 		this.$leftPane = $panes.find('> .pane.pane-left');
 		this.$rightPane = $panes.find('> .pane.pane-right');
 		this.parentPanes = parentPanes;
 		this.childPanes = childPanes;
+		if (title != null) this.$panes.find('> .panes-title').html(title);
+		if (!parentPanes) this.$panes.append($('<div class="panes-logo"/>').html(this.$body.find('.logo .logo-lg').html()));
 	};
 	
 	this.init = function() {
@@ -359,8 +362,8 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 	
 	this.detailLoadingCls = 'loading';
 	
-	this.constructor = function($panes, dtSettings, dtJson) {
-		this.super($panes);
+	this.constructor = function($panes, dtSettings, dtJson, title) {
+		this.super($panes, null, null, title);
 		this.dtSettings = dtSettings;
 		this.dtJson = dtJson;
 		this.$detail = this.$rightPane.find('.result-detail');
@@ -415,8 +418,8 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 	
 	this.$attBody;
 	
-	this.constructor = function($panes, resultId, parentPanes) {
-		this.super($panes, parentPanes);
+	this.constructor = function($panes, resultId, parentPanes, title) {
+		this.super($panes, parentPanes, null, title);
 		this.resultId = resultId;
 		this.$attBody = this.$rightPane.find('.box-body');
 	};

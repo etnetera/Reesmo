@@ -104,6 +104,34 @@ body.panes-maximized {
 	display: block;
 }
 
+.panes > .panes-title {
+	display: none;
+	position: absolute;
+	top: -37px;
+	right: 0px;
+	color: white;
+	font-size: 20px;
+}
+
+.panes.maximized > .panes-title {
+	display: block;
+}
+
+.panes > .panes-logo {
+	display: none;
+	position: absolute;
+	top: -38px;
+	left: 40px;
+	color: white;
+	font-size: 20px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+}
+
+.panes.maximized > .panes-logo {
+	display: block;
+}
+
 .panes.active > .pane-left,
 .panes.active > .pane-right {
 	position: absolute;
@@ -119,6 +147,7 @@ body.panes-maximized {
     left: 50%;
     width: 50%;
     border-left: 1px solid #ccc;
+    z-index: 2;
 }
 
 .panes.active > .pane-left {
@@ -147,7 +176,7 @@ body.panes-maximized {
 	position: absolute;
 	top: 0;
 	width: 100%;
-	height: 100%;
+	height: 10000px; /* UGLY HACK, BUT WORKS */
 	cursor: pointer;
 }
 
@@ -180,6 +209,10 @@ body.panes-maximized {
 	display: inline;
 }
 
+.results-box-panes-title {
+	display: none;
+}
+
 /* RESULT DETAIL PANES */
 
 .result-detail .result-attachment-pane-controls .collapse-right-pane,
@@ -194,6 +227,14 @@ body.panes-maximized {
 .result-detail .box-header,
 .result-detail .box-header .box-title {
 	font-size: 22px;
+}
+
+.result-detail .box-header .box-title {
+	line-height: 2.4;
+}
+
+.result-detail .box-header .box-title:first-line {
+	line-height: 1;
 }
 
 .result-att-preview .attachment-lnk {
@@ -265,5 +306,9 @@ body.panes-maximized {
 
 .result-detail.right-pane-expanded .result-att-preview .box-body .result-att-img {
 	cursor: zoom-out;
+}
+
+.result-att-preview .attachment-lnk {
+	display: inline-block;
 }
 

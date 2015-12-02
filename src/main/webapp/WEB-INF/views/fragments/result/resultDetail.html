@@ -121,6 +121,7 @@
 		</div>
 		<div class="clearfix"></div>
 		<div th:if="${single}" class="panes-minimizer"><i class="fa fa-times-circle clickable"></i></div>
+		<div th:if="${single}" class="panes-title"><i class="fa fa-check-square-o"></i> <span th:text="${project.name}">Project</span> - <span th:text="#{page.resultdetail.title}">Result</span> <small th:text="#{page.resultdetail.titledesc}">small title</small></div>
 	</th:block>
 </body>
 </html>

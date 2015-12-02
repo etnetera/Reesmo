@@ -17,6 +17,7 @@
 			th:text="#{page.projectgroupresults.title}">Results</a></li>
 	</ol>
 	<div layout:fragment="content">
+		<div th:id="'projectGroupResultsBox' + ${projectGroup.id} + '-panes-title'" class="results-box-panes-title"><i class="fa fa-check-square-o"></i> <span th:text="${projectGroup.name}">Project group</span> - <span th:text="#{page.projectgroupresults.title}">Results</span> <small th:text="#{page.projectgroupresults.titledesc}">small title</small></div>
 		<div th:replace="fragments/result/resultList :: box ('projectGroupResultsBox' + ${projectGroup.id}, @{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}, true)">Results</div>
 	</div>
 </body>
