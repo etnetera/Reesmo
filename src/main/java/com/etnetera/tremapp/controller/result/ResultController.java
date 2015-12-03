@@ -111,7 +111,7 @@ public class ResultController implements MenuActivityController {
 		int i = 0;
 		for (String resultId : removeCommand.getResultIds()) {
 			Result result = resultRepository.findOne(resultId);
-			if (result == null || !userManager.isAllowedForProject(result.getProjectId(), Permission.EDITOR))
+			if (result == null || !userManager.isAllowedForProject(result.getProjectId(), Permission.ADMIN))
 				continue;
 			resultRepository.deleteResult(result);
 			i++;

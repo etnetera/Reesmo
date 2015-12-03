@@ -107,7 +107,7 @@
 					</div>
 				</div>
 			</div>
-			<div th:if="${project.isAllowedForUser(#authentication.principal, 'EDITOR')}" class="box-footer">
+			<div th:if="${project.isAllowedForUser(#authentication.principal, 'ADMIN')}" class="box-footer">
 				<button type="button" class="btn btn-danger btn-delete-result" th:text="#{result.delete}" th:attr="data-confirm-text=#{result.delete.confirm}">Delete result</button>
 			</div>
 			<div class="expand-overlay"></div>
