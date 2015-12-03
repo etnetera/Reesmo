@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<div th:fragment="box (id, url, withProject)" th:id="${id}" class="box box-primary results-box panes">
+	<div th:fragment="box (id, url, withProject, allowDelete)" th:id="${id}" class="box box-primary results-box panes">
 		<div class="panes-overlay"></div>
 		<div class="results-box-list pane pane-left">
 			<div class="box-body">
@@ -11,7 +11,7 @@
 							<div dt:conf="${id} + 'Table'" th:attr="dtConf=${id} + 'Table'">
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.impl.result.init" />
 							</div>
-							<table th:id="${id} + 'Table'" class="resultsTable" dt:table="true" dt:url="${url}" dt:displayLength="50" dt:filterable="false">
+							<table th:id="${id} + 'Table'" class="resultsTable selectable" dt:table="true" dt:url="${url}" dt:displayLength="50" dt:filterable="false">
 								<thead>
 									<tr>
 										<th dt:property="name" dt:renderFunction="Tremapp.dataTables.impl.result.renderName" th:text="#{result.name}">Name</th>
@@ -26,6 +26,13 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div th:if="${allowDelete}" class="box-footer">
+				<label class="with-input padding-right clickable toggler-delete-results" th:title="#{results.delete.mode}">
+					<input type="checkbox" class="checkbox-enabled-delete-results"/>
+					<i class="fa fa-trash"></i>
+				</label>
+				<button type="button" class="btn btn-danger btn-delete-results" th:text="#{results.delete}" th:attr="data-confirm-text=#{results.delete.confirm}">Delete selected results</button>
 			</div>
 			<div class="expand-overlay"></div>
 		</div>

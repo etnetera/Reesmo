@@ -8,24 +8,19 @@ $.extend(Tremapp, {
 		
 		initCompleteSelectableRowCallback: function(settings, json) {
 			$(settings.nTBody).on('click', 'tr', function(){
-				if (e && e.target && $(e.target).is('a')) return;
 				var $this = $(this);
-				if ($this.find('td:first').hasClass('dataTables_empty')) return;
-				if ($this.hasClass('selected')) {
-					$this.removeClass('selected');
-				} else {
-					$(settings.nTBody).find('tr.selected').removeClass('selected');
-					$this.addClass('selected');
-				}
+				if (!Tremapp.dataTables.isSelectable(settings.nTable) || !Tremapp.dataTables.isRow($this)) return;
+				if (e && e.target && $(e.target).is('a')) return;
+				Tremapp.dataTables.toggleOneRowSelection($this, settings.nTBody);
 			});
 		},
 		
 		initCompleteSelectableRowsCallback: function(settings, json) {
 			$(settings.nTBody).on('click', 'tr', function(e){
-				if (e && e.target && $(e.target).is('a')) return;
 				var $this = $(this);
-				if ($this.find('td:first').hasClass('dataTables_empty')) return;
-				$this.toggleClass('selected');
+				if (!Tremapp.dataTables.isSelectable(settings.nTable) || !Tremapp.dataTables.isRow($this)) return;
+				if (e && e.target && $(e.target).is('a')) return;
+				Tremapp.dataTables.toggleRowSelection($this);
 			});
 		},
 		
@@ -39,6 +34,29 @@ $.extend(Tremapp, {
 		
 		clearRowSelection: function($table) {
 			return $table.find('tbody tr.selected').removeClass('selected');
+		},
+		
+		toggleRowSelection: function(rowEl, select) {
+			$(rowEl).toggleClass('selected', select == undefined ? undefined : !!select);
+		},
+		
+		toggleOneRowSelection: function(rowEl, bodyEl, select) {
+			var $row = (rowEl),
+				select = (select == undefined ? !$row.hasClass('selected') : !!select);
+			if (select) {
+				(bodyEl ? $(bodyEl) : $row.parents('tbody:first')).find('tr.selected').removeClass('selected');
+				$row.addClass('selected');
+			} else {
+				$row.removeClass('selected');
+			}
+		},
+		
+		isRow: function(rowEl) {
+			return !$(rowEl).find('td:first').hasClass('dataTables_empty');
+		},
+		
+		isSelectable: function(tableEl) {
+			return $(tableEl).hasClass('selectable');
 		},
 		
 		reloadTable: function($table) {
@@ -67,10 +85,12 @@ $.extend(Tremapp, {
 				},
 				
 				renderStatus: function(status, type, result) {
+					if (result.statusValue == null) return '';
 					return '<span class="label bg-' + Tremapp.dataTables.impl.result.getStatusColor(result.statusValue) + '">' + status + '</span>';
 				},
 				
 				renderSeverity: function(severity, type, result) {
+					if (result.severityValue == null) return '';
 					var cls = Tremapp.dataTables.impl.result.getSeverityIconClass(result.severityValue);
 					return '<i class="severity fa ' + cls + '" title="' + severity + '"></i>';
 				},
@@ -362,15 +382,26 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 	
 	this.dtJson;
 	
+	this.$table;
+	
 	this.$detail;
 	
+	this.$deleteToggler;
+	
+	this.$deleteTrigger;
+	
 	this.detailLoadingCls = 'loading';
+	
+	this.resultId;
 	
 	this.constructor = function($panes, dtSettings, dtJson, title) {
 		this.super($panes, null, null, title);
 		this.dtSettings = dtSettings;
 		this.dtJson = dtJson;
+		this.$table = $(dtSettings.nTable);
 		this.$detail = this.$rightPane.find('.result-detail');
+		this.$deleteToggler = this.$leftPane.find('.checkbox-enabled-delete-results');
+		this.$deleteTrigger = this.$leftPane.find('.btn-delete-results');
 	};
 	
 	this.bindEvents = function() {
@@ -379,22 +410,80 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 		
 		var that = this;
 		
-		$(this.dtSettings.nTBody).on('click', 'a.display-result', function(e){
-			var $this = $(this);
-			$this.blur();
-			that.displayRightPane({
-				id: $this.attr('data-result-id'),
-				name: $this.text(),
-				status: $this.attr('data-result-status')
-			});
+		$(this.dtSettings.nTBody).on('click', 'tr', function(e){
+			if (!Tremapp.dataTables.isSelectable(that.$table) || !Tremapp.dataTables.isRow($this)) return;
+			var $this = $(this),
+				$target,
+				$resultA,
+				isA,
+				isResultA,
+				isRemovingEnabled;
+			
+			if (e && e.target) {
+				$target = $(e.target);
+				isA = $target.is('a');
+			}
+			if (isA) isResultA = $target.hasClass('display-result');
+			if (isA && !isResultA) return;
 			e.preventDefault();
+			
+			isRemovingEnabled = that.isRemovingEnabled();
+			
+			if (!isResultA && isRemovingEnabled) {
+				Tremapp.dataTables.toggleRowSelection($this);
+				return;
+			}
+			$resultA = isResultA ? $target : $target.parents('tr:first').find('a.display-result');
+			if (isResultA) $target.blur();
+			
+			that.displayRightPane({
+				id: $resultA.attr('data-result-id'),
+				name: $resultA.text(),
+				status: $resultA.attr('data-result-status')
+			});
+			if (!isRemovingEnabled) Tremapp.dataTables.toggleOneRowSelection($this, that.$table);			
 		});
+		
+		if (this.$deleteToggler.length > 0) {
+			this.$deleteToggler.change(function(e){
+				Tremapp.dataTables.clearRowSelection(that.$table);
+				that.$table.toggleClass('remove', $(this).is(':checked'));
+				that.$deleteTrigger.toggle();
+			});
+			
+			var confirmText = this.$deleteTrigger.attr('data-confirm-text');
+			this.$deleteTrigger.click(function(){
+				var rowsData = Tremapp.dataTables.getSelectedRowsData(that.$table),
+					ids = [];
+				
+				$.each(rowsData, function(i, rowData){
+					ids.push(rowData.id);
+				});
+				if (ids.length < 1 || !confirm(confirmText.replace('{0}', ids.length))) return;
+				
+				if (that.resultId != null && ids.indexOf(that.resultId) > -1 && that.isRightPaneOpened()) {
+					that.closeRightPane();
+				}
+				
+				Tremapp.ajax({
+					url: Tremapp.baseUrl + 'results/delete/',
+					data: {
+						resultIds: ids
+					}
+				}, function(removedCnt){
+					Tremapp.dataTables.clearRowSelection(that.$table);
+					Tremapp.dataTables.reloadTable(that.$table);
+					// TODO - show count
+				});
+			});
+		}
 	};
 	
 	this.displayRightPane = function(result) {
 		var that = this;
 		this.$detail.html('');
 		this.$detail.addClass(this.detailLoadingCls);
+		this.resultId = result.id;
 		this.super.displayRightPane();
 		
 		Tremapp.ajax({
@@ -412,20 +501,44 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 		});
 	};
 	
+	this.closeRightPane = function() {
+		this.super.closeRightPane();
+		if (!this.isRemovingEnabled()) Tremapp.dataTables.clearRowSelection(this.$table);
+	};
+	
+	this.minimize = function() {
+		this.super.minimize();
+		if (!this.isRemovingEnabled()) Tremapp.dataTables.clearRowSelection(this.$table);
+	};
+	
+	this.isRemovingEnabled = function() {
+		return this.$table.hasClass('remove');
+	};
+	
+	this.reloadTable = function() {
+		Tremapp.dataTables.reloadTable(this.$table);
+	};
+	
 });
 
 Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 	
 	this.resultId;
 	
+	this.projectId;
+	
 	this.attLoadingCls = 'loading';
 	
 	this.$attBody;
 	
+	this.$deleteTrigger;
+	
 	this.constructor = function($panes, resultId, parentPanes, title) {
 		this.super($panes, parentPanes, null, title);
 		this.resultId = resultId;
+		this.projectId = this.$leftPane.attr('data-project-id');
 		this.$attBody = this.$rightPane.find('.box-body');
+		this.$deleteTrigger = this.$leftPane.find('.btn-delete-result');
 	};
 	
 	this.bindEvents = function() {
@@ -452,6 +565,29 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 			else that.expandRightPane();
 			e.preventDefault();
 		});
+		
+		if (this.$deleteTrigger.length > 0) {
+			var confirmText = this.$deleteTrigger.attr('data-confirm-text');
+			this.$deleteTrigger.click(function(){
+				if (!confirm(confirmText)) return;
+			
+				Tremapp.ajax({
+					url: Tremapp.baseUrl + 'results/delete/',
+					data: {
+						resultIds: [that.resultId]
+					}
+				}, function(removedCnt){
+					if (removedCnt > 0) {
+						if (that.parentPanes) {
+							that.parentPanes.closeRightPane();
+							that.parentPanes.reloadTable();
+						} else {
+							window.location.replace(Tremapp.baseUrl + 'project/home/' + that.projectId);
+						}
+					}
+				});
+			});
+		}
 	};
 	
 	this.minimize = function() {

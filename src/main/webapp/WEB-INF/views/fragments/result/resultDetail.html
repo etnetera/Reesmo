@@ -3,7 +3,7 @@
 <body>
 	<th:block th:fragment="detail (single)">
 		<div th:if="${single}" class="panes-overlay"></div>
-		<div class="result-data pane pane-left">
+		<div class="result-data pane pane-left" th:attr="data-result-id=${result.id},data-project-id=${project.id}">
 			<div class="box-header with-border">
 				<h3 class="box-title">
 					<span th:replace="fragments/result/resultParts :: status (${result.status})">Status</span>
@@ -106,6 +106,9 @@
 						</th:block>
 					</div>
 				</div>
+			</div>
+			<div th:if="${project.isAllowedForUser(#authentication.principal, 'EDITOR')}" class="box-footer">
+				<button type="button" class="btn btn-danger btn-delete-result" th:text="#{result.delete}" th:attr="data-confirm-text=#{result.delete.confirm}">Delete result</button>
 			</div>
 			<div class="expand-overlay"></div>
 		</div>

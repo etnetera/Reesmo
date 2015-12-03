@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,11 +25,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
 import com.etnetera.tremapp.controller.MenuActivityController;
+import com.etnetera.tremapp.controller.json.JsonResponse;
 import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.http.exception.NotFoundException;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
+import com.etnetera.tremapp.model.form.result.ResultDeleteCommand;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
 import com.etnetera.tremapp.repository.elasticsearch.result.ResultRepository;
@@ -96,6 +100,23 @@ public class ResultController implements MenuActivityController {
 		model.addAttribute("result", result);
 		model.addAttribute("project", project);
 		return "fragments/result/resultDetail :: detail (single=false)";
+	}
+	
+	@RequestMapping(value = "/results/delete", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody JsonResponse deleteResults(@Valid ResultDeleteCommand removeCommand,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return new JsonResponse(false, bindingResult.getAllErrors());
+		}
+		int i = 0;
+		for (String resultId : removeCommand.getResultIds()) {
+			Result result = resultRepository.findOne(resultId);
+			if (result == null || !userManager.isAllowedForProject(result.getProjectId(), Permission.EDITOR))
+				continue;
+			resultRepository.deleteResult(result);
+			i++;
+		}
+		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
 	}
 	
 	@RequestMapping(value = "/result/attachment/view/{resultId}/**", method = RequestMethod.GET)
