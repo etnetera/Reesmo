@@ -411,9 +411,9 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 		var that = this;
 		
 		$(this.dtSettings.nTBody).on('click', 'tr', function(e){
+			var $this = $(this);
 			if (!Tremapp.dataTables.isSelectable(that.$table) || !Tremapp.dataTables.isRow($this)) return;
-			var $this = $(this),
-				$target,
+			var $target,
 				$resultA,
 				isA,
 				isResultA,
