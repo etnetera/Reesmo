@@ -31,7 +31,8 @@
 							</div>
 						</div>
 						<div class="box-footer">
-							<button type="submit" class="btn btn-primary" th:text="#{submit}">Submit</button>
+							<button th:replace="fragments/form/button :: submit">Submit</button>
+							<button th:replace="fragments/form/button :: cancel">Cancel</button>
 						</div>
 					</form>
 				</div>

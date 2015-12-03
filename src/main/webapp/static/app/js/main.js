@@ -1,5 +1,9 @@
 $.extend(Tremapp, {
 	
+	goBack: function() {
+		window.history.back();
+	},
+	
 	dataTables: {
 		
 		initCompleteSelectableRowCallback: function(settings, json) {
