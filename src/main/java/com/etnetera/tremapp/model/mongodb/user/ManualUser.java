@@ -12,7 +12,7 @@ import com.etnetera.tremapp.user.UserType;
 @Document(collection = "user")
 public class ManualUser extends User {
 
-	@Indexed(unique = true)
+	@Indexed(unique = true, sparse = true)
 	private String email;
 
 	public String getEmail() {
