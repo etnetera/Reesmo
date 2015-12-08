@@ -30,7 +30,10 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @ComponentScan(basePackages = { "com.github.dandelion.datatables.web" })
 public class WebConfiguration extends WebMvcConfigurationSupport {
 
-	public static final long FILE_SIZE_LIMIT = 31457280l;
+	/**
+	 * 100MB
+	 */
+	public static final long FILE_SIZE_LIMIT = 104857600l;
 
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
