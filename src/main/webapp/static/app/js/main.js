@@ -20,7 +20,7 @@ $.extend(Tremapp, {
 				var $this = $(this);
 				if (!Tremapp.dataTables.isSelectable(settings.nTable) || !Tremapp.dataTables.isRow($this)) return;
 				if (e && e.target && $(e.target).is('a')) return;
-				Tremapp.dataTables.toggleRowSelection($this);
+				Tremapp.dataTables.toggleRowSelection($this, settings.nTBody, null, e);
 			});
 		},
 		
@@ -32,23 +32,50 @@ $.extend(Tremapp, {
 			return $table.DataTable().rows('.selected').data();
 		},
 		
-		clearRowSelection: function($table) {
-			return $table.find('tbody tr.selected').removeClass('selected');
+		clearRowSelection: function(tableEl) {
+			var $body = $(tableEl);
+			if ($body.is('table')) $body = $body.find('tbody');
+			return $body.find('tr.selected').removeClass('selected');
 		},
 		
-		toggleRowSelection: function(rowEl, select) {
-			$(rowEl).toggleClass('selected', select == undefined ? undefined : !!select);
+		toggleRowSelection: function(rowEl, bodyEl, select, e) {
+			var $row = $(rowEl),
+				$body = this.$getTableBody($row, bodyEl);
+				
+			if (e && (e.ctrlKey || e.metaKey)) {
+				$row.toggleClass('selected', select == undefined ? undefined : !!select);
+				if (this.isRowSelected($row)) {
+					$body.data('last-selected', $body.find('tr').index($row));
+				}
+			} else if (e && e.shiftKey) {
+				var lastSelected = $body.data('last-selected'),
+					$trs = $body.find('tr'),
+					start = (lastSelected && this.isRowSelected($trs.eq(lastSelected))) ? lastSelected : 0,
+					end = $trs.index($row);
+				
+				this.clearRowSelection($body);	
+	            $trs.slice(Math.min(start, end), Math.max(start, end) + 1)
+	                .addClass('selected');
+			} else {
+				this.toggleOneRowSelection(rowEl, bodyEl, true);
+			}
 		},
 		
 		toggleOneRowSelection: function(rowEl, bodyEl, select) {
 			var $row = (rowEl),
-				select = (select == undefined ? !$row.hasClass('selected') : !!select);
+				select = (select == undefined ? !this.isRowSelected($row) : !!select);
 			if (select) {
-				(bodyEl ? $(bodyEl) : $row.parents('tbody:first')).find('tr.selected').removeClass('selected');
+				$body = this.$getTableBody($row, bodyEl);
+				this.clearRowSelection($body);
 				$row.addClass('selected');
+				$body.data('last-selected', $body.find('tr').index($row));
 			} else {
 				$row.removeClass('selected');
 			}
+		},
+		
+		isRowSelected: function(rowEl) {
+			return $(rowEl).hasClass('selected');
 		},
 		
 		isRow: function(rowEl) {
@@ -65,6 +92,10 @@ $.extend(Tremapp, {
 		
 		renderLink: function(uri, name) {
 			return '<a href="' + Tremapp.baseUrl + uri + '">' + (name == null ? uri : name) + '</a>';
+		},
+		
+		$getTableBody: function(rowEl, bodyEl) {
+			return bodyEl ? $(bodyEl) : $(rowEl).parents('tbody:first');
 		},
 		
 		impl: {
@@ -430,7 +461,7 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 			isRemovingEnabled = that.isRemovingEnabled();
 			
 			if (!isResultA && isRemovingEnabled) {
-				Tremapp.dataTables.toggleRowSelection($this);
+				Tremapp.dataTables.toggleRowSelection($this, that.dtSettings.nTBody, null, e);
 				return;
 			}
 			$resultA = isResultA ? $target : $target.parents('tr:first').find('a.display-result');
