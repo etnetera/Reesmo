@@ -9,6 +9,7 @@ public enum TestType {
 	SOAPUI,
 	TESTNG,
 	JUNIT,
-	SPOCK
+	SPOCK,
+	SELENIUMBROWSER
 	
 }
