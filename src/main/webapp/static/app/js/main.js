@@ -98,6 +98,41 @@ $.extend(Tremapp, {
 			return bodyEl ? $(bodyEl) : $(rowEl).parents('tbody:first');
 		},
 		
+		filter: {
+			
+			filters: {},
+			
+			dtInit: function(settings, json) {
+				this.getFilterFromSettings(settings).init();
+			},
+			
+			dtStateLoaded: function(settings, data) {
+				this.filters[this.getFilterIdFromSettings(settings)] = new Tremapp.ListFilters(settings, data);
+			},
+			
+			/**
+			 * Get filtering values from filter so it is updated
+			 * in storage.
+			 */
+			dtStateSaveParams: function(settings, data) {
+				/*var filter = this.getFilterFromSettings(settings);
+				if (filter == null) {
+					this.filters[this.getFilterIdFromSettings(settings)] = new Tremapp.ListFilter(settings, data);
+				} else {
+					filter.fetchParams(settings, data);
+				}*/
+				this.getFilterFromSettings(settings).stateSaveParams(settings, data);
+			},
+			
+			getFilterFromSettings: function(settings) {
+				return this.filters[this.getFilterIdFromSettings(settings)];
+			},
+			
+			getFilterIdFromSettings: function(settings) {
+				return $(settings.nTable).attr('id');
+			}
+		},
+		
 		impl: {
 			
 			result: {
@@ -277,6 +312,56 @@ $.extend(Tremapp, {
 
 		return false;
 	}
+	
+});
+
+Tremapp.ListFilters = Class.extend(function(){
+	
+	this.$table;
+	
+	this.$container;
+	
+	this.data;
+	
+	this.exists = false;
+	
+	this.constructor = function(dtSettings, dtData) {
+		this.$table = $(dtSettings.nTable);
+		this.$container = $('#' + this.$table.attr('id') + 'Filters');
+		if (this.$container.length < 1)
+			return;
+		this.exists = true;
+		this.data = dtData.filter || {};
+	};
+	
+	this.init = function() {
+		if (!this.exists)
+			return;
+		this.bindEvents();
+		this.$container.show();
+	};
+	
+	this.bindEvents = function() {
+		var that = this;
+		this.$container.on('click', '.list-filters-trigger', function(e){
+			that.runFilter();
+			e.preventDefault();
+		});
+	};
+	
+	this.stateSaveParams = function(settings, dtData) {
+		dtData.filter = this.data;
+	};
+	
+	this.runFilter = function() {
+		// update data from filter elements
+		var data = {};
+		data.test = (new Date()).toString();
+		this.data = data; 
+
+		// reload table
+		Tremapp.dataTables.reloadTable(this.$table);
+	};
 	
 });
 

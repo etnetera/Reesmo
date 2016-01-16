@@ -7,6 +7,7 @@ import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.RangeFilterBuilder;
 import org.elasticsearch.index.query.TermFilterBuilder;
+import org.elasticsearch.index.query.TermsFilterBuilder;
 
 /**
  * Filter representation.
@@ -26,6 +27,9 @@ public class ListFilter {
 	public FilterBuilder getFilterBuilder() {
 		if (StringUtils.isEmpty(comparator) || "TERM".equalsIgnoreCase(comparator)) {
 			return new BoolFilterBuilder().must(new TermFilterBuilder(field, value)).cache(true);
+		}
+		if ("TERMS".equalsIgnoreCase(comparator)) {
+			return new BoolFilterBuilder().must(new TermsFilterBuilder(field, (List<Object>) value)).cache(true);
 		}
 		if ("RANGE".equalsIgnoreCase(comparator)) {
 			List<Object> ranges = (List<Object>) value;

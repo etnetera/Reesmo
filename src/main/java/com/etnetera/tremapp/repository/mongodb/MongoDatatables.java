@@ -28,7 +28,7 @@ public class MongoDatatables {
 			List<Criteria> cs = new ArrayList<>();
 			
 			criterias.getColumnDefs().forEach(columnDef -> {
-				if (columnDef.isSearchable() && StringUtils.isBlank(columnDef.getSearch())) {
+				if (columnDef.isSearchable() && !columnDef.isFiltered()) {
 					cs.add(Criteria.where(columnDef.getName()).regex(criterias.getSearch(), "i"));
 				}
 			});

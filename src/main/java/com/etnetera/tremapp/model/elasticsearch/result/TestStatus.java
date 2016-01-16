@@ -1,5 +1,9 @@
 package com.etnetera.tremapp.model.elasticsearch.result;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public enum TestStatus {
 
 	/**
@@ -29,5 +33,9 @@ public enum TestStatus {
 	 * expected outcomes. Compare with test failure and test error.
 	 */
 	PASSED;
+	
+	public static List<String> getAsStringList() {
+		return Stream.of(values()).map(Enum::name).collect(Collectors.toList());
+	}
 	
 }
