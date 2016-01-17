@@ -337,6 +337,8 @@ Tremapp.DataTablesFilters = Class.extend(function(){
 	
 	this.$container;
 	
+	this.definition;
+	
 	this.data;
 	
 	this.exists = false;
@@ -347,12 +349,22 @@ Tremapp.DataTablesFilters = Class.extend(function(){
 		if (this.$container.length < 1)
 			return;
 		this.exists = true;
-		this.data = dtStateData.filters || {};
+		
+		this.definition = $.extend({
+			filters: {},
+			visibleFilters: []
+		}, window['oTable_' + tableId + '_filtersDef'] || {});
+		
+		this.data = $.extend({
+			filters: {},
+			visibleFilters: this.definition.visibleFilters
+		}, dtStateData.filters || {});
 	};
 	
 	this.init = function() {
 		if (!this.exists)
 			return;
+		this.createFilters();
 		this.bindEvents();
 		this.$container.show();
 	};
@@ -365,15 +377,23 @@ Tremapp.DataTablesFilters = Class.extend(function(){
 		});
 	};
 	
+	this.createFilters = function() {
+		var that = this,
+			visibleFilters = this.definition.visibleFilters;
+		
+		$.each(this.definition.filters, function(i, filter){
+			if (visibleFilters.indexOf(filter.field) < 0) return;
+			that.$container.append(filter.label).append('&nbsp;');
+		});
+	};
+	
 	this.stateSaveParams = function(settings, dtStateData) {
 		dtStateData.filters = this.data;
 	};
 	
 	this.runFilters = function() {
 		// update data from filter elements
-		var data = {};
-		data.test = (new Date()).toString();
-		this.data = data; 
+		this.data.test = (new Date()).toString();
 
 		// reload table
 		Tremapp.dataTables.reloadTable(this.$table);

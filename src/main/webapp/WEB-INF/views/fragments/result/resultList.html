@@ -6,6 +6,9 @@
 		<div class="results-box-list pane pane-left">
 			<div th:id="${id} + 'TableFilters'" class="box-header with-border dt-filters" style="display: none">
 				<button type="button" class="btn dt-filters-trigger">Filter list</button>
+				<script th:inline="javascript">
+					window['oTable_' + [[${id}]] + 'Table_filtersDef'] = [[${datatablesFiltersDef}]];
+				</script>
 			</div>
 			<div class="box-body">
 				<div class="dataTables_wrapper form-inline dt-bootstrap">

@@ -1,6 +1,9 @@
 package com.etnetera.tremapp.controller.result;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +29,10 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.controller.json.JsonResponse;
+import com.etnetera.tremapp.dandelion.datatables.DatatablesFilter;
+import com.etnetera.tremapp.dandelion.datatables.DatatablesFilterEnum;
+import com.etnetera.tremapp.dandelion.datatables.DatatablesFilterText;
+import com.etnetera.tremapp.dandelion.datatables.DatatablesFiltersDefinition;
 import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.http.exception.NotFoundException;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
@@ -62,7 +69,11 @@ public class ResultController implements MenuActivityController {
 	}
 	
 	@RequestMapping(value = "/results", method = RequestMethod.GET)
-	public String results() {
+	public String results(Model model) {
+		List<DatatablesFilter> filters = new ArrayList<>();
+		filters.add(new DatatablesFilterText("field1", "Superžýá+ěáýšá+ě"));
+		filters.add(new DatatablesFilterEnum("field2", "Jééééé", Arrays.asList(new DatatablesFilterEnum.Value("value1", "Val 1"), new DatatablesFilterEnum.Value("value2", "Val 2"))));
+		model.addAttribute("datatablesFiltersDef", new DatatablesFiltersDefinition(filters, Arrays.asList("field2")));
 		return "page/result/results";
 	}
 
