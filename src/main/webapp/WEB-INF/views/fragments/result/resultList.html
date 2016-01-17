@@ -4,20 +4,20 @@
 	<div th:fragment="box (id, url, withProject, allowDelete)" th:id="${id}" class="box box-primary results-box panes">
 		<div class="panes-overlay"></div>
 		<div class="results-box-list pane pane-left">
-			<div th:id="${id} + 'TableFilters'" class="box-header with-border list-filters" style="display: none">
-				<button type="button" class="btn list-filters-trigger">Filter list</button>
+			<div th:id="${id} + 'TableFilters'" class="box-header with-border dt-filters" style="display: none">
+				<button type="button" class="btn dt-filters-trigger">Filter list</button>
 			</div>
 			<div class="box-body">
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
 					<div class="row">
 						<div class="col-sm-12">
 							<div dt:conf="${id} + 'Table'" th:attr="dtConf=${id} + 'Table'">
-								<div dt:confType="callback" dt:type="statesaveparams" dt:function="Tremapp.dataTables.filter.dtStateSaveParams" />
-								<div dt:confType="callback" dt:type="stateloaded" dt:function="Tremapp.dataTables.filter.dtStateLoaded" />
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.filter.dtInit" />
+								<div dt:confType="callback" dt:type="statesaveparams" dt:function="Tremapp.dataTables.filters.dtStateSaveParams" />
+								<div dt:confType="callback" dt:type="stateloaded" dt:function="Tremapp.dataTables.filters.dtStateLoaded" />
+								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.filters.dtInit" />
 								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.impl.result.init" />
 							</div>
-							<table th:id="${id} + 'Table'" class="resultsTable selectable" dt:table="true" dt:url="${url}" dt:displayLength="50" dt:filterable="false">
+							<table th:id="${id} + 'Table'" class="resultsTable selectable" dt:table="true" dt:url="${url}" dt:displayLength="50" dt:filterable="false" dt:ext="filters">
 								<thead>
 									<tr>
 										<th dt:property="name" dt:renderFunction="Tremapp.dataTables.impl.result.renderName" th:text="#{result.name}">Name</th>

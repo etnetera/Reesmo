@@ -98,16 +98,17 @@ $.extend(Tremapp, {
 			return bodyEl ? $(bodyEl) : $(rowEl).parents('tbody:first');
 		},
 		
-		filter: {
+		filters: {
 			
-			filters: {},
+			instances: {},
 			
 			dtInit: function(settings, json) {
-				this.getFilterFromSettings(settings).init();
+				this.getFiltersFromSettings(settings).init();
 			},
 			
 			dtStateLoaded: function(settings, data) {
-				this.filters[this.getFilterIdFromSettings(settings)] = new Tremapp.ListFilters(settings, data);
+				// just creates new filter instance with loaded state
+				this.getFiltersFromSettings(settings, data);
 			},
 			
 			/**
@@ -115,21 +116,36 @@ $.extend(Tremapp, {
 			 * in storage.
 			 */
 			dtStateSaveParams: function(settings, data) {
-				/*var filter = this.getFilterFromSettings(settings);
-				if (filter == null) {
-					this.filters[this.getFilterIdFromSettings(settings)] = new Tremapp.ListFilter(settings, data);
-				} else {
-					filter.fetchParams(settings, data);
-				}*/
-				this.getFilterFromSettings(settings).stateSaveParams(settings, data);
+				this.getFiltersFromSettings(settings).stateSaveParams(settings, data);
 			},
 			
-			getFilterFromSettings: function(settings) {
-				return this.filters[this.getFilterIdFromSettings(settings)];
+			/**
+			 * Bind ajax data modification. This is called from DatatablesFiltersExtension java extension.
+			 */
+			dtInitAjaxData: function(tableId, tableVar, tableParams) {
+				var that = this;
+				tableParams.ajax.data = function(data) {
+					return that.getFiltersFromId(tableId).modifyAjaxData(data);
+				};
 			},
 			
-			getFilterIdFromSettings: function(settings) {
-				return $(settings.nTable).attr('id');
+			/**
+			 * Returns filters using settings and creates a filter if not exists yet.
+			 */
+			getFiltersFromSettings: function(settings, initialData) {
+				return this.getFiltersFromId($(settings.nTable).attr('id'), initialData);
+			},
+			
+			/**
+			 * Returns filters using id and creates a filter if not exists yet.
+			 */
+			getFiltersFromId: function(id, initialData) {
+				var filters = this.instances[id];
+				if (filters == null) {
+					filters = new Tremapp.DataTablesFilters(id, initialData || {});
+					this.instances[id] = filters;
+				}
+				return filters;
 			}
 		},
 		
@@ -315,7 +331,7 @@ $.extend(Tremapp, {
 	
 });
 
-Tremapp.ListFilters = Class.extend(function(){
+Tremapp.DataTablesFilters = Class.extend(function(){
 	
 	this.$table;
 	
@@ -325,13 +341,13 @@ Tremapp.ListFilters = Class.extend(function(){
 	
 	this.exists = false;
 	
-	this.constructor = function(dtSettings, dtData) {
-		this.$table = $(dtSettings.nTable);
-		this.$container = $('#' + this.$table.attr('id') + 'Filters');
+	this.constructor = function(tableId, dtStateData) {
+		this.$table = $('#' + tableId);
+		this.$container = $('#' + tableId + 'Filters');
 		if (this.$container.length < 1)
 			return;
 		this.exists = true;
-		this.data = dtData.filter || {};
+		this.data = dtStateData.filters || {};
 	};
 	
 	this.init = function() {
@@ -343,17 +359,17 @@ Tremapp.ListFilters = Class.extend(function(){
 	
 	this.bindEvents = function() {
 		var that = this;
-		this.$container.on('click', '.list-filters-trigger', function(e){
-			that.runFilter();
+		this.$container.on('click', '.dt-filters-trigger', function(e){
+			that.runFilters();
 			e.preventDefault();
 		});
 	};
 	
-	this.stateSaveParams = function(settings, dtData) {
-		dtData.filter = this.data;
+	this.stateSaveParams = function(settings, dtStateData) {
+		dtStateData.filters = this.data;
 	};
 	
-	this.runFilter = function() {
+	this.runFilters = function() {
 		// update data from filter elements
 		var data = {};
 		data.test = (new Date()).toString();
@@ -361,6 +377,12 @@ Tremapp.ListFilters = Class.extend(function(){
 
 		// reload table
 		Tremapp.dataTables.reloadTable(this.$table);
+	};
+	
+	this.modifyAjaxData = function(dtAjaxData) {
+		return $.extend({}, dtAjaxData, {
+			filters: this.data
+		});
 	};
 	
 });
