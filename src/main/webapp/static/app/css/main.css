@@ -360,3 +360,26 @@ body.panes-maximized {
 	display: inline-block;
 }
 
+/* FILTERS */
+
+.dt-filters .btn-group {
+	margin-right: 5px;
+}
+
+.btn-group.dt-filter-type-text .dropdown-menu {
+	padding: 10px;
+	width: 250px;
+}
+
+.btn-group.dt-filter-type-text .dropdown-menu .dropdown-buttons {
+	margin-top: 10px;
+}
+
+.btn-group.dt-filter-type-select .dropdown-menu {
+	padding: 5px 10px 10px;
+}
+
+.btn-group.dt-filter-type-select .dropdown-menu li {
+	padding-top: 5px;
+}
+

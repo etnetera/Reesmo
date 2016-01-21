@@ -30,7 +30,8 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.etnetera.tremapp.list.ListModifier;
+import com.etnetera.tremapp.datatables.FilteredDatatablesCriterias;
+import com.etnetera.tremapp.list.PageableListModifier;
 import com.etnetera.tremapp.message.Localizer;
 import com.etnetera.tremapp.model.ModelAuditor;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
@@ -80,7 +81,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	}
 
 	@Override
-	public Page<Result> findByModifier(ListModifier modifier, List<String> projectIds) {
+	public Page<Result> findByModifier(PageableListModifier modifier, List<String> projectIds) {
 		if (projectIds == null) {
 			return template.queryForPage(createSearchBuilderFromModifier(modifier).build(), Result.class);
 		}
@@ -96,17 +97,17 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	}
 
 	@Override
-	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier) {
+	public Page<Result> findByViewAndModifier(String viewId, PageableListModifier modifier) {
 		View view = viewRepository.findOne(viewId);
-		modifier = view.getModifier().join(modifier);
+		modifier = new PageableListModifier().join(view.getModifier()).join(modifier);
 		return findByModifier(modifier, Arrays.asList(view.getProjectId()));
 	}
 
-	private NativeSearchQueryBuilder createSearchBuilderFromModifier(ListModifier modifier) {
+	private NativeSearchQueryBuilder createSearchBuilderFromModifier(PageableListModifier modifier) {
 		return createSearchBuilderFromModifier(modifier, null);
 	}
 
-	private NativeSearchQueryBuilder createSearchBuilderFromModifier(ListModifier modifier,
+	private NativeSearchQueryBuilder createSearchBuilderFromModifier(PageableListModifier modifier,
 			FilterBuilder filterBuilder) {
 		NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder().withTypes("result")
 				.withFilter(filterBuilder == null ? modifier.getFilterBuilder() : filterBuilder)
@@ -199,6 +200,22 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 				.map(r -> new ResultDT(r, foundProjects.get(r.getProjectId()), localizer, locale))
 				.collect(Collectors.toList()), results.getTotalRecords(), results.getTotalDisplayRecords());
 	}
+	
+	@Override
+	public DataSet<ResultDT> findWithFilteredDatatablesCriterias(FilteredDatatablesCriterias criterias, List<String> projectIds,
+			Locale locale) {
+		DataSet<Result> results = findResultsWithFilteredDatatablesCriterias(criterias, projectIds);
+
+		Set<String> foundProjectIds = results.getRows().stream().filter(r -> r.getProjectId() != null)
+				.map(r -> r.getProjectId()).collect(Collectors.toSet());
+		Map<String, Project> foundProjects = StreamSupport
+				.stream(projectRepository.findAll(foundProjectIds).spliterator(), false)
+				.collect(Collectors.toMap(Project::getId, Function.identity()));
+
+		return new DataSet<ResultDT>(results.getRows().stream()
+				.map(r -> new ResultDT(r, foundProjects.get(r.getProjectId()), localizer, locale))
+				.collect(Collectors.toList()), results.getTotalRecords(), results.getTotalDisplayRecords());
+	}
 
 	private DataSet<Result> findResultsWithDatatablesCriterias(DatatablesCriterias criterias,
 			Collection<String> projectIds) {
@@ -218,6 +235,32 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		}
 		queryBuilder.withPageable(ElasticsearchDatatables.getPageable(criterias));
 		ElasticsearchDatatables.sortQueryBuilder(queryBuilder, criterias);
+
+		Page<Result> projects = template.queryForPage(queryBuilder.build(), Result.class);
+		return new DataSet<Result>(projects.getContent(), Long.valueOf(projects.getNumberOfElements()),
+				projects.getTotalElements());
+	}
+	
+	private DataSet<Result> findResultsWithFilteredDatatablesCriterias(FilteredDatatablesCriterias criterias,
+			Collection<String> projectIds) {
+		FilterBuilder filterBuilder = null;
+		if (projectIds != null) {
+			if (projectIds.isEmpty()) {
+				return new DataSet<Result>(new ArrayList<>(), 0L, 0L);
+			} else {
+				filterBuilder = new BoolFilterBuilder().must(new TermsFilterBuilder("projectId", projectIds))
+						.cache(true);
+			}
+		}
+
+		NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder().withTypes("result");
+		if (filterBuilder != null) {
+			queryBuilder.withFilter(criterias.getFilterBuilder(filterBuilder));
+		} else {
+			queryBuilder.withFilter(criterias.getFilterBuilder());
+		}
+		queryBuilder.withPageable(ElasticsearchDatatables.getPageable(criterias.getCriterias()));
+		ElasticsearchDatatables.sortQueryBuilder(queryBuilder, criterias.getCriterias());
 
 		Page<Result> projects = template.queryForPage(queryBuilder.build(), Result.class);
 		return new DataSet<Result>(projects.getContent(), Long.valueOf(projects.getNumberOfElements()),

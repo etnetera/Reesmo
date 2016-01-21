@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.dandelion.datatables;
+package com.etnetera.tremapp.datatables;
 
 abstract public class DatatablesFilter {
 

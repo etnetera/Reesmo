@@ -18,6 +18,10 @@ public class Localizer {
 	@Autowired
 	private MessageSource messageSource;
 	
+	public MessageSource getMessageSource() {
+		return messageSource;
+	}
+
 	public String localize(boolean bool, Locale locale) {
 		return messageSource.getMessage(bool ? "true" : "false", null, locale);
 	}

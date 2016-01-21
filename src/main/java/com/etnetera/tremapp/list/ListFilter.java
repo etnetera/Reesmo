@@ -1,42 +1,25 @@
 package com.etnetera.tremapp.list;
 
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.RangeFilterBuilder;
-import org.elasticsearch.index.query.TermFilterBuilder;
-import org.elasticsearch.index.query.TermsFilterBuilder;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Filter representation.
- * 
- * @author zdenek
- *
  */
-public class ListFilter {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+	@JsonSubTypes.Type(value = PrefixListFilter.class, name = PrefixListFilter.TYPE),
+	@JsonSubTypes.Type(value = TermListFilter.class, name = TermListFilter.TYPE),
+	@JsonSubTypes.Type(value = TermsListFilter.class, name = TermsListFilter.TYPE),
+	@JsonSubTypes.Type(value = RangeListFilter.class, name = RangeListFilter.TYPE)
+}) 
+abstract public class ListFilter {
 
-	private String field;
+	protected String field;
 	
-	private String comparator;
-	
-	private Object value;
-	
-	@SuppressWarnings("unchecked")
-	public FilterBuilder getFilterBuilder() {
-		if (StringUtils.isEmpty(comparator) || "TERM".equalsIgnoreCase(comparator)) {
-			return new BoolFilterBuilder().must(new TermFilterBuilder(field, value)).cache(true);
-		}
-		if ("TERMS".equalsIgnoreCase(comparator)) {
-			return new BoolFilterBuilder().must(new TermsFilterBuilder(field, (List<Object>) value)).cache(true);
-		}
-		if ("RANGE".equalsIgnoreCase(comparator)) {
-			List<Object> ranges = (List<Object>) value;
-			return new BoolFilterBuilder().must(new RangeFilterBuilder(field).from(ranges.get(0)).to(ranges.get(1))).cache(true);
-		}
-		throw new IllegalArgumentException("Unknown list filter comparator: " + comparator);
-	}
+	abstract public FilterBuilder getFilterBuilder();
 
 	public String getField() {
 		return field;
@@ -44,22 +27,6 @@ public class ListFilter {
 
 	public void setField(String field) {
 		this.field = field;
-	}
-
-	public String getComparator() {
-		return comparator;
-	}
-
-	public void setComparator(String comparator) {
-		this.comparator = comparator;
-	}
-
-	public Object getValue() {
-		return value;
-	}
-
-	public void setValue(Object value) {
-		this.value = value;
 	}
 	
 }

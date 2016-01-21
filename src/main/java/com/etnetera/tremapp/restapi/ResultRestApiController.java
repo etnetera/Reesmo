@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.etnetera.tremapp.list.ListModifier;
+import com.etnetera.tremapp.list.PageableListModifier;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultValidator;
 import com.etnetera.tremapp.model.mongodb.project.Project;
@@ -84,11 +84,11 @@ public class ResultRestApiController extends AbstractRestController {
 	
 	@RequestMapping(value = "/results/list", method = RequestMethod.GET)
 	public RestApiList<Result> getResults() {
-		return new RestApiList<>(resultRepository.findByModifier(new ListModifier(), userManager.getAllowedProjectIds(Permission.BASIC)));
+		return new RestApiList<>(resultRepository.findByModifier(new PageableListModifier(), userManager.getAllowedProjectIds(Permission.BASIC)));
 	}
 	
 	@RequestMapping(value = "/results/list", method = RequestMethod.POST)
-	public RestApiList<Result> searchResults(@RequestBody ListModifier modifier) {
+	public RestApiList<Result> searchResults(@RequestBody PageableListModifier modifier) {
 		return new RestApiList<>(resultRepository.findByModifier(modifier, userManager.getAllowedProjectIds(Permission.BASIC)));
 	}
 	

@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.dandelion.datatables;
+package com.etnetera.tremapp.datatables;
 
 import com.github.dandelion.datatables.core.extension.AbstractExtension;
 import com.github.dandelion.datatables.core.html.HtmlTable;

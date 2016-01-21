@@ -77,10 +77,10 @@ public class Result extends ElasticAuditedModel {
 	@Field(type = FieldType.Long)
 	private Long length;
 	
-	@Field(type = FieldType.String)
+	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	private TestStatus status;
 	
-	@Field(type = FieldType.String)
+	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	private TestSeverity severity;
 	
 	@Field(type = FieldType.Boolean)
@@ -95,10 +95,10 @@ public class Result extends ElasticAuditedModel {
 	@Field(type = FieldType.String)
 	private List<String> errors = new ArrayList<>();
 	
-	@Field(type = FieldType.String)
+	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	private List<TestCategory> categories = new ArrayList<>();
 	
-	@Field(type = FieldType.String)
+	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	private List<TestType> types = new ArrayList<>();
 	
 	@Field(type = FieldType.Nested)

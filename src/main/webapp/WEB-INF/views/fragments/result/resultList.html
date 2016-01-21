@@ -5,7 +5,6 @@
 		<div class="panes-overlay"></div>
 		<div class="results-box-list pane pane-left">
 			<div th:id="${id} + 'TableFilters'" class="box-header with-border dt-filters" style="display: none">
-				<button type="button" class="btn dt-filters-trigger">Filter list</button>
 				<script th:inline="javascript">
 					window['oTable_' + [[${id}]] + 'Table_filtersDef'] = [[${datatablesFiltersDef}]];
 				</script>

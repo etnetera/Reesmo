@@ -1,5 +1,6 @@
-package com.etnetera.tremapp.dandelion.datatables;
+package com.etnetera.tremapp.datatables;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatatablesFiltersDefinition {
@@ -8,6 +9,10 @@ public class DatatablesFiltersDefinition {
 	
 	protected List<String> visibleFilters;
 
+	public DatatablesFiltersDefinition() {
+		this(new ArrayList<>(), new ArrayList<>());
+	}
+	
 	public DatatablesFiltersDefinition(List<DatatablesFilter> filters, List<String> visibleFilters) {
 		this.filters = filters;
 		this.visibleFilters = visibleFilters;
@@ -27,6 +32,16 @@ public class DatatablesFiltersDefinition {
 
 	public void setVisibleFilters(List<String> visibleFilters) {
 		this.visibleFilters = visibleFilters;
+	}
+	
+	public DatatablesFiltersDefinition addFilter(DatatablesFilter filter) {
+		return addFilter(filter, false);
+	}
+	
+	public DatatablesFiltersDefinition addFilter(DatatablesFilter filter, boolean visible) {
+		filters.add(filter);
+		visibleFilters.add(filter.getField());
+		return this;
 	}
 	
 }

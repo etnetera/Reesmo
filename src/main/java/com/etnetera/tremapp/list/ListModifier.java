@@ -6,53 +6,18 @@ import java.util.List;
 import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Holds data for list modification.
- * List can be filtered, sorted and paged.
+ * List can be filtered and sorted.
  * Or whole query can be applied to list when
  * query field is defined.
- * 
- * @author zdenek
- * 
  */
 public class ListModifier {
-	
-	private static final int DEFAULT_PAGE = 0;
-	private static final int DEFAULT_SIZE = 20;
-	
-	private int page = -1;
-	
-	private int size = -1;
 	
 	private List<ListFilter> filters;
 	
 	private List<ListSorter> sorters;
-	
-	public ListModifier() {}
-	
-	public ListModifier(int page, int size) {
-		this.page = page;
-		this.size = size;
-	}
-
-	public int getPage() {
-		return page;
-	}
-
-	public void setPage(int page) {
-		this.page = page;
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
 
 	public List<ListFilter> getFilters() {
 		return filters;
@@ -70,16 +35,7 @@ public class ListModifier {
 		this.sorters = sorters;
 	}
 	
-	public ListModifier applyPageable(Pageable pageable) {
-		page = pageable.getPageNumber();
-		size = pageable.getPageSize();
-		return this;
-	}
-	
 	public ListModifier join(ListModifier modifier) {
-		if (modifier.page != -1) page = modifier.page;
-		if (modifier.size != -1) size = modifier.size;
-		
 		if (filters == null) filters = modifier.filters;
 		else if (modifier.filters != null) modifier.filters.forEach(f -> filters.add(f));
 		
@@ -109,10 +65,6 @@ public class ListModifier {
 			sorters.forEach(s -> sortBuilders.add(s.getSortBuilder()));
 		}
 		return sortBuilders;
-	}
-
-	public Pageable getPageable() {
-		return new PageRequest(page == -1 ? DEFAULT_PAGE : page, size == -1 ? DEFAULT_SIZE : size);
 	}
 	
 }

@@ -5,7 +5,12 @@
 		var Tremapp = {
 			baseUrl: [[@{/}]],
 			csrfName: [[${_csrf.parameterName}]],
-			csrfValue: [[${_csrf.token}]]
+			csrfValue: [[${_csrf.token}]],
+			i18n: {
+				'all': [[#{all}]],
+				'update': [[#{update}]],
+				'close': [[#{close}]]
+			}
 		};
 	</script>
 	<div th:fragment="last">

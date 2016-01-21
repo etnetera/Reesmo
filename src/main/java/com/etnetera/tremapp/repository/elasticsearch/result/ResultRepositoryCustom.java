@@ -7,7 +7,8 @@ import java.util.Locale;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.etnetera.tremapp.list.ListModifier;
+import com.etnetera.tremapp.datatables.FilteredDatatablesCriterias;
+import com.etnetera.tremapp.list.PageableListModifier;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
@@ -20,9 +21,9 @@ import com.mongodb.gridfs.GridFSDBFile;
  */
 public interface ResultRepositoryCustom {
 	
-	public Page<Result> findByModifier(ListModifier modifier, List<String> projectIds);
+	public Page<Result> findByModifier(PageableListModifier modifier, List<String> projectIds);
 	
-	public Page<Result> findByViewAndModifier(String viewId, ListModifier modifier);
+	public Page<Result> findByViewAndModifier(String viewId, PageableListModifier modifier);
 	
 	/**
 	 * Overrides default delete method, so attachments from GridFS
@@ -83,5 +84,7 @@ public interface ResultRepositoryCustom {
 	public GridFSDBFile getAttachmentFile(ResultAttachment attachment);
 	
 	public DataSet<ResultDT> findWithDatatablesCriterias(DatatablesCriterias criterias, List<String> projectIds, Locale locale);
+	
+	public DataSet<ResultDT> findWithFilteredDatatablesCriterias(FilteredDatatablesCriterias criterias, List<String> projectIds, Locale locale);
 	
 }
