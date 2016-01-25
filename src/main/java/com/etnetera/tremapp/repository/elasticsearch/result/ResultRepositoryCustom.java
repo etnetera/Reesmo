@@ -7,7 +7,7 @@ import java.util.Locale;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.etnetera.tremapp.datatables.FilteredDatatablesCriterias;
+import com.etnetera.tremapp.datatables.filter.FilteredDatatablesCriterias;
 import com.etnetera.tremapp.list.PageableListModifier;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;

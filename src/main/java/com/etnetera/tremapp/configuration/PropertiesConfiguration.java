@@ -7,6 +7,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @PropertySource("classpath:application.properties")
+@PropertySource(value = "file:application-override.properties", ignoreResourceNotFound = true)
 public class PropertiesConfiguration {
 
 	@Bean

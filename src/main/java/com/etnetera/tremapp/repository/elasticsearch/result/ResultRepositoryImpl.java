@@ -30,7 +30,7 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.etnetera.tremapp.datatables.FilteredDatatablesCriterias;
+import com.etnetera.tremapp.datatables.filter.FilteredDatatablesCriterias;
 import com.etnetera.tremapp.list.PageableListModifier;
 import com.etnetera.tremapp.message.Localizer;
 import com.etnetera.tremapp.model.ModelAuditor;

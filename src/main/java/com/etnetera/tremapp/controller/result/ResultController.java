@@ -26,18 +26,13 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import com.etnetera.tremapp.controller.MenuActivityController;
 import com.etnetera.tremapp.controller.json.JsonResponse;
-import com.etnetera.tremapp.datatables.DatatablesFilterSelect;
-import com.etnetera.tremapp.datatables.DatatablesFilterText;
-import com.etnetera.tremapp.datatables.DatatablesFiltersDefinition;
-import com.etnetera.tremapp.datatables.FilteredDatatablesCriterias;
+import com.etnetera.tremapp.datatables.filter.FilteredDatatablesCriterias;
 import com.etnetera.tremapp.http.ControllerModel;
 import com.etnetera.tremapp.http.exception.NotFoundException;
 import com.etnetera.tremapp.message.Localizer;
 import com.etnetera.tremapp.model.datatables.result.ResultDT;
 import com.etnetera.tremapp.model.elasticsearch.result.Result;
 import com.etnetera.tremapp.model.elasticsearch.result.ResultAttachment;
-import com.etnetera.tremapp.model.elasticsearch.result.TestSeverity;
-import com.etnetera.tremapp.model.elasticsearch.result.TestStatus;
 import com.etnetera.tremapp.model.form.result.ResultDeleteCommand;
 import com.etnetera.tremapp.model.mongodb.project.Project;
 import com.etnetera.tremapp.model.mongodb.user.Permission;
@@ -49,7 +44,7 @@ import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 import com.mongodb.gridfs.GridFSDBFile;
 
 @Controller
-public class ResultController implements MenuActivityController {
+public class ResultController implements MenuActivityController, ResultFilteredController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultController.class);
 
@@ -72,13 +67,7 @@ public class ResultController implements MenuActivityController {
 
 	@RequestMapping(value = "/results", method = RequestMethod.GET)
 	public String results(Model model, Locale locale) {
-		DatatablesFiltersDefinition datatablesFiltersDef = new DatatablesFiltersDefinition()
-				.addFilter(new DatatablesFilterText("name", "result.name", localizer, locale), true)
-				.addFilter(new DatatablesFilterSelect("status", "result.status", TestStatus.values(),
-						"result.status.value.", localizer, locale), true)
-				.addFilter(new DatatablesFilterSelect("severity", "result.severity", TestSeverity.values(),
-						"result.severity.value.", localizer, locale), true);
-		model.addAttribute("datatablesFiltersDef", datatablesFiltersDef);
+		injectFiltersDefinition(model, localizer, locale);
 		return "page/result/results";
 	}
 

@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.datatables;
+package com.etnetera.tremapp.datatables.filter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class DatatablesFiltersDefinition {
 	
 	public DatatablesFiltersDefinition addFilter(DatatablesFilter filter, boolean visible) {
 		filters.add(filter);
-		visibleFilters.add(filter.getField());
+		if (visible) visibleFilters.add(filter.getField());
 		return this;
 	}
 	

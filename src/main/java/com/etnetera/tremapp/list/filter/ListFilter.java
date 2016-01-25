@@ -1,7 +1,12 @@
-package com.etnetera.tremapp.list;
+package com.etnetera.tremapp.list.filter;
 
 import org.elasticsearch.index.query.FilterBuilder;
 
+import com.etnetera.tremapp.list.filter.impl.DateRangeListFilter;
+import com.etnetera.tremapp.list.filter.impl.DoubleRangeListFilter;
+import com.etnetera.tremapp.list.filter.impl.PrefixListFilter;
+import com.etnetera.tremapp.list.filter.impl.TermListFilter;
+import com.etnetera.tremapp.list.filter.impl.TermsListFilter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -13,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 	@JsonSubTypes.Type(value = PrefixListFilter.class, name = PrefixListFilter.TYPE),
 	@JsonSubTypes.Type(value = TermListFilter.class, name = TermListFilter.TYPE),
 	@JsonSubTypes.Type(value = TermsListFilter.class, name = TermsListFilter.TYPE),
-	@JsonSubTypes.Type(value = RangeListFilter.class, name = RangeListFilter.TYPE)
+	@JsonSubTypes.Type(value = DoubleRangeListFilter.class, name = DoubleRangeListFilter.TYPE),
+	@JsonSubTypes.Type(value = DateRangeListFilter.class, name = DateRangeListFilter.TYPE)
 }) 
 abstract public class ListFilter {
 

@@ -1,9 +1,10 @@
-package com.etnetera.tremapp.list;
+package com.etnetera.tremapp.list.filter.impl;
 
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.PrefixFilterBuilder;
 
+import com.etnetera.tremapp.list.filter.ListFilter;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**

@@ -1,10 +1,11 @@
-package com.etnetera.tremapp.datatables;
+package com.etnetera.tremapp.datatables.filter.impl;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.etnetera.tremapp.datatables.filter.DatatablesFilter;
 import com.etnetera.tremapp.message.Localizer;
 
 public class DatatablesFilterSelect extends DatatablesFilter {
@@ -16,6 +17,15 @@ public class DatatablesFilterSelect extends DatatablesFilter {
 	public DatatablesFilterSelect(String field, String label, List<Option> options) {
 		super(field, label);
 		this.options = options;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public DatatablesFilterSelect(String field, String labelKey, Enum[] enumValues,
+			Localizer localizer, Locale locale) {
+		this(field, localizer.getMessageSource().getMessage(labelKey, null, locale),
+				Stream.of(enumValues)
+						.map(enumValue -> new Option(enumValue.name(), enumValue.name()))
+				.collect(Collectors.toList()));
 	}
 
 	@SuppressWarnings("rawtypes")

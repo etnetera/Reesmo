@@ -7,9 +7,19 @@
 			csrfName: [[${_csrf.parameterName}]],
 			csrfValue: [[${_csrf.token}]],
 			i18n: {
-				'all': [[#{all}]],
-				'update': [[#{update}]],
-				'close': [[#{close}]]
+				values: {
+					'all': [[#{all}]],
+					'update': [[#{update}]],
+					'close': [[#{close}]],
+					'and': [[#{and}]],
+					'between': [[#{between}]],
+					'before': [[#{before}]],
+					'after': [[#{after}]],
+					'moreThan': [[#{moreThan}]],
+					'lessThan': [[#{lessThan}]],
+					'dt.filters.showMore': [[#{dt.filters.showMore}]],
+					'dt.filters.showLess': [[#{dt.filters.showLess}]]
+				}
 			}
 		};
 	</script>
@@ -19,8 +29,15 @@
 		<script th:src="@{/static/plugins/datatables/jquery.dataTables.min.js}" src="../../../../static/plugins/datatables/jquery.dataTables.min.js"></script>
 		<script th:src="@{/static/plugins/datatables/dataTables.bootstrap.min.js}" src="../../../../static/plugins/datatables/dataTables.bootstrap.min.js"></script>
 		<script th:src="@{/static/vendor/google-code-prettify/prettify.js}" src="../../../../static/vendor/google-code-prettify/prettify.js"></script>
+		<script th:src="@{/static/vendor/moment.min.js}" src="../../../../static/vendor/moment.min.js"></script>
+		<script th:src="@{/static/vendor/daterangepicker/daterangepicker.js}" src="../../../../static/vendor/daterangepicker/daterangepicker.js"></script>
 		<script th:src="@{/static/dist/js/app.min.js}" src="../../../../static/dist/js/app.min.js"></script>
 		<script th:src="@{/static/app/js/main.js}" src="../../../../static/app/js/main.js"></script>
+		<script th:src="@{/static/app/js/datatables.js}" src="../../../../static/app/js/datatables.js"></script>
+		<script th:src="@{/static/app/js/datatables-filters.js}" src="../../../../static/app/js/datatables-filters.js"></script>
+		<script th:src="@{/static/app/js/datatables.impl.result.js}" src="../../../../static/app/js/datatables.impl.result.js"></script>
+		<script th:src="@{/static/app/js/panes.js}" src="../../../../static/app/js/panes.js"></script>
+		<script th:src="@{/static/app/js/result-panes.js}" src="../../../../static/app/js/result-panes.js"></script>
 	</div>
 </body>
 </html>

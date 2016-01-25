@@ -1,7 +1,8 @@
-package com.etnetera.tremapp.datatables;
+package com.etnetera.tremapp.datatables.filter.impl;
 
 import java.util.Locale;
 
+import com.etnetera.tremapp.datatables.filter.DatatablesFilter;
 import com.etnetera.tremapp.message.Localizer;
 
 public class DatatablesFilterText extends DatatablesFilter {

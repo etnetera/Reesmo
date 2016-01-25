@@ -7,6 +7,8 @@ import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
+import com.etnetera.tremapp.list.filter.ListFilter;
+
 /**
  * Holds data for list modification.
  * List can be filtered and sorted.

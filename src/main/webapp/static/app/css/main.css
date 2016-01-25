@@ -362,13 +362,32 @@ body.panes-maximized {
 
 /* FILTERS */
 
+.box-header.dt-filters {
+	padding-top: 5px;
+}
+
+.dt-filters > * {
+	margin-top: 5px;
+}
+
 .dt-filters .btn-group {
 	margin-right: 5px;
 }
 
+.dt-filters.dt-filters-less-view .dt-filter.dt-filter-hidden {
+	display: none;
+}
+
+.dt-filters.dt-filters-more-view .dt-filters-trigger-more .dt-filters-more-label {
+	display: none;
+}
+
+.dt-filters.dt-filters-less-view .dt-filters-trigger-more .dt-filters-less-label {
+	display: none;
+}
+
 .btn-group.dt-filter-type-text .dropdown-menu {
 	padding: 10px;
-	width: 250px;
 }
 
 .btn-group.dt-filter-type-text .dropdown-menu .dropdown-buttons {
@@ -381,5 +400,21 @@ body.panes-maximized {
 
 .btn-group.dt-filter-type-select .dropdown-menu li {
 	padding-top: 5px;
+}
+
+.btn-group.dt-filter-type-daterange .dropdown-menu,
+.btn-group.dt-filter-type-numberrange .dropdown-menu {
+	padding: 10px;
+}
+
+.btn-group.dt-filter-type-daterange .dropdown-menu .dropdown-buttons,
+.btn-group.dt-filter-type-numberrange .dropdown-menu .dropdown-buttons {
+	margin-top: 10px;
+}
+
+.btn-group.dt-filter-type-daterange input.date-input,
+.btn-group.dt-filter-type-numberrange input.date-input {
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 

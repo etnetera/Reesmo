@@ -1,4 +1,4 @@
-package com.etnetera.tremapp.datatables;
+package com.etnetera.tremapp.datatables.filter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 
-import com.etnetera.tremapp.list.ListFilter;
 import com.etnetera.tremapp.list.ListModifier;
+import com.etnetera.tremapp.list.filter.ListFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dandelion.core.util.StringUtils;
 import com.github.dandelion.core.util.Validate;
