@@ -386,6 +386,18 @@ body.panes-maximized {
 	display: none;
 }
 
+.dt-filters .dt-filters-trigger-more i {
+	font-weight: bold;
+	margin-left: 8px;
+}
+
+.dt-filters.dt-filters-more-view .dt-filters-trigger-more i {
+	-webkit-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+
 .btn-group.dt-filter-type-text .dropdown-menu {
 	padding: 10px;
 }

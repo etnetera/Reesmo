@@ -94,7 +94,7 @@ Tremapp.DataTablesFilters = Class.extend(function(){
 			.append('<button type="button" class="btn btn-link dt-filters-trigger-more">'
 						+ '<span class="dt-filters-more-label">' + Tremapp.i18n.get('dt.filters.showMore') + '</span>'
 						+ '<span class="dt-filters-less-label">' + Tremapp.i18n.get('dt.filters.showLess') + '</span>'
-						+ '</button>');
+						+ '<i class="fa fa-angle-left"></i></button>');
 		
 		this.filters = filters;
 	};
