@@ -76,12 +76,7 @@ public class FilteredDatatablesCriterias {
 				error = true;
 				break;
 			}
-			ListFilter filter = mapper.readValue(filterStr, ListFilter.class);
-			if (filter == null){
-				error = true;
-				break;
-			}
-			filters.add(filter);
+			filters.add(mapper.readValue(filterStr, ListFilter.class));
 		}
 		
 		return new FilteredDatatablesCriterias(DatatablesCriterias.getFromRequest(request), error ? null : filters);
