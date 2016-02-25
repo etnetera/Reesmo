@@ -10,6 +10,6 @@ public enum TestType {
 	TESTNG,
 	JUNIT,
 	SPOCK,
-	SELENIUMBROWSER
+	SEB
 	
 }
