@@ -70,18 +70,18 @@
 				</div>
 				<div th:if="${result.errors != null and not #lists.isEmpty(result.errors)}" class="result-value result-errors">
 					<span class="value-label" th:text="#{result.errors} + ':'">Errors</span>
-					<div th:each="err : ${result.errors}" class="result-info result-error bg-red-active" th:with="lines=${#strings.listSplit(err, T(com.etnetera.tremapp.Tremapp).NEWLINE)}">
+					<div th:each="err : ${result.errors}" class="result-info result-error bg-red-active" th:with="lines=${#strings.listSplit(err, T(cz.etnetera.reesmo.Reesmo).NEWLINE)}">
 						<div class="firstline" th:text="${lines[0]}" th:classappend="${lines.size() gt 1 ? 'with-nextlines' : ''}">Error first line</div>
 						<div th:if="${lines.size() gt 1}" class="nextlines-trigger"><i class="fa fa-angle-left"></i></div>
-						<div th:if="${lines.size() gt 1}" class="nextlines" th:text="${#strings.listJoin(lines.subList(1, lines.size()), T(com.etnetera.tremapp.Tremapp).NEWLINE)}">Next lines</div>
+						<div th:if="${lines.size() gt 1}" class="nextlines" th:text="${#strings.listJoin(lines.subList(1, lines.size()), T(cz.etnetera.reesmo.Reesmo).NEWLINE)}">Next lines</div>
 					</div>
 				</div>
 				<div th:if="${result.notes != null and not #lists.isEmpty(result.notes)}" class="result-value result-notes">
 					<span class="value-label" th:text="#{result.notes} + ':'">Notes</span>
-					<div th:each="note : ${result.notes}" class="result-info result-note bg-aqua-active" th:with="lines=${#strings.listSplit(note, T(com.etnetera.tremapp.Tremapp).NEWLINE)}">
+					<div th:each="note : ${result.notes}" class="result-info result-note bg-aqua-active" th:with="lines=${#strings.listSplit(note, T(cz.etnetera.reesmo.Reesmo).NEWLINE)}">
 						<div class="firstline" th:text="${lines[0]}" th:classappend="${lines.size() gt 1 ? 'with-nextlines' : ''}">Note first line</div>
 						<div th:if="${lines.size() gt 1}" class="nextlines-trigger"><i class="fa fa-angle-left"></i></div>
-						<div th:if="${lines.size() gt 1}" class="nextlines" th:text="${#strings.listJoin(lines.subList(1, lines.size()), T(com.etnetera.tremapp.Tremapp).NEWLINE)}">Next lines</div>
+						<div th:if="${lines.size() gt 1}" class="nextlines" th:text="${#strings.listJoin(lines.subList(1, lines.size()), T(cz.etnetera.reesmo.Reesmo).NEWLINE)}">Next lines</div>
 					</div>
 				</div>
 				<div th:if="${result.attachments != null and not #lists.isEmpty(result.attachments)}" class="result-value result-attachments">

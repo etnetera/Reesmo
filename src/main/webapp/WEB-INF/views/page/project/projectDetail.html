@@ -40,12 +40,12 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div th:if="${isProjectAdmin}" dt:conf="projectUsersTable">
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.initCompleteSelectableRowsCallback" />
+								<div dt:confType="callback" dt:type="init" dt:function="Reesmo.dataTables.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="projectUsersTable" th:class="${isProjectAdmin}?'selectable remove'" dt:table="true" dt:url="@{/dt/project/users/{projectId}(projectId=${project.id})}">
 								<thead>
 									<tr>
-										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
+										<th dt:property="label" dt:renderFunction="Reesmo.usersTableRenderLabel" th:text="#{user.label}">Label</th>
 										<th dt:property="username" th:text="#{user.username}">Username</th>
 										<th dt:property="type" dt:searchable="false" dt:sortable="false" th:text="#{user.type}">Type</th>
 										<th dt:property="permission" dt:searchable="false" dt:sortable="false" th:text="#{user.permission}">Permission</th>
@@ -73,12 +73,12 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div dt:conf="usersTable">
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.initCompleteSelectableRowsCallback" />
+								<div dt:confType="callback" dt:type="init" dt:function="Reesmo.dataTables.initCompleteSelectableRowsCallback" />
 							</div>
 							<table id="usersTable" th:class="${isProjectAdmin}?'selectable add'" dt:table="true" dt:url="@{/dt/users}">
 								<thead>
 									<tr>
-										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
+										<th dt:property="label" dt:renderFunction="Reesmo.usersTableRenderLabel" th:text="#{user.label}">Label</th>
 										<th dt:property="username" th:text="#{user.username}">Username</th>
 										<th dt:property="type" dt:searchable="false" dt:sortable="false" th:text="#{user.type}">Type</th>
 										<th dt:property="enabled" dt:searchable="false" dt:sortable="false" th:text="#{user.enabled}">Enabled</th>
@@ -111,7 +111,7 @@
 							<table id="projectUsersFromGroupsTable" dt:table="true" dt:url="@{/dt/project/users-from-groups/{projectId}(projectId=${project.id})}">
 								<thead>
 									<tr>
-										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
+										<th dt:property="label" dt:renderFunction="Reesmo.usersTableRenderLabel" th:text="#{user.label}">Label</th>
 										<th dt:property="username" th:text="#{user.username}">Username</th>
 										<th dt:property="type" dt:searchable="false" dt:sortable="false" th:text="#{user.type}">Type</th>
 										<th dt:property="permission" dt:searchable="false" dt:sortable="false" th:text="#{user.permission}">Permission</th>
@@ -126,19 +126,19 @@
 		</div>
 		<div th:switch="${#authentication.principal.isSuperadmin()}">
 			<script th:case="${true}" th:inline="javascript">
-				Tremapp.usersTableRenderLabel = function(label, type, user) {
-					return Tremapp.dataTables.renderLink('user/home/' + user.id, label);
+				Reesmo.usersTableRenderLabel = function(label, type, user) {
+					return Reesmo.dataTables.renderLink('user/home/' + user.id, label);
 				};
 			</script>
 			<script th:case="${false}" th:inline="javascript">
-				Tremapp.usersTableRenderLabel = function(label, type, user) {
+				Reesmo.usersTableRenderLabel = function(label, type, user) {
 					return label;
 				};
 			</script>
 		</div>
 		<script th:if="${isProjectAdmin}" th:inline="javascript">
 			/*<![CDATA[*/
-			Tremapp.initProjectUsersManagement = function() {
+			Reesmo.initProjectUsersManagement = function() {
 				var $showAddUsersBtn = $('#btn-show-add-users'),
 					$removeUsersBtn = $('#btn-remove-users'),
 					$addUsersBtn = $('#btn-add-users'),
@@ -152,7 +152,7 @@
 				});
 				
 				$addUsersBtn.click(function(){
-					var rowsData = Tremapp.dataTables.getSelectedRowsData($usersTable),
+					var rowsData = Reesmo.dataTables.getSelectedRowsData($usersTable),
 						userIds = [];
 					
 					$.each(rowsData, function(i, rowData){
@@ -160,21 +160,21 @@
 					});
 					if (userIds.length < 1) return;
 					
-					Tremapp.ajax({
+					Reesmo.ajax({
 						url: [[@{/project/user/add/{projectId}(projectId=${project.id})}]],
 						data: {
 							permission: $selectAddUsersPermission.val(),
 							userIds: userIds
 						}
 					}, function(addedCnt){
-						Tremapp.dataTables.clearRowSelection($usersTable);
-						Tremapp.dataTables.reloadTable($projectUsersTable);
+						Reesmo.dataTables.clearRowSelection($usersTable);
+						Reesmo.dataTables.reloadTable($projectUsersTable);
 						// TODO - show count
 					});
 				});
 				
 				$removeUsersBtn.click(function(){
-					var rowsData = Tremapp.dataTables.getSelectedRowsData($projectUsersTable),
+					var rowsData = Reesmo.dataTables.getSelectedRowsData($projectUsersTable),
 						userIds = [];
 					
 					$.each(rowsData, function(i, rowData){
@@ -182,21 +182,21 @@
 					});
 					if (userIds.length < 1) return;
 					
-					Tremapp.ajax({
+					Reesmo.ajax({
 						url: [[@{/project/user/remove/{projectId}(projectId=${project.id})}]],
 						data: {
 							userIds: userIds
 						}
 					}, function(removedCnt){
-						Tremapp.dataTables.clearRowSelection($projectUsersTable);
-						Tremapp.dataTables.reloadTable($projectUsersTable);
+						Reesmo.dataTables.clearRowSelection($projectUsersTable);
+						Reesmo.dataTables.reloadTable($projectUsersTable);
 						// TODO - show count
 					});
 				});
 			}
 			
 			$(document).ready(function(){
-				Tremapp.initProjectUsersManagement();
+				Reesmo.initProjectUsersManagement();
 			});
 			/*]]>*/
 		</script>

@@ -1,4 +1,4 @@
-Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
+Reesmo.ResultListPanes = Reesmo.Panes.extend(function(){
 	
 	this.resultId;
 	
@@ -36,7 +36,7 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 		
 		$(this.dtSettings.nTBody).on('click', 'tr', function(e){
 			var $this = $(this);
-			if (!Tremapp.dataTables.isSelectable(that.$table) || !Tremapp.dataTables.isRow($this)) return;
+			if (!Reesmo.dataTables.isSelectable(that.$table) || !Reesmo.dataTables.isRow($this)) return;
 			var $target,
 				$resultA,
 				isA,
@@ -54,7 +54,7 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 			isRemovingEnabled = that.isRemovingEnabled();
 			
 			if (!isResultA && isRemovingEnabled) {
-				Tremapp.dataTables.toggleRowSelection($this, that.dtSettings.nTBody, null, e);
+				Reesmo.dataTables.toggleRowSelection($this, that.dtSettings.nTBody, null, e);
 				return;
 			}
 			$resultA = isResultA ? $target : $target.parents('tr:first').find('a.display-result');
@@ -65,19 +65,19 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 				name: $resultA.text(),
 				status: $resultA.attr('data-result-status')
 			});
-			if (!isRemovingEnabled) Tremapp.dataTables.toggleOneRowSelection($this, that.$table);			
+			if (!isRemovingEnabled) Reesmo.dataTables.toggleOneRowSelection($this, that.$table);			
 		});
 		
 		if (this.$deleteToggler.length > 0) {
 			this.$deleteToggler.change(function(e){
-				Tremapp.dataTables.clearRowSelection(that.$table);
+				Reesmo.dataTables.clearRowSelection(that.$table);
 				that.$table.toggleClass('remove', $(this).is(':checked'));
 				that.$deleteTrigger.toggle();
 			});
 			
 			var confirmText = this.$deleteTrigger.attr('data-confirm-text');
 			this.$deleteTrigger.click(function(){
-				var rowsData = Tremapp.dataTables.getSelectedRowsData(that.$table),
+				var rowsData = Reesmo.dataTables.getSelectedRowsData(that.$table),
 					ids = [];
 				
 				$.each(rowsData, function(i, rowData){
@@ -89,14 +89,14 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 					that.closeRightPane();
 				}
 				
-				Tremapp.ajax({
-					url: Tremapp.baseUrl + 'results/delete/',
+				Reesmo.ajax({
+					url: Reesmo.baseUrl + 'results/delete/',
 					data: {
 						resultIds: ids
 					}
 				}, function(removedCnt){
-					Tremapp.dataTables.clearRowSelection(that.$table);
-					Tremapp.dataTables.reloadTable(that.$table);
+					Reesmo.dataTables.clearRowSelection(that.$table);
+					Reesmo.dataTables.reloadTable(that.$table);
 					// TODO - show count
 				});
 			});
@@ -110,13 +110,13 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 		this.resultId = result.id;
 		this.super.displayRightPane();
 		
-		Tremapp.ajax({
+		Reesmo.ajax({
 			type: 'GET',
-			url: Tremapp.baseUrl + 'a/result/detail/' + result.id,
+			url: Reesmo.baseUrl + 'a/result/detail/' + result.id,
 			dataType: 'html'
 		}, function(html) {
 			that.$detail.html(html);
-			that.childPanes = new Tremapp.ResultDetailPanes(that.$detail, result.id, that);
+			that.childPanes = new Reesmo.ResultDetailPanes(that.$detail, result.id, that);
 			that.childPanes.init();
 			that.$detail.removeClass(that.detailLoadingCls);
 		}, function() {
@@ -127,12 +127,12 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 	
 	this.closeRightPane = function() {
 		this.super.closeRightPane();
-		if (!this.isRemovingEnabled()) Tremapp.dataTables.clearRowSelection(this.$table);
+		if (!this.isRemovingEnabled()) Reesmo.dataTables.clearRowSelection(this.$table);
 	};
 	
 	this.minimize = function() {
 		this.super.minimize();
-		if (!this.isRemovingEnabled()) Tremapp.dataTables.clearRowSelection(this.$table);
+		if (!this.isRemovingEnabled()) Reesmo.dataTables.clearRowSelection(this.$table);
 	};
 	
 	this.isRemovingEnabled = function() {
@@ -140,12 +140,12 @@ Tremapp.ResultListPanes = Tremapp.Panes.extend(function(){
 	};
 	
 	this.reloadTable = function() {
-		Tremapp.dataTables.reloadTable(this.$table);
+		Reesmo.dataTables.reloadTable(this.$table);
 	};
 	
 });
 
-Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
+Reesmo.ResultDetailPanes = Reesmo.Panes.extend(function(){
 	
 	this.resultId;
 	
@@ -195,8 +195,8 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 			this.$deleteTrigger.click(function(){
 				if (!confirm(confirmText)) return;
 			
-				Tremapp.ajax({
-					url: Tremapp.baseUrl + 'results/delete/',
+				Reesmo.ajax({
+					url: Reesmo.baseUrl + 'results/delete/',
 					data: {
 						resultIds: [that.resultId]
 					}
@@ -206,7 +206,7 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 							that.parentPanes.closeRightPane();
 							that.parentPanes.reloadTable();
 						} else {
-							window.location.replace(Tremapp.baseUrl + 'project/home/' + that.projectId);
+							window.location.replace(Reesmo.baseUrl + 'project/home/' + that.projectId);
 						}
 					}
 				});
@@ -236,9 +236,9 @@ Tremapp.ResultDetailPanes = Tremapp.Panes.extend(function(){
 			if (kind == 'image') {
 				this.$attBody.html('').append($('<img class="result-att-img"/>').attr('src', $viewLnk.attr('href')));
 			} else {
-				Tremapp.ajax({
+				Reesmo.ajax({
 					type: 'GET',
-					url: Tremapp.baseUrl + 'a/result/attachment/view/' + this.resultId + '/' + path,
+					url: Reesmo.baseUrl + 'a/result/attachment/view/' + this.resultId + '/' + path,
 					dataType: 'html'
 				}, function(html) {
 					that.$attBody.html(html);

@@ -24,7 +24,7 @@
 							<table id="usersTable" dt:table="true" dt:url="@{/dt/users}">
 								<thead>
 									<tr>
-										<th dt:property="label" dt:renderFunction="Tremapp.usersTableRenderLabel" th:text="#{user.label}">Label</th>
+										<th dt:property="label" dt:renderFunction="Reesmo.usersTableRenderLabel" th:text="#{user.label}">Label</th>
 										<th dt:property="username" th:text="#{user.username}">Username</th>
 										<th dt:property="type" dt:searchable="false" dt:sortable="false" th:text="#{user.type}">Type</th>
 										<th dt:property="enabled" dt:searchable="false" dt:sortable="false" th:text="#{user.enabled}">Enabled</th>
@@ -33,8 +33,8 @@
 								</thead>
 							</table>
 							<script th:inline="javascript">
-								Tremapp.usersTableRenderLabel = function(label, type, user) {
-									return Tremapp.dataTables.renderLink('user/home/' + user.id, label);
+								Reesmo.usersTableRenderLabel = function(label, type, user) {
+									return Reesmo.dataTables.renderLink('user/home/' + user.id, label);
 								};
 							</script>
 						</div>

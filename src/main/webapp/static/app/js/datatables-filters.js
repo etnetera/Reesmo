@@ -1,4 +1,4 @@
-Tremapp.DataTablesFilters = Class.extend(function(){
+Reesmo.DataTablesFilters = Class.extend(function(){
 	
 	this.$table;
 	
@@ -70,16 +70,16 @@ Tremapp.DataTablesFilters = Class.extend(function(){
 				instance;
 			switch (definition.type) {
 				case 'text':
-					instance = new Tremapp.DataTablesFilterText(that, definition, state, visible).init();
+					instance = new Reesmo.DataTablesFilterText(that, definition, state, visible).init();
 					break;
 				case 'select':
-					instance = new Tremapp.DataTablesFilterSelect(that, definition, state, visible).init();
+					instance = new Reesmo.DataTablesFilterSelect(that, definition, state, visible).init();
 					break;
 				case 'daterange':
-					instance = new Tremapp.DataTablesFilterDateRange(that, definition, state, visible).init();
+					instance = new Reesmo.DataTablesFilterDateRange(that, definition, state, visible).init();
 					break;
 				case 'numberrange':
-					instance = new Tremapp.DataTablesFilterNumberRange(that, definition, state, visible).init();
+					instance = new Reesmo.DataTablesFilterNumberRange(that, definition, state, visible).init();
 					break;
 			}
 			if (instance) {
@@ -92,8 +92,8 @@ Tremapp.DataTablesFilters = Class.extend(function(){
 			.addClass('dt-filters-less-view')
 			.append('<button type="button" class="btn btn-default dt-filters-trigger"><i class="fa fa-search"></i></button>')
 			.append('<button type="button" class="btn btn-link dt-filters-trigger-more">'
-						+ '<span class="dt-filters-more-label">' + Tremapp.i18n.get('dt.filters.showMore') + '</span>'
-						+ '<span class="dt-filters-less-label">' + Tremapp.i18n.get('dt.filters.showLess') + '</span>'
+						+ '<span class="dt-filters-more-label">' + Reesmo.i18n.get('dt.filters.showMore') + '</span>'
+						+ '<span class="dt-filters-less-label">' + Reesmo.i18n.get('dt.filters.showLess') + '</span>'
 						+ '<i class="fa fa-angle-left"></i></button>');
 		
 		this.filters = filters;
@@ -136,7 +136,7 @@ Tremapp.DataTablesFilters = Class.extend(function(){
 		this.state.filters = filters;
 
 		// reload table
-		Tremapp.dataTables.reloadTable(this.$table);
+		Reesmo.dataTables.reloadTable(this.$table);
 	};
 	
 	this.modifyAjaxData = function(dtAjaxData) {
@@ -156,7 +156,7 @@ Tremapp.DataTablesFilters = Class.extend(function(){
 	
 });
 
-Tremapp.DataTablesFilter = Class.extend(function(){
+Reesmo.DataTablesFilter = Class.extend(function(){
 
 	this.filterClass = 'dt-filter';
 	
@@ -230,7 +230,7 @@ Tremapp.DataTablesFilter = Class.extend(function(){
 	
 });
 
-Tremapp.DataTablesFilterText = Tremapp.DataTablesFilter.extend(function(){
+Reesmo.DataTablesFilterText = Reesmo.DataTablesFilter.extend(function(){
 	
 	this.$button;
 	
@@ -258,10 +258,10 @@ Tremapp.DataTablesFilterText = Tremapp.DataTablesFilter.extend(function(){
 		});
 		this.setValue(this.getValueFromState(this.state));
 		
-		this.$update = $('<button class="btn btn-default"/>').text(Tremapp.i18n.get('update')).click(function(){
+		this.$update = $('<button class="btn btn-default"/>').text(Reesmo.i18n.get('update')).click(function(){
 			that.$button.dropdown('toggle');
 		});
-		this.$close = $('<button class="btn btn-link"/>').text(Tremapp.i18n.get('close')).click(function(){
+		this.$close = $('<button class="btn btn-link"/>').text(Reesmo.i18n.get('close')).click(function(){
 			that.setValue(that.getValueFromState(that.state));
 			that.$button.dropdown('toggle');
 		});
@@ -298,7 +298,7 @@ Tremapp.DataTablesFilterText = Tremapp.DataTablesFilter.extend(function(){
 			this.$button.removeClass('btn-default').addClass('btn-success');
 			this.afterValueChange(true);
 		} else {
-			this.$label.text(this.definition.label + ': ' + Tremapp.i18n.get('all'));
+			this.$label.text(this.definition.label + ': ' + Reesmo.i18n.get('all'));
 			this.$button.addClass('btn-default').removeClass('btn-success');
 			this.afterValueChange(false);
 		}
@@ -322,7 +322,7 @@ Tremapp.DataTablesFilterText = Tremapp.DataTablesFilter.extend(function(){
 	
 });
 
-Tremapp.DataTablesFilterSelect = Tremapp.DataTablesFilter.extend(function(){
+Reesmo.DataTablesFilterSelect = Reesmo.DataTablesFilter.extend(function(){
 	
 	this.$button;
 	
@@ -396,7 +396,7 @@ Tremapp.DataTablesFilterSelect = Tremapp.DataTablesFilter.extend(function(){
 			this.$button.removeClass('btn-default').addClass('btn-success');
 			this.afterValueChange(true);
 		} else {
-			this.$label.text(this.definition.label + ': ' + Tremapp.i18n.get('all'));
+			this.$label.text(this.definition.label + ': ' + Reesmo.i18n.get('all'));
 			this.$button.addClass('btn-default').removeClass('btn-success');
 			this.afterValueChange(false);
 		}
@@ -424,7 +424,7 @@ Tremapp.DataTablesFilterSelect = Tremapp.DataTablesFilter.extend(function(){
 	
 });
 
-Tremapp.DataTablesFilterDateRange = Tremapp.DataTablesFilter.extend(function(){
+Reesmo.DataTablesFilterDateRange = Reesmo.DataTablesFilter.extend(function(){
 	
 	this.format = 'YYYY-MM-DD';
 	
@@ -489,16 +489,16 @@ Tremapp.DataTablesFilterDateRange = Tremapp.DataTablesFilter.extend(function(){
 			ev.stopPropagation();
 		});
 		
-		this.$update = $('<button class="btn btn-default"/>').text(Tremapp.i18n.get('update')).click(function(){
+		this.$update = $('<button class="btn btn-default"/>').text(Reesmo.i18n.get('update')).click(function(){
 			that.$button.dropdown('toggle');
 		});
-		this.$close = $('<button class="btn btn-link"/>').text(Tremapp.i18n.get('close')).click(function(){
+		this.$close = $('<button class="btn btn-link"/>').text(Reesmo.i18n.get('close')).click(function(){
 			that.setValue(that.getValueFromState(that.state));
 			that.$button.dropdown('toggle');
 		});
 		
 		$dropdown
-			.append($('<li/>').append(Tremapp.i18n.get('between')).append(this.$from).append(Tremapp.i18n.get('and').toLowerCase()).append(this.$to))
+			.append($('<li/>').append(Reesmo.i18n.get('between')).append(this.$from).append(Reesmo.i18n.get('and').toLowerCase()).append(this.$to))
 			.append($('<li class="dropdown-buttons"/>').append(this.$update).append(this.$close));
 		this.$element.append($dropdown);
 		$dropdown.click(function(e){
@@ -565,17 +565,17 @@ Tremapp.DataTablesFilterDateRange = Tremapp.DataTablesFilter.extend(function(){
 		if (value) {
 			var label = '';
 			if (value.from != null && value.to != null) {
-				label = (Tremapp.i18n.get('between') + ' ' + value.from.format(this.format) + ' ' + Tremapp.i18n.get('and').toLowerCase() + ' ' + value.to.format(this.format));
+				label = (Reesmo.i18n.get('between') + ' ' + value.from.format(this.format) + ' ' + Reesmo.i18n.get('and').toLowerCase() + ' ' + value.to.format(this.format));
 			} else if (value.from != null) {
-				label = (Tremapp.i18n.get('after') + ' ' + value.from.format(this.format));
+				label = (Reesmo.i18n.get('after') + ' ' + value.from.format(this.format));
 			} else {
-				label = (Tremapp.i18n.get('before') + ' ' + value.to.format(this.format));
+				label = (Reesmo.i18n.get('before') + ' ' + value.to.format(this.format));
 			}
 			this.$label.text(this.definition.label + ': ' + label);
 			this.$button.removeClass('btn-default').addClass('btn-success');
 			this.afterValueChange(true);
 		} else {
-			this.$label.text(this.definition.label + ': ' + Tremapp.i18n.get('all'));
+			this.$label.text(this.definition.label + ': ' + Reesmo.i18n.get('all'));
 			this.$button.addClass('btn-default').removeClass('btn-success');
 			this.afterValueChange(false);
 		}
@@ -612,7 +612,7 @@ Tremapp.DataTablesFilterDateRange = Tremapp.DataTablesFilter.extend(function(){
 	
 });
 
-Tremapp.DataTablesFilterNumberRange = Tremapp.DataTablesFilter.extend(function(){
+Reesmo.DataTablesFilterNumberRange = Reesmo.DataTablesFilter.extend(function(){
 	
 	this.$button;
 	
@@ -648,16 +648,16 @@ Tremapp.DataTablesFilterNumberRange = Tremapp.DataTablesFilter.extend(function()
 		
 		this.setValue(this.getValueFromState(this.state));
 		
-		this.$update = $('<button class="btn btn-default"/>').text(Tremapp.i18n.get('update')).click(function(){
+		this.$update = $('<button class="btn btn-default"/>').text(Reesmo.i18n.get('update')).click(function(){
 			that.$button.dropdown('toggle');
 		});
-		this.$close = $('<button class="btn btn-link"/>').text(Tremapp.i18n.get('close')).click(function(){
+		this.$close = $('<button class="btn btn-link"/>').text(Reesmo.i18n.get('close')).click(function(){
 			that.setValue(that.getValueFromState(that.state));
 			that.$button.dropdown('toggle');
 		});
 		
 		$dropdown
-			.append($('<li/>').append(Tremapp.i18n.get('between')).append(this.$from).append(Tremapp.i18n.get('and').toLowerCase()).append(this.$to))
+			.append($('<li/>').append(Reesmo.i18n.get('between')).append(this.$from).append(Reesmo.i18n.get('and').toLowerCase()).append(this.$to))
 			.append($('<li class="dropdown-buttons"/>').append(this.$update).append(this.$close));
 		this.$element.append($dropdown);
 		$dropdown.click(function(e){
@@ -724,17 +724,17 @@ Tremapp.DataTablesFilterNumberRange = Tremapp.DataTablesFilter.extend(function()
 		if (value) {
 			var label = '';
 			if (value.from != null && value.to != null) {
-				label = (Tremapp.i18n.get('between') + ' ' + value.from + ' ' + Tremapp.i18n.get('and').toLowerCase() + ' ' + value.to);
+				label = (Reesmo.i18n.get('between') + ' ' + value.from + ' ' + Reesmo.i18n.get('and').toLowerCase() + ' ' + value.to);
 			} else if (value.from != null) {
-				label = (Tremapp.i18n.get('moreThan') + ' ' + value.from);
+				label = (Reesmo.i18n.get('moreThan') + ' ' + value.from);
 			} else {
-				label = (Tremapp.i18n.get('lessThan') + ' ' + value.to);
+				label = (Reesmo.i18n.get('lessThan') + ' ' + value.to);
 			}
 			this.$label.text(this.definition.label + ': ' + label);
 			this.$button.removeClass('btn-default').addClass('btn-success');
 			this.afterValueChange(true);
 		} else {
-			this.$label.text(this.definition.label + ': ' + Tremapp.i18n.get('all'));
+			this.$label.text(this.definition.label + ': ' + Reesmo.i18n.get('all'));
 			this.$button.addClass('btn-default').removeClass('btn-success');
 			this.afterValueChange(false);
 		}

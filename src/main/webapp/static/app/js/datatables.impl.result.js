@@ -1,26 +1,26 @@
-Tremapp.dataTables.impl.result = {
+Reesmo.dataTables.impl.result = {
 			
 	init: function(settings, json) {
 		var $panes = $(settings.nTable).parents('.panes:first');
-		new Tremapp.ResultListPanes($panes, settings, json, $('#' + $panes.attr('id') + '-panes-title').html()).init();
+		new Reesmo.ResultListPanes($panes, settings, json, $('#' + $panes.attr('id') + '-panes-title').html()).init();
 	},
 	
 	renderName: function(name, type, result) {
-		return '<a href="' + Tremapp.baseUrl + 'result/home/' + result.id + '" class="display-result" data-result-id="' + result.id + '" data-result-status="' + result.statusValue + '">' + (name == null ? result.id : name) + '</a>';
+		return '<a href="' + Reesmo.baseUrl + 'result/home/' + result.id + '" class="display-result" data-result-id="' + result.id + '" data-result-status="' + result.statusValue + '">' + (name == null ? result.id : name) + '</a>';
 	},
 	
 	renderProject: function(project, type, result) {
-		return Tremapp.dataTables.renderLink('project/home/' + result.projectId, project == null ? result.projectId : project);
+		return Reesmo.dataTables.renderLink('project/home/' + result.projectId, project == null ? result.projectId : project);
 	},
 	
 	renderStatus: function(status, type, result) {
 		if (result.statusValue == null) return '';
-		return '<span class="label bg-' + Tremapp.dataTables.impl.result.getStatusColor(result.statusValue) + '">' + status + '</span>';
+		return '<span class="label bg-' + Reesmo.dataTables.impl.result.getStatusColor(result.statusValue) + '">' + status + '</span>';
 	},
 	
 	renderSeverity: function(severity, type, result) {
 		if (result.severityValue == null) return '';
-		var cls = Tremapp.dataTables.impl.result.getSeverityIconClass(result.severityValue);
+		var cls = Reesmo.dataTables.impl.result.getSeverityIconClass(result.severityValue);
 		return '<i class="severity fa ' + cls + '" title="' + severity + '"></i>';
 	},
 	

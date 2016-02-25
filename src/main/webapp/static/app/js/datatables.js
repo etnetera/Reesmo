@@ -1,20 +1,20 @@
-Tremapp.dataTables = {
+Reesmo.dataTables = {
 		
 	initCompleteSelectableRowCallback: function(settings, json) {
 		$(settings.nTBody).on('click', 'tr', function(){
 			var $this = $(this);
-			if (!Tremapp.dataTables.isSelectable(settings.nTable) || !Tremapp.dataTables.isRow($this)) return;
+			if (!Reesmo.dataTables.isSelectable(settings.nTable) || !Reesmo.dataTables.isRow($this)) return;
 			if (e && e.target && $(e.target).is('a')) return;
-			Tremapp.dataTables.toggleOneRowSelection($this, settings.nTBody);
+			Reesmo.dataTables.toggleOneRowSelection($this, settings.nTBody);
 		});
 	},
 	
 	initCompleteSelectableRowsCallback: function(settings, json) {
 		$(settings.nTBody).on('click', 'tr', function(e){
 			var $this = $(this);
-			if (!Tremapp.dataTables.isSelectable(settings.nTable) || !Tremapp.dataTables.isRow($this)) return;
+			if (!Reesmo.dataTables.isSelectable(settings.nTable) || !Reesmo.dataTables.isRow($this)) return;
 			if (e && e.target && $(e.target).is('a')) return;
-			Tremapp.dataTables.toggleRowSelection($this, settings.nTBody, null, e);
+			Reesmo.dataTables.toggleRowSelection($this, settings.nTBody, null, e);
 		});
 	},
 	
@@ -85,7 +85,7 @@ Tremapp.dataTables = {
 	},
 	
 	renderLink: function(uri, name) {
-		return '<a href="' + Tremapp.baseUrl + uri + '">' + (name == null ? uri : name) + '</a>';
+		return '<a href="' + Reesmo.baseUrl + uri + '">' + (name == null ? uri : name) + '</a>';
 	},
 	
 	$getTableBody: function(rowEl, bodyEl) {
@@ -136,7 +136,7 @@ Tremapp.dataTables = {
 		getFiltersFromId: function(id, initialData) {
 			var filters = this.instances[id];
 			if (filters == null) {
-				filters = new Tremapp.DataTablesFilters(id, initialData || {});
+				filters = new Reesmo.DataTablesFilters(id, initialData || {});
 				this.instances[id] = filters;
 			}
 			return filters;

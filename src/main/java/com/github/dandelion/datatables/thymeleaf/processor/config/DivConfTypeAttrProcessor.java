@@ -120,9 +120,10 @@ public class DivConfTypeAttrProcessor extends AbstractAttrProcessor {
       Map<String, Map<ConfType, Object>> configs = (Map<String, Map<ConfType, Object>>) RequestUtils.getFromRequest(
             DataTablesDialect.INTERNAL_BEAN_CONFIGS, request);
 
-      // FIX to allow using variables in config id 
+      // REESMO - START - FIX to allow using variables in config id 
       // String tableId = ((Element) element.getParent()).getAttributeValue(DataTablesDialect.DIALECT_PREFIX + ":conf");
       String tableId = AttributeUtils.parseStringAttribute(arguments, (Element) element.getParent(), DataTablesDialect.DIALECT_PREFIX + ":conf");
+      // REESMO - END
 
       String confTypeStr = AttributeUtils.parseStringAttribute(arguments, element, attributeName);
       ConfType confType = null;

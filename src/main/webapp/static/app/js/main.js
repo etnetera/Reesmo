@@ -1,13 +1,13 @@
-Tremapp.goBack = function() {
+Reesmo.goBack = function() {
 	window.history.back();
 };
 
-Tremapp.i18n.get = function(key) {
+Reesmo.i18n.get = function(key) {
 	var value = this.values[key];
 	return value == null ? ('_' + key + '_') : value;
 };
 
-Tremapp.ajax = function(options, successCallback, errorCallback) {
+Reesmo.ajax = function(options, successCallback, errorCallback) {
 	options = options || {};
 	if (successCallback) options.successCallback = successCallback;
 	if (errorCallback) options.errorCallback = errorCallback;
@@ -33,7 +33,7 @@ Tremapp.ajax = function(options, successCallback, errorCallback) {
 		},
 		401 : function(status, JSON, xhr, textStatus, errorThrown) {
 			alert('Error: You were logged out and therefore not authorized! You will be redirected to login page.');
-			window.location.replace(Tremapp.baseUrl);
+			window.location.replace(Reesmo.baseUrl);
 		},
 		403 : function(status, JSON, xhr, textStatus, errorThrown) {
 			alert('Error: This operation is forbidden for you!');
@@ -41,7 +41,7 @@ Tremapp.ajax = function(options, successCallback, errorCallback) {
 	};
 	
 	var data = {};
-	data[Tremapp.csrfName] = Tremapp.csrfValue;
+	data[Reesmo.csrfName] = Reesmo.csrfValue;
 	
 	if (options.data) {
 		options.data = $.extend(data, options.data);

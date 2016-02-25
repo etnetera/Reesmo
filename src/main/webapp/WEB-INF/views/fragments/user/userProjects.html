@@ -12,7 +12,7 @@
 						<table id="userProjectsTable" dt:table="true" dt:url="@{/dt/user/projects/{userId}(userId=${user.id})}">
 							<thead>
 								<tr>
-									<th dt:property="name" dt:renderFunction="Tremapp.projectsTableRenderName" th:text="#{project.name}">Name</th>
+									<th dt:property="name" dt:renderFunction="Reesmo.projectsTableRenderName" th:text="#{project.name}">Name</th>
 									<th dt:property="key" th:text="#{project.key}">Key</th>
 									<th dt:property="description" th:text="#{project.description}">Description</th>
 									<th dt:property="permission" dt:searchable="false" dt:sortable="false" th:text="#{user.permission}">Permission</th>
@@ -20,8 +20,8 @@
 							</thead>
 						</table>
 						<script th:inline="javascript">
-							Tremapp.projectsTableRenderName = function(name, type, project) {
-								return Tremapp.dataTables.renderLink('project/home/' + project.id, name);
+							Reesmo.projectsTableRenderName = function(name, type, project) {
+								return Reesmo.dataTables.renderLink('project/home/' + project.id, name);
 							};
 						</script>
 					</div>

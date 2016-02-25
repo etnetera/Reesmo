@@ -1,4 +1,4 @@
-Tremapp.Panes = Class.extend(function(){
+Reesmo.Panes = Class.extend(function(){
 	
 	this.$body;
 	

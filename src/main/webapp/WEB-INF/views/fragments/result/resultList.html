@@ -14,20 +14,20 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div dt:conf="${id} + 'Table'" th:attr="dtConf=${id} + 'Table'">
-								<div dt:confType="callback" dt:type="statesaveparams" dt:function="Tremapp.dataTables.filters.dtStateSaveParams" />
-								<div dt:confType="callback" dt:type="stateloaded" dt:function="Tremapp.dataTables.filters.dtStateLoaded" />
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.filters.dtInit" />
-								<div dt:confType="callback" dt:type="init" dt:function="Tremapp.dataTables.impl.result.init" />
+								<div dt:confType="callback" dt:type="statesaveparams" dt:function="Reesmo.dataTables.filters.dtStateSaveParams" />
+								<div dt:confType="callback" dt:type="stateloaded" dt:function="Reesmo.dataTables.filters.dtStateLoaded" />
+								<div dt:confType="callback" dt:type="init" dt:function="Reesmo.dataTables.filters.dtInit" />
+								<div dt:confType="callback" dt:type="init" dt:function="Reesmo.dataTables.impl.result.init" />
 							</div>
 							<table th:id="${id} + 'Table'" class="resultsTable selectable" dt:table="true" dt:url="${url}" dt:displayLength="50" dt:filterable="false" dt:ext="filters">
 								<thead>
 									<tr>
-										<th dt:property="name" dt:renderFunction="Tremapp.dataTables.impl.result.renderName" th:text="#{result.name}">Name</th>
-										<th dt:property="status" dt:renderFunction="Tremapp.dataTables.impl.result.renderStatus" th:text="#{result.status}">Status</th>
+										<th dt:property="name" dt:renderFunction="Reesmo.dataTables.impl.result.renderName" th:text="#{result.name}">Name</th>
+										<th dt:property="status" dt:renderFunction="Reesmo.dataTables.impl.result.renderStatus" th:text="#{result.status}">Status</th>
 										<th dt:property="length" th:text="#{result.length}">Length</th>
-										<th dt:property="severity" dt:renderFunction="Tremapp.dataTables.impl.result.renderSeverity" th:text="#{result.severity}">Severity</th>
+										<th dt:property="severity" dt:renderFunction="Reesmo.dataTables.impl.result.renderSeverity" th:text="#{result.severity}">Severity</th>
 										<th dt:property="startedAt" dt:sortInitDirection="desc" th:text="#{result.startedAt}">Started at</th>
-										<th th:if="${withProject}" dt:property="projectName" dt:searchable="false" dt:sortable="false" dt:renderFunction="Tremapp.dataTables.impl.result.renderProject" th:text="#{result.project}">Project</th>
+										<th th:if="${withProject}" dt:property="projectName" dt:searchable="false" dt:sortable="false" dt:renderFunction="Reesmo.dataTables.impl.result.renderProject" th:text="#{result.project}">Project</th>
 									</tr>
 								</thead>
 							</table>
