@@ -34,9 +34,9 @@ public interface ResultFilteredController {
 				.addFilter(new DatatablesFilterText("description", "result.description", localizer, locale))
 				.addFilter(new DatatablesFilterText("environment", "result.environment", localizer, locale))
 				.addFilter(new DatatablesFilterText("author", "result.author", localizer, locale))
-				.addFilter(new DatatablesFilterSelect("categories", "result.categories", TestCategory.values(),
+				.addFilter(new DatatablesFilterSelect("categories", "result.categories", TestCategory.getDeclaredValues(),
 						localizer, locale))
-				.addFilter(new DatatablesFilterSelect("types", "result.types", TestType.values(),
+				.addFilter(new DatatablesFilterSelect("types", "result.types", TestType.getDeclaredValues(),
 						localizer, locale))
 				.addFilter(new DatatablesFilterText("labels", "result.labels", localizer, locale))
 				.addFilter(new DatatablesFilterText("notes", "result.notes", localizer, locale))

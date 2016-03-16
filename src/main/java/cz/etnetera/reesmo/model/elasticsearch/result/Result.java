@@ -96,10 +96,10 @@ public class Result extends ElasticAuditedModel {
 	private List<String> errors = new ArrayList<>();
 	
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
-	private List<TestCategory> categories = new ArrayList<>();
+	private List<String> categories = new ArrayList<>();
 	
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
-	private List<TestType> types = new ArrayList<>();
+	private List<String> types = new ArrayList<>();
 	
 	@Field(type = FieldType.Nested)
 	private List<ResultAttachment> attachments = new ArrayList<>();
@@ -267,19 +267,19 @@ public class Result extends ElasticAuditedModel {
 		this.errors = errors;
 	}
 
-	public List<TestCategory> getCategories() {
+	public List<String> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<TestCategory> categories) {
+	public void setCategories(List<String> categories) {
 		this.categories = categories;
 	}
 
-	public List<TestType> getTypes() {
+	public List<String> getTypes() {
 		return types;
 	}
 
-	public void setTypes(List<TestType> types) {
+	public void setTypes(List<String> types) {
 		this.types = types;
 	}
 

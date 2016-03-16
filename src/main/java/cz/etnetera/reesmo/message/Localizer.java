@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import cz.etnetera.reesmo.model.elasticsearch.result.TestSeverity;
 import cz.etnetera.reesmo.model.elasticsearch.result.TestStatus;
-import cz.etnetera.reesmo.model.elasticsearch.result.TestType;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.user.UserType;
 
@@ -40,10 +39,6 @@ public class Localizer {
 	
 	public String localize(TestSeverity severity, Locale locale) {
 		return severity == null ? null : messageSource.getMessage("result.severity.value." + severity.name().toLowerCase(), null, locale);
-	}
-	
-	public String localize(TestType type, Locale locale) {
-		return type == null ? null : messageSource.getMessage("result.type.value." + type.name().toLowerCase(), null, locale);
 	}
 	
 }

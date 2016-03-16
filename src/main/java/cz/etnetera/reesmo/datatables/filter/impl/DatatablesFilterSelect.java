@@ -18,25 +18,34 @@ public class DatatablesFilterSelect extends DatatablesFilter {
 		super(field, label);
 		this.options = options;
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public DatatablesFilterSelect(String field, String labelKey, Enum[] enumValues,
+
+	public DatatablesFilterSelect(String field, String labelKey, List<String> values, Localizer localizer,
+			Locale locale) {
+		this(field, localizer.getMessageSource().getMessage(labelKey, null, locale),
+				values.stream().map(value -> new Option(value, value)).collect(Collectors.toList()));
+	}
+
+	public DatatablesFilterSelect(String field, String labelKey, List<String> values, String optionMessagePrefix,
 			Localizer localizer, Locale locale) {
 		this(field, localizer.getMessageSource().getMessage(labelKey, null, locale),
-				Stream.of(enumValues)
-						.map(enumValue -> new Option(enumValue.name(), enumValue.name()))
+				values.stream()
+						.map(value -> new Option(value, localizer.getMessageSource()
+								.getMessage(optionMessagePrefix + value.toLowerCase(), null, locale)))
 				.collect(Collectors.toList()));
+	}
+
+	@SuppressWarnings("rawtypes")
+	public DatatablesFilterSelect(String field, String labelKey, Enum[] enumValues, Localizer localizer,
+			Locale locale) {
+		this(field, labelKey, Stream.of(enumValues).map(enumValue -> enumValue.name()).collect(Collectors.toList()),
+				localizer, locale);
 	}
 
 	@SuppressWarnings("rawtypes")
 	public DatatablesFilterSelect(String field, String labelKey, Enum[] enumValues, String optionMessagePrefix,
 			Localizer localizer, Locale locale) {
-		this(field, localizer.getMessageSource().getMessage(labelKey, null, locale),
-				Stream.of(enumValues)
-						.map(enumValue -> new Option(enumValue.name(),
-								localizer.getMessageSource()
-										.getMessage(optionMessagePrefix + enumValue.name().toLowerCase(), null, locale)))
-				.collect(Collectors.toList()));
+		this(field, labelKey, Stream.of(enumValues).map(enumValue -> enumValue.name()).collect(Collectors.toList()),
+				optionMessagePrefix, localizer, locale);
 	}
 
 	@Override
