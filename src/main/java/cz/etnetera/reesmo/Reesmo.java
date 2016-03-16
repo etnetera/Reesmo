@@ -2,7 +2,7 @@ package cz.etnetera.reesmo;
 
 public class Reesmo {
 
-	public static final String VERSION = "0.0.2-SNAPSHOT";
+	public static final String VERSION = "0.1.0";
 	
 	public static final String PACKAGE = "cz.etnetera.reesmo";
 	
