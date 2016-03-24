@@ -226,15 +226,17 @@ Reesmo.ResultDetailPanes = Reesmo.Panes.extend(function(){
 			path = $viewLnk.find('> span').text(),
 			kind = $att.find('.result-attachment-inner').attr('data-att-kind');
 		
-		if (kind == 'image' || kind == 'txt' || kind == 'html') {
+		if (kind == 'image' || kind == 'text' || kind == 'html') {
 			this.$attBody.html('');
 			this.$attBody.addClass(this.attLoadingCls);
+			this.$attBody.attr('data-att-kind', kind);
 			$header.find('.attachment-name').text($att.attr('data-att-name'));
 			$header.find('.attachment-lnk').text(path).attr('href', $viewLnk.attr('href'));
 			this.super.displayRightPane();
 			
 			if (kind == 'image') {
 				this.$attBody.html('').append($('<img class="result-att-img"/>').attr('src', $viewLnk.attr('href')));
+				that.$attBody.removeClass(this.attLoadingCls);
 			} else {
 				Reesmo.ajax({
 					type: 'GET',

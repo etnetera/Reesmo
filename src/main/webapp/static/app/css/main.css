@@ -339,7 +339,7 @@ body.panes-maximized {
 	text-decoration: none;
 }
 
-.result-att-preview .box-body {
+.result-att-preview .box-body[data-att-kind=image] {
 	text-align: center;
 }
 
