@@ -90,11 +90,7 @@ public class ProjectGroupUserController {
 			}
 			projectGroup.getUsers().put(user.getId(), permission);
 			projectGroupRepository.save(projectGroup);
-			userManager.updateUserProjectsPermissions(user);
-			userRepository.save(user);
-			if (userManager.isSameAsLogged(user)) {
-				userManager.updateUser(user);
-			}
+			userManager.saveUserProjectsPermissions(user);
 			i++;
 		}
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);
@@ -127,11 +123,7 @@ public class ProjectGroupUserController {
 			}
 			projectGroup.getUsers().remove(user.getId());
 			projectGroupRepository.save(projectGroup);
-			userManager.updateUserProjectsPermissions(user);
-			userRepository.save(user);
-			if (userManager.isSameAsLogged(user)) {
-				userManager.updateUser(user);
-			}
+			userManager.saveUserProjectsPermissions(user);
 			i++;
 		}
 		return new JsonResponse(JsonResponse.Status.SUCCESS, i);

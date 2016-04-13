@@ -85,6 +85,7 @@ public class ProjectsController implements MenuActivityController {
 		projectCommand.toProject(project);
 		project.getUsers().put(userManager.requireUserId(), Permission.OWNER);
 		projectRepository.save(project);
+		userManager.saveUserProjectsPermissions(userManager.requireUser());
 		return "redirect:/project/detail/" + project.getId();
 	}
 

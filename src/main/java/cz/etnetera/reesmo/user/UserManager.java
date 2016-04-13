@@ -14,6 +14,7 @@ import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.model.mongodb.user.User;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectGroupRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
+import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
 
 @Component
 public class UserManager {
@@ -25,6 +26,9 @@ public class UserManager {
 	
 	@Autowired
 	private ProjectGroupRepository projectGroupRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	private UserManager() {
 		instance = this;
@@ -130,6 +134,14 @@ public class UserManager {
 		// override group permissions with direct project permissions
 		groupPermissions.putAll(permissions);
 		user.setProjectsPermissions(groupPermissions);
+	}
+	
+	public void saveUserProjectsPermissions(User user) {
+		updateUserProjectsPermissions(user);
+		userRepository.save(user);
+		if (isSameAsLogged(user)) {
+			updateUser(user);
+		}
 	}
 	
 }

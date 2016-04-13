@@ -65,6 +65,7 @@ public class ProjectGroupsController implements MenuActivityController {
 		projectGroupCommand.toProject(projectGroup);
 		projectGroup.getUsers().put(userManager.requireUserId(), Permission.OWNER);
 		projectGroupRepository.save(projectGroup);
+		userManager.saveUserProjectsPermissions(userManager.requireUser());
 		return "redirect:/project-group/detail/" + projectGroup.getId();
 	}
 

@@ -1,13 +1,22 @@
 package cz.etnetera.reesmo;
 
-public class Reesmo {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-	public static final String VERSION = "0.1.0";
+@Component
+public class Reesmo {
 	
 	public static final String PACKAGE = "cz.etnetera.reesmo";
 	
 	public static final String ELASTICSEARCH_INDEX = "reesmo";
 	
 	public static final String NEWLINE = "\n";
+	
+	@Value("${build.version}")
+    private String version;
+
+	public String getVersion() {
+		return version;
+	}
 	
 }
