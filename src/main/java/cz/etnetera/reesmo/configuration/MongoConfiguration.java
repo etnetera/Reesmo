@@ -2,7 +2,6 @@ package cz.etnetera.reesmo.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,9 +32,6 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 
     @Value("${mongodb.dbname}")
     private String dbName;
-    
-    @Autowired
-    private UserManager userManager;
 	
     @Bean
     public GridFsTemplate gridFsTemplate() {
@@ -62,7 +58,7 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 		return new AuditorAware<String>() {
 			@Override
 			public String getCurrentAuditor() {
-				return userManager.getUserId();
+				return UserManager.getInstance().getUserId();
 			}
 		};
 	}
