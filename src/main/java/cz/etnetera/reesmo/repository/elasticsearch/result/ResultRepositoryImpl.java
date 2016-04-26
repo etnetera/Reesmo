@@ -1,10 +1,13 @@
 package cz.etnetera.reesmo.repository.elasticsearch.result;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -53,6 +56,14 @@ import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
  */
 public class ResultRepositoryImpl implements ResultRepositoryCustom {
 
+	private static final Map<String, String> FIXED_CONTENT_TYPES;
+	
+	static {
+		FIXED_CONTENT_TYPES = new HashMap<>();
+		FIXED_CONTENT_TYPES.put("log", "text/plain");
+		FIXED_CONTENT_TYPES.put("properties", "text/plain");
+	}
+	
 	@Autowired
 	private ElasticsearchOperations template;
 
@@ -136,9 +147,10 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 	}
 
 	@Override
-	public ResultAttachment createAttachment(Result result, MultipartFile file, String path) throws IOException {
-		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(),
-				file.getContentType());
+	public ResultAttachment createAttachment(Result result, MultipartFile file, String path, String contentType) throws IOException {
+		String filename = getFilename(file, path);
+		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), filename,
+				getContentType(filename, contentType));
 
 		ResultAttachment attachment = new ResultAttachment();
 		attachment.setId(gridFile.getId().toString());
@@ -160,8 +172,8 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		ResultAttachment attachment = result.getAttachment(attachmentId);
 		gridFsTemplate.delete(Query.query(Criteria.where("_id").is(attachment.getId())));
 
-		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(),
-				file.getContentType());
+		GridFSFile gridFile = gridFsTemplate.store(file.getInputStream(), attachment.getName(),
+				attachment.getContentType());
 		attachment.setId(gridFile.getId().toString());
 		attachment.setName(gridFile.getFilename());
 		attachment.setContentType(gridFile.getContentType());
@@ -266,6 +278,29 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		Page<Result> projects = template.queryForPage(queryBuilder.build(), Result.class);
 		return new DataSet<Result>(projects.getContent(), Long.valueOf(projects.getNumberOfElements()),
 				projects.getTotalElements());
+	}
+	
+	private String getFilename(MultipartFile file, String path) {
+		if (path == null)
+			return file.getOriginalFilename();
+		return new File(StringUtils.trim(path)).getName();
+	}
+	
+	private String getContentType(String filename, String contentType) {
+		if (contentType != null)
+			return contentType;
+		int extensionSepIndex = filename.lastIndexOf(".");
+		if (extensionSepIndex > -1) {
+			String extension = filename.substring(extensionSepIndex + 1);
+			contentType = FIXED_CONTENT_TYPES.get(extension.toLowerCase());
+			if (contentType == null) {
+				contentType = URLConnection.guessContentTypeFromName(filename);
+			}
+		}
+		if (contentType == null) {
+			contentType = "application/octet-stream";
+		}
+		return contentType;
 	}
 
 }

@@ -32,17 +32,18 @@ public class ResultAttachmentRestApiController extends AbstractRestController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultAttachmentRestApiController.class);
 
 	@Autowired
-    private UserManager userManager;
-	
+	private UserManager userManager;
+
 	@Autowired
 	private ResultRepository resultRepository;
 
 	@RequestMapping(value = "/results/attachment/create/{resultId}", method = RequestMethod.POST, produces = "application/json")
 	public ResultAttachment createResultAttachment(@PathVariable String resultId, @RequestParam MultipartFile file,
-			@RequestParam(required = false) String path) throws IOException {
+			@RequestParam(required = false) String path, @RequestParam(required = false) String contentType)
+					throws IOException {
 		Result result = resultRepository.findOne(resultId);
 		userManager.checkProjectPermission(result.getProjectId(), Permission.EDITOR);
-		return resultRepository.createAttachment(result, file, path);
+		return resultRepository.createAttachment(result, file, path, contentType);
 	}
 
 	@RequestMapping(value = "/results/attachment/update/{resultId}/{attachmentId}", method = RequestMethod.POST, produces = "application/json")
