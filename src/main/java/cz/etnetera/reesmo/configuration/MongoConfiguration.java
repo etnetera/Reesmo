@@ -58,7 +58,9 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 		return new AuditorAware<String>() {
 			@Override
 			public String getCurrentAuditor() {
-				return UserManager.getInstance().getUserId();
+				UserManager userManager = UserManager.getInstance();
+				// user manager can be null on application start
+				return userManager == null ? null : userManager.getUserId();
 			}
 		};
 	}

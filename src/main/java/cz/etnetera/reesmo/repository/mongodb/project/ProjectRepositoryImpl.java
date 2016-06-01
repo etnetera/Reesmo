@@ -32,8 +32,17 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	private MongoOperations mongoTemplate;
 	
 	@Autowired
+	private ProjectRepository projectRepository;
+	
+	@Autowired
 	private Localizer localizer;
 
+	@Override
+	public void deleteProject(Project project) {
+		projectRepository.delete(project);
+		// TODO delete views
+	}
+	
 	@Override
 	public Project findOneByKey(String key) {
 		return mongoTemplate.findOne(Query.query(Criteria.where("key").is(key)), Project.class);

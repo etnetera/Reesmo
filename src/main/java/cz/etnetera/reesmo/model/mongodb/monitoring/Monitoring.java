@@ -13,6 +13,8 @@ abstract public class Monitoring extends MongoAuditedModel {
 	
 	private Interval updateInterval;
 	
+	private boolean enabled;
+	
 	private String view;
 
 	public String getId() {
@@ -29,6 +31,14 @@ abstract public class Monitoring extends MongoAuditedModel {
 
 	public void setUpdateInterval(Interval updateInterval) {
 		this.updateInterval = updateInterval;
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public String getView() {

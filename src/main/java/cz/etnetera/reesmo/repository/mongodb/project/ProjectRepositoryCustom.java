@@ -18,6 +18,8 @@ import cz.etnetera.reesmo.model.mongodb.user.User;
  */
 public interface ProjectRepositoryCustom {
 	
+	public void deleteProject(Project project);
+	
 	public Project findOneByKey(String key);
 	
 	public List<Project> findByUser(String userId);

@@ -101,7 +101,7 @@ public class ProjectController implements MenuActivityController {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.OWNER);
-		projectRepository.delete(project);
+		projectRepository.deleteProject(project);
 		return "redirect:/projects";
 	}
 

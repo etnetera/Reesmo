@@ -17,7 +17,7 @@ import cz.etnetera.reesmo.model.elasticsearch.result.TestType;
 
 public interface ResultFilteredController {
 
-	public default String injectFiltersDefinition(Model model, Localizer localizer, Locale locale) {
+	public default void injectFiltersDefinition(Model model, Localizer localizer, Locale locale) {
 		DatatablesFiltersDefinition datatablesFiltersDef = new DatatablesFiltersDefinition()
 				.addFilter(new DatatablesFilterText("name", "result.name", localizer, locale), true)
 				.addFilter(new DatatablesFilterSelect("status", "result.status", TestStatus.values(),
@@ -42,7 +42,6 @@ public interface ResultFilteredController {
 				.addFilter(new DatatablesFilterText("notes", "result.notes", localizer, locale))
 				.addFilter(new DatatablesFilterText("errors", "result.errors", localizer, locale));
 		model.addAttribute("datatablesFiltersDef", datatablesFiltersDef);
-		return "page/result/results";
 	}
 	
 }
