@@ -78,8 +78,9 @@ public class ProjectViewController implements MenuActivityController {
 			throw new IllegalArgumentException("Unknown permission " + permission);
 		}
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ViewDT> views = viewRepository.findWithDatatablesCriterias(criterias, userManager.getAllowedProjectIds(perm));
-		return DatatablesResponse.build(views, criterias);
+		return null;
+		/*DataSet<ViewDT> views = viewRepository.findWithDatatablesCriterias(criterias, userManager.getAllowedProjectIds(perm));
+		return DatatablesResponse.build(views, criterias);*/
 	}
 
 	@RequestMapping(value = "/project/view/create/{projectId}", method = RequestMethod.POST, produces = "application/json")
