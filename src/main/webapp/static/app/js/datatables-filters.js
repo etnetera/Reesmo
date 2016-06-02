@@ -88,6 +88,7 @@ Reesmo.DataTablesFilters = Class.extend(function(){
 				filters.push(instance);
 			}
 		});
+		
 		this.$container
 			.addClass('dt-filters-less-view')
 			.append('<button type="button" class="btn btn-default dt-filters-trigger"><i class="fa fa-search"></i></button>')

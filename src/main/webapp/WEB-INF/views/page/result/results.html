@@ -11,7 +11,7 @@
 	</ol>
 	<div layout:fragment="content">
 		<div id="resultsBox-panes-title" class="results-box-panes-title"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span> <small th:text="#{page.results.titledesc}">small title</small></div>
-		<div th:replace="fragments/result/resultList :: box ('resultsBox', @{/dt/results}, true, ${#authentication.principal.isSuperadmin()})">Results</div>
+		<div th:replace="fragments/result/resultList :: box ('resultsBox', @{/dt/results}, null, ${#authentication.principal.isSuperadmin()})">Results</div>
 	</div>
 </body>
 </html>

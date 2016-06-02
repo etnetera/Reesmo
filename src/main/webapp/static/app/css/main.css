@@ -398,6 +398,14 @@ body.panes-maximized {
 	transform: rotate(-90deg);
 }
 
+.dt-filters .dt-views-container {
+	margin-left: 5px;
+}
+
+.dt-filters .dt-views-container li:last-child {
+	padding: 10px;
+}
+
 .btn-group.dt-filter-type-text .dropdown-menu {
 	padding: 10px;
 }

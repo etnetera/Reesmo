@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
 <body>
-	<div th:fragment="box (id, url, withProject, allowDelete)" th:id="${id}" class="box box-primary results-box panes">
+	<div th:fragment="box (id, url, project, allowDelete)" th:id="${id}" th:attr="data-project-id=${project?.id}" class="box box-primary results-box panes">
 		<div class="panes-overlay"></div>
 		<div class="results-box-list pane pane-left">
 			<div th:id="${id} + 'TableFilters'" class="box-header with-border dt-filters" style="display: none">
 				<script th:inline="javascript">
 					window['oTable_' + [[${id}]] + 'Table_filtersDef'] = [[${datatablesFiltersDef}]];
 				</script>
+				<script th:if="${project}" th:inline="javascript">
+					/*<![CDATA[*/
+					window['oTable_' + [[${id}]] + 'Table_viewsDef'] = {
+						activeView: '1',
+						views: [{
+							id: '1',
+							name: 'View 1'
+						}, {
+							id: '2',
+							name: 'View 2'
+						}]
+					};
+					/*]]>*/
+				</script>
+			</div>
+			<div th:if="${project.isAllowedForUser(#authentication.principal, 'ADMIN')}" th:id="${id} + 'TableViewForm'" class="box-header with-border dt-view-form-box" style="display: none">
+				<form action="#" th:action="@{/project/results/{projectId}(projectId=${project.id})}" th:object="${viewCommand}" method="post">
+					<div class="box-header with-border">
+						<h3 class="box-title" th:text="#{page.viewedit.formtitle}">Information</h3>
+					</div>
+					<div th:replace="fragments/view/viewFormFields :: fields (noFooter=true)">Form</div>
+					<div class="box-footer">
+						<button th:replace="fragments/form/button :: submit">Submit</button>
+						<button class="btn btn-cancel" th:text="#{cancel}">Cancel</button>
+					</div>
+				</form>
 			</div>
 			<div class="box-body">
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
@@ -27,7 +53,7 @@
 										<th dt:property="length" th:text="#{result.length}">Length</th>
 										<th dt:property="severity" dt:renderFunction="Reesmo.dataTables.impl.result.renderSeverity" th:text="#{result.severity}">Severity</th>
 										<th dt:property="startedAt" dt:sortInitDirection="desc" th:text="#{result.startedAt}">Started at</th>
-										<th th:if="${withProject}" dt:property="projectName" dt:searchable="false" dt:sortable="false" dt:renderFunction="Reesmo.dataTables.impl.result.renderProject" th:text="#{result.project}">Project</th>
+										<th th:unless="${project}" dt:property="projectName" dt:searchable="false" dt:sortable="false" dt:renderFunction="Reesmo.dataTables.impl.result.renderProject" th:text="#{result.project}">Project</th>
 									</tr>
 								</thead>
 							</table>
