@@ -1,14 +1,16 @@
 package cz.etnetera.reesmo.model.mongodb.view;
 
-import java.util.List;
-
-import org.joda.time.Interval;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import cz.etnetera.reesmo.list.ListModifier;
 import cz.etnetera.reesmo.model.elasticsearch.result.Result;
 import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
+import cz.etnetera.reesmo.model.mongodb.project.Project;
+import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
+import org.joda.time.Interval;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 /**
  * Describes stored view representing list modifier.
@@ -18,6 +20,9 @@ import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
  */
 @Document
 public class View extends MongoAuditedModel {
+
+	@Autowired
+	private transient ProjectRepository projectRepository;
 
 	@Id
 	private String id;
@@ -79,6 +84,10 @@ public class View extends MongoAuditedModel {
 		// TODO get results but include results with update time in given
 		// interval only
 		return null;
+	}
+
+	public Project getProject(String projectId){
+		return projectRepository.findOne(projectId);
 	}
 
 }

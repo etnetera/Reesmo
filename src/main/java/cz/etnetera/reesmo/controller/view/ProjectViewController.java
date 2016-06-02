@@ -1,42 +1,33 @@
 package cz.etnetera.reesmo.controller.view;
 
 import com.github.dandelion.datatables.core.ajax.DataSet;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 import cz.etnetera.reesmo.controller.MenuActivityController;
+import cz.etnetera.reesmo.controller.result.ResultFilteredController;
 import cz.etnetera.reesmo.datatables.filter.FilteredDatatablesCriterias;
 import cz.etnetera.reesmo.http.ControllerModel;
-import cz.etnetera.reesmo.http.exception.ValidationErrorException;
-import cz.etnetera.reesmo.list.ListModifier;
-import cz.etnetera.reesmo.list.filter.ListFilter;
 import cz.etnetera.reesmo.message.Localizer;
-import cz.etnetera.reesmo.model.datatables.project.ProjectDT;
-import cz.etnetera.reesmo.model.datatables.view.ViewDT;
-import cz.etnetera.reesmo.model.form.view.ViewCommand;
+import cz.etnetera.reesmo.model.datatables.result.ResultDT;
 import cz.etnetera.reesmo.model.form.view.ViewCommandValidator;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.model.mongodb.view.View;
+import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
 import cz.etnetera.reesmo.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Locale;
-import java.util.stream.Collectors;
-
-import static javax.swing.text.html.HTML.Tag.DT;
 
 @Controller
-public class ProjectViewController implements MenuActivityController {
+public class ProjectViewController implements MenuActivityController, ResultFilteredController {
 	
 	@Autowired
     private UserManager userManager;
@@ -46,7 +37,10 @@ public class ProjectViewController implements MenuActivityController {
 	
 	@Autowired
 	private ViewRepository viewRepository;
-	
+
+	@Autowired
+	private ResultRepository resultRepository;
+
 	@Autowired
 	private Localizer localizer;
 	
@@ -59,51 +53,60 @@ public class ProjectViewController implements MenuActivityController {
 	protected void initBinder(WebDataBinder binder) {		
 		binder.addValidators(new ViewCommandValidator());
 	}
-	
 
-	@RequestMapping(value = "/project/views/{projectId}", method = RequestMethod.GET)
-	public String projects(@PathVariable String projectId, Model model) {
-		Project project = projectRepository.findOne(projectId);
+
+	@RequestMapping(value = "/view/{viewId}", method = RequestMethod.GET)
+	public String view(@PathVariable String viewId, Model model) {
+		View view = viewRepository.findOne(viewId);
+		Project project = projectRepository.findOne(view.getProjectId());
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.BASIC);
+		model.addAttribute("view", view);
 		model.addAttribute("project", project);
-		return "page/view/views";
+		return "page/view/view";
 	}
 
-	@RequestMapping(value = "/dt/views/{projectId}")
+	@RequestMapping(value = "/dt/results/view/{viewId}")
 	public @ResponseBody
-	DatatablesResponse<ProjectDT> findAllForDataTables(@RequestParam(required = false, defaultValue = "BASIC") String permission, HttpServletRequest request) {
-		Permission perm = Permission.fromString(permission);
-		if (perm == null) {
-			throw new IllegalArgumentException("Unknown permission " + permission);
-		}
-		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<ViewDT> views = viewRepository.findWithDatatablesCriterias(criterias, userManager.getAllowedProjectIds(perm));
-		return DatatablesResponse.build(views, criterias);
+	DatatablesResponse<ResultDT> findAllviewResultsForDataTables(@PathVariable String viewId, HttpServletRequest request, Locale locale) throws Exception {
+		View view = viewRepository.findOne(viewId);
+		Project project = projectRepository.findOne(view.getId());
+		ControllerModel.exists(project, Project.class);
+
+		FilteredDatatablesCriterias criterias = FilteredDatatablesCriterias.getFromRequest(request);
+		DataSet<ResultDT> results = resultRepository.findWithFilteredDatatablesCriterias(criterias, Arrays.asList(project.getId()), locale);
+		//TODO filter results to match certain view
+		return DatatablesResponse.build(results, criterias.getCriterias());
 	}
 
-	@RequestMapping(value = "/project/view/create/{projectId}", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody View createProjectView(@Valid ViewCommand viewCommand,
-			BindingResult bindingResult, @PathVariable String projectId, HttpServletRequest request, Locale locale) throws Exception {
-		Project project = projectRepository.findOne(projectId);
-		ControllerModel.exists(project, Project.class);
-		project.checkUserPermission(userManager.requireUser(), Permission.EDITOR);
-		
-		if (bindingResult.hasErrors()) {
-			throw new ValidationErrorException(bindingResult.getAllErrors().stream().map(er -> er.toString()).collect(Collectors.joining(". ")));
-		}
-		View view = new View();
-		viewCommand.toView(view);
-		
-		List<ListFilter> filters = FilteredDatatablesCriterias.getFiltersFromRequest(request);
-		if (filters == null) {
-			throw new ValidationErrorException("Filters are empty or not well-formed.");
-		}
-		ListModifier modifier = new ListModifier();
-		modifier.setFilters(filters);
-		view.setModifier(modifier);
-		viewRepository.save(view);
-		return view;
+
+	@RequestMapping(value = "/view/edit/{viewId}", method = RequestMethod.GET)
+	public String editView(@PathVariable String viewId, Model model) {
+		model.addAttribute("view", viewRepository.findOne(viewId));
+		return "page/view/viewEdit";
 	}
+
+	@RequestMapping(value = "/view/edit/{viewId}", method = RequestMethod.POST)
+	public String editView(@ModelAttribute View view) {
+		// TODO
+		return "page/view/viewEdit";
+	}
+
+
+
+	@RequestMapping(value = "/view/delete/{viewId}", method = RequestMethod.GET)
+	public String deleteView(@PathVariable String viewId, Model model) {
+		model.addAttribute("view", viewRepository.findOne(viewId));
+		return "page/view/viewDelete";
+	}
+
+	@RequestMapping(value = "/view/delete/{viewId}", method = RequestMethod.POST)
+	public String deleteView(@PathVariable String viewId) {
+		viewRepository.delete(viewId);
+		//TODO delete monitors
+		return "page/view/viewDelete";
+	}
+
+
 
 }

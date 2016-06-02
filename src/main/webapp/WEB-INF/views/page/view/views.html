@@ -6,14 +6,12 @@
 <body>
 <h1 layout:fragment="content-title"><i class="fa fa-cube"></i> <span th:text="#{page.views.title}">Projects</span> <small th:text="#{page.views.titledesc}">small title</small></h1>
 <ol layout:fragment="content-breadcrumb">
-    <li class="active"><a th:href="@{/project/views}" href="#"><i
-            class="fa fa-cubes"></i> <span th:text="#{page.views.title}">Projects</span></a></li>
+    <li><a th:href="@{/projects}" href="#"><i class="fa fa-binoculars"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
+    <li><a th:href="@{/project/detail/{projectId}(projectId=${project.id})}" href="#"> <span th:text="${project.name}">Projects</span></a></li>
+    <li class="active"><a th:href="@{/project/views/{projectId}(projectId=${project.id})}" href="#"><span th:text="#{page.views.title}">Projects</span></a></li>
 </ol>
 <div layout:fragment="content">
     <div class="row">
-        <div class="col-sm-12">
-            <a th:href="@{/project/create}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.projects.newproject}">New project</span></a>
-        </div>
     </div>
     <div class="box box-primary">
         <div class="box-body">
@@ -23,15 +21,14 @@
                         <table id="projectsTable" dt:table="true" dt:url="@{/dt/views/{projectId}(projectId=${project.id})}">
                             <thead>
                             <tr>
-                                <th dt:property="name" dt:renderFunction="Reesmo.projectsTableRenderName" th:text="#{project.name}">Name</th>
-                                <th dt:property="key" th:text="#{project.key}">Key</th>
-                                <th dt:property="description" th:text="#{project.description}">Description</th>
+                                <th dt:property="name" dt:renderFunction="Reesmo.viewsTableRenderName">Name</th>
+                                <th dt:property="description">Description</th>
                             </tr>
                             </thead>
                         </table>
                         <script th:inline="javascript">
-                            Reesmo.projectsTableRenderName = function(name, type, project) {
-                                return Reesmo.dataTables.renderLink('project/home/' + project.id, name);
+                            Reesmo.viewsTableRenderName = function(name, type, view) {
+                                return Reesmo.dataTables.renderLink('view/' + view.id, name);
                             };
                         </script>
                     </div>

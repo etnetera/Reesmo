@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/project" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title th:text="#{page.views.title} - ${project.name}">Delete -
+    <title th:text="#{page.viewdelete.title} - ${view.name}">Delete -
         Project - Projects</title>
 </head>
 <body>
-<h1 layout:fragment="content-title"><i class="fa fa-cog"></i> <span th:text="${project.name}">Project</span> - <span th:text="#{page.views.title}">Delete</span> <small th:text="#{page.views.titledesc}">small title</small></h1>
-<ol layout:fragment="content-breadcrumb">
+<h1 layout:fragment="content-title"><i class="fa fa-cog"></i> <span th:text="${view.name}">Project</span> - <span th:text="#{page.viewdelete.title}">Delete</span> <small th:text="#{page.viewdelete.titledesc}">small title</small></h1>
+<ol layout:fragment="content-breadcrumb" th:with="project=${view.getProject()}">
     <li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
-        <span th:text="#{page.projects.title}">Projects</span></a></li>
+    <span th:text="#{page.projects.title}">Projects</span></a></li>
     <li><a
             th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#"
             th:text="${project.name}">Project</a></li>
     <li class="active"><a
-            th:href="@{/project/delete/{projectId}(projectId=${project.id})}" href="#"
-            th:text="#{page.projectdelete.title}">Delete</a></li>
+            th:href="@{/view/delete/{viewId}(viewId=${view.id})}" href="#"
+            th:text="#{page.viewdelete.title}">Delete</a></li>
 </ol>
+
 <div layout:fragment="content">
     <div class="row">
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-bullhorn"></i> <span th:text="#{page.projectdelete.formtitle}">Read well</span></h3>
+                    <h3 class="box-title"><i class="fa fa-bullhorn"></i> <span th:text="#{page.viewdelete.formtitle}">Read well</span></h3>
                 </div>
-                <form action="#" th:action="@{/project/delete/{projectId}(projectId=${project.id})}" method="post">
+                <form action="#" th:action="@{/view/delete/{viewId}(viewId=${view.id})}" method="post">
                     <div class="box-body">
                         <div class="callout callout-danger">
-                            <h4 th:text="#{page.projectdelete.dangertitle}">I am a danger callout!</h4>
-                            <p th:text="#{page.projectdelete.dangercontent}">There is a problem that we need to fix. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</p>
+                            <h4 th:text="#{page.viewdelete.dangertitle}">I am a danger callout!</h4>
+                            <p th:text="#{page.viewdelete.dangercontent}">There is a problem that we need to fix. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</p>
                         </div>
                     </div>
                     <div class="box-footer">

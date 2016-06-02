@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/project" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="#{page.view.title} - ${view.name}">Results -
+        Project - Projects</title>
+</head>
+<body>
+<h1 layout:fragment="content-title"><i class="fa fa-check-square-o"></i> <span th:text="${view.name}">Project</span> - <span th:text="#{page.view.title}">Results</span> <small th:text="#{page.view.titledesc}">small title</small></h1>
+<ol layout:fragment="content-breadcrumb">
+    <li><a th:href="@{/projects}" href="#"><i class="fa fa-binoculars"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
+    <li><a th:href="@{/project/detail/{projectId}(projectId=${project.id})}" href="#"> <span th:text="${project.name}">Projects</span></a></li>
+    <li class="active"><a th:href="@{/project/view/{viewId}(projectId=${view.id})}" href="#"></i> <span th:text="${view.name}">Projects</span></a></li>
+
+</ol>
+<div layout:fragment="content" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}, isProjectOwner=${project.isAllowedForUser(#authentication.principal, 'OWNER')}">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <h3 class="profile-username text-center" th:text="${view.name}">Project</h3>
+                    <a th:if="${isProjectAdmin}" th:href="@{/view/edit/{viewId}(viewId=${view.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+                    <a th:if="${isProjectOwner}" th:href="@{/view/delete/{viewId}(viewId=${view.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/project/projectDetail :: details">Details</div>
+        <div th:replace="fragments/model/audit :: history (model=${project})">History</div>
+    </div>
+
+    <div th:id="'viewResultsBox' + ${view.id} + '-panes-title'" class="results-box-panes-title"><i class="fa fa-check-square-o"></i> <span th:text="${project.name}">Project</span> - <span th:text="${view.name}">Results</span> <small th:text="#{page.view.titledesc}">small title</small></div>
+    <div th:replace="fragments/result/resultList :: box ('viewResultsBox' + ${view.id}, @{/dt/results/view/{viewId}(viewId=${view.id})}, false, ${project.isAllowedForUser(#authentication.principal, 'ADMIN')})">Results</div>
+</div>
+</body>

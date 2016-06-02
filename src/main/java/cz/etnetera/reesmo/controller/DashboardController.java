@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Locale;
+
 @Controller
 public class DashboardController implements MenuActivityController {
 
@@ -14,7 +16,7 @@ public class DashboardController implements MenuActivityController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String dashboard(Model model) {
+	public String dashboard(Model model, Locale locale) {
 		return "page/dashboard";
 	}
 	
