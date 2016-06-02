@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<span th:fragment="status (status)">
 		<span th:if="${status.name() == 'FAILED'}" class="label bg-red" th:text="#{result.status.value.failed}">Failed</span>

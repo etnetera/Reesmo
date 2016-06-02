@@ -1,9 +1,13 @@
 package cz.etnetera.reesmo.controller.project;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import cz.etnetera.reesmo.controller.MenuActivityController;
+import cz.etnetera.reesmo.http.ControllerModel;
+import cz.etnetera.reesmo.model.form.project.ProjectCommand;
+import cz.etnetera.reesmo.model.form.project.ProjectCommandValidator;
+import cz.etnetera.reesmo.model.mongodb.project.Project;
+import cz.etnetera.reesmo.model.mongodb.user.Permission;
+import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
+import cz.etnetera.reesmo.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,14 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import cz.etnetera.reesmo.controller.MenuActivityController;
-import cz.etnetera.reesmo.http.ControllerModel;
-import cz.etnetera.reesmo.model.form.project.ProjectCommand;
-import cz.etnetera.reesmo.model.form.project.ProjectCommandValidator;
-import cz.etnetera.reesmo.model.mongodb.project.Project;
-import cz.etnetera.reesmo.model.mongodb.user.Permission;
-import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
-import cz.etnetera.reesmo.user.UserManager;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class ProjectController implements MenuActivityController {

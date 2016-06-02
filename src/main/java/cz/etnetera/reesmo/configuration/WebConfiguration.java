@@ -78,7 +78,7 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 		resolver.setSuffix(".html");
 		resolver.setTemplateMode("HTML5");
 		resolver.setCharacterEncoding("UTF-8");
-		resolver.setCacheable(true);
+		resolver.setCacheable(false);
 		return resolver;
 	}
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<p th:fragment="errors (fieldName)" class="help-block" th:each="err : ${#fields.errors(fieldName)}">
 		<i class="fa fa-exclamation"></i> <span th:text="${err}"></span>

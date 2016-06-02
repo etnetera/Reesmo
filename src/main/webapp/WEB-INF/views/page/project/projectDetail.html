@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="layout/project">
+<html layout:decorator="layout/project" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
 <head>
 <title th:text="#{page.projectdetail.title} - ${project.name}">Detail -
 	Project - Projects</title>
@@ -10,7 +10,7 @@
 		<li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
 				<span th:text="#{page.projects.title}">Projects</span></a></li>
 		<li><a 
-			th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#" 
+			th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#"
 			th:text="${project.name}">Project</a></li>
 		<li class="active"><a
 			th:href="@{/project/detail/{projectId}(projectId=${project.id})}" href="#"
