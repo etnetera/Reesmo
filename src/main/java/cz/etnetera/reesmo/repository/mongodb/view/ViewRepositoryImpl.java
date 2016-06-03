@@ -24,6 +24,10 @@ public class ViewRepositoryImpl implements ViewRepositoryCustom {
     @Autowired
     private MongoOperations mongoTemplate;
 
+    @Autowired
+    private ViewRepository viewRepository;
+
+
     @Override
 	public List<View> findByProject(String projectId) {
 		return mongoTemplate.find(Query.query(Criteria.where("projectId").is(projectId)), View.class);

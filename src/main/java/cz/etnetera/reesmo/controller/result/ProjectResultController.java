@@ -41,6 +41,19 @@ import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
 import cz.etnetera.reesmo.user.UserManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProjectResultController implements MenuActivityController, ResultFilteredController {
@@ -90,13 +103,13 @@ public class ProjectResultController implements MenuActivityController, ResultFi
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.BASIC);
-		
+
 		View view = viewRepository.findOne(viewId);
 		ControllerModel.exists(view, View.class);
-		
+
 		if (!view.getProjectId().equals(project.getId()))
 			throw new NotFoundException("View " + view.getId() + " not found under project " + project.getId() + ".");
-		
+
 		model.addAttribute("project", project);
 		injectFiltersDefinition(model, localizer, locale);
 		injectFiltersState(model, view.getModifier().getFilters());
@@ -107,19 +120,19 @@ public class ProjectResultController implements MenuActivityController, ResultFi
 		}
 		return "page/project/projectResults";
 	}
-	
+
 	@RequestMapping(value = "/project/results/{projectId}/view/create", method = RequestMethod.POST)
 	public String createViewFromFilters(@Valid ViewCommand viewCommand,
 			BindingResult bindingResult, @PathVariable String projectId, HttpServletRequest request, Model model, Locale locale) throws Exception {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.ADMIN);
-		
+
 		List<ListFilter> filters = FilteredDatatablesCriterias.getFiltersFromRequest(request);
 		if (filters == null) {
 			throw new ValidationErrorException("Filters are empty or not well-formed.");
 		}
-		
+
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("project", project);
 			injectFiltersDefinition(model, localizer, locale);
@@ -127,14 +140,15 @@ public class ProjectResultController implements MenuActivityController, ResultFi
 			injectViewsDefinition(model, project, null);
 			return "page/project/projectResults";
 		}
-		
+
 		View view = new View();
 		viewCommand.toView(view);
 		view.setProjectId(project.getId());
-		
+
 		ListModifier modifier = new ListModifier();
 		modifier.setFilters(filters);
 		view.setModifier(modifier);
+		view.setProjectId(projectId);
 		viewRepository.save(view);
 		
 		return "redirect:/project/results/" + projectId + "/view/" + view.getId();
@@ -149,7 +163,7 @@ public class ProjectResultController implements MenuActivityController, ResultFi
 		DataSet<ResultDT> results = resultRepository.findWithFilteredDatatablesCriterias(criterias, Arrays.asList(projectId), locale);
 		return DatatablesResponse.build(results, criterias.getCriterias());
 	}
-	
+
 	private void injectViewsDefinition(Model model, Project project, View activeView) {
 		DatatablesViewsDefinition datatablesViewsDef = new DatatablesViewsDefinition();
 		viewRepository.findByProject(project.getId()).forEach(v -> datatablesViewsDef.addView(DatatablesView.fromView(v)));
