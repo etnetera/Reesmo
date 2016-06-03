@@ -17,7 +17,6 @@ public class ViewDT {
     }
 
     public String getId() {
-
         return id;
     }
 

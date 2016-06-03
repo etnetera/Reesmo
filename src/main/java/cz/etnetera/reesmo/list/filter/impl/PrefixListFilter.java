@@ -18,6 +18,12 @@ public class PrefixListFilter extends ListFilter {
 	
 	protected String prefix;
 
+	@Override
+	public String getType() {
+		return TYPE;
+	}
+
+	@Override
 	public FilterBuilder getFilterBuilder() {
 		return new BoolFilterBuilder().must(new PrefixFilterBuilder(field, prefix)).cache(true);
 	}

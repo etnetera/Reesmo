@@ -402,8 +402,31 @@ body.panes-maximized {
 	margin-left: 5px;
 }
 
-.dt-filters .dt-views-container li:last-child {
-	padding: 10px;
+.dt-filters .dt-views-container li a {
+	font-weight: bold;
+}
+
+.dt-filters .dt-views-container li.dt-view-changed-box,
+.dt-filters .dt-views-container li.dt-view-update-trigger-box,
+.dt-filters .dt-views-container li.dt-view-create-trigger-box {
+	padding: 10px 10px 0 10px;
+}
+
+.dt-filters .dt-views-container li.dt-view-changed-box {
+	padding-top: 0;
+	padding-bottom: 10px;
+}
+
+.dt-filters .dt-views-container.empty li.dt-view-create-trigger-box {
+	padding-top: 0;
+}
+
+.dt-filters .dt-views-container .dropdown-menu {
+	padding: 10px 0;
+}
+
+.dt-filters .dt-views-container .dropdown-menu > li > a {
+	padding: 5px 10px;
 }
 
 .btn-group.dt-filter-type-text .dropdown-menu {

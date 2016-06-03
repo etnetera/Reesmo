@@ -1,18 +1,20 @@
 package cz.etnetera.reesmo.repository.mongodb.view;
 
-import com.github.dandelion.datatables.core.ajax.DataSet;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-import cz.etnetera.reesmo.model.datatables.view.ViewDT;
-import cz.etnetera.reesmo.model.mongodb.user.User;
-import cz.etnetera.reesmo.model.mongodb.view.View;
-import cz.etnetera.reesmo.repository.mongodb.MongoDatatables;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.github.dandelion.datatables.core.ajax.DataSet;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
+
+import cz.etnetera.reesmo.model.datatables.view.ViewDT;
+import cz.etnetera.reesmo.model.mongodb.user.User;
+import cz.etnetera.reesmo.model.mongodb.view.View;
+import cz.etnetera.reesmo.repository.mongodb.MongoDatatables;
 
 /**
  * View repository custom method implementation
@@ -23,6 +25,11 @@ public class ViewRepositoryImpl implements ViewRepositoryCustom {
     private MongoOperations mongoTemplate;
 
     @Override
+	public List<View> findByProject(String projectId) {
+		return mongoTemplate.find(Query.query(Criteria.where("projectId").is(projectId)), View.class);
+	}
+    
+    @Override
     public DataSet<ViewDT> findViewsForProjectWithCriterias(DatatablesCriterias criterias, String projectId) {
         DataSet<View> views = findViewsWithDatatablesCriterias(criterias, projectId);
 
@@ -31,9 +38,8 @@ public class ViewRepositoryImpl implements ViewRepositoryCustom {
                 views.getTotalRecords(), views.getTotalDisplayRecords());
     }
 
-
     private DataSet<View> findViewsWithDatatablesCriterias(DatatablesCriterias criterias, String projectId) {
-        Criteria allCrit = Criteria.where("_projectId").is(projectId);
+        Criteria allCrit = Criteria.where("projectId").is(projectId);
 
         Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 
@@ -49,4 +55,5 @@ public class ViewRepositoryImpl implements ViewRepositoryCustom {
         return new DataSet<View>(views, count, countFiltered);
 
     }
+
 }

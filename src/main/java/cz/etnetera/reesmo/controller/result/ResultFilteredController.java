@@ -1,14 +1,17 @@
 package cz.etnetera.reesmo.controller.result;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.ui.Model;
 
 import cz.etnetera.reesmo.datatables.filter.DatatablesFiltersDefinition;
+import cz.etnetera.reesmo.datatables.filter.DatatablesFiltersState;
 import cz.etnetera.reesmo.datatables.filter.impl.DatatablesFilterDateRange;
 import cz.etnetera.reesmo.datatables.filter.impl.DatatablesFilterNumberRange;
 import cz.etnetera.reesmo.datatables.filter.impl.DatatablesFilterSelect;
 import cz.etnetera.reesmo.datatables.filter.impl.DatatablesFilterText;
+import cz.etnetera.reesmo.list.filter.ListFilter;
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.elasticsearch.result.TestCategory;
 import cz.etnetera.reesmo.model.elasticsearch.result.TestSeverity;
@@ -42,6 +45,12 @@ public interface ResultFilteredController {
 				.addFilter(new DatatablesFilterText("notes", "result.notes", localizer, locale))
 				.addFilter(new DatatablesFilterText("errors", "result.errors", localizer, locale));
 		model.addAttribute("datatablesFiltersDef", datatablesFiltersDef);
+	}
+	
+	public default void injectFiltersState(Model model, List<ListFilter> filters) {
+		DatatablesFiltersState datatablesFiltersState = new DatatablesFiltersState();
+		datatablesFiltersState.setFilters(filters);
+		model.addAttribute("datatablesFiltersState", datatablesFiltersState);
 	}
 	
 }

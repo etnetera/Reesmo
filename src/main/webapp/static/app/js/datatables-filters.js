@@ -14,6 +14,8 @@ Reesmo.DataTablesFilters = Class.extend(function(){
 	
 	this.filters;
 	
+	this.onChangeListeners = {};
+	
 	this.constructor = function(tableId, dtStateData) {
 		this.$table = $('#' + tableId);
 		this.$container = $('#' + tableId + 'Filters');
@@ -28,7 +30,7 @@ Reesmo.DataTablesFilters = Class.extend(function(){
 		
 		this.state = $.extend({
 			filters: []
-		}, dtStateData.filters || {});
+		}, window['oTable_' + tableId + '_filtersState'] || dtStateData.filters || {});
 	};
 	
 	this.init = function() {
@@ -128,6 +130,7 @@ Reesmo.DataTablesFilters = Class.extend(function(){
 	};
 	
 	this.onChange = function() {
+		var that = this;
 		// update data from filter elements
 		var filters = [];
 		$.each(this.filters, function(i, filter){
@@ -138,6 +141,17 @@ Reesmo.DataTablesFilters = Class.extend(function(){
 
 		// reload table
 		Reesmo.dataTables.reloadTable(this.$table);
+		$.each(this.onChangeListeners, function(key, listener){
+			listener(that);
+		});
+	};
+	
+	this.addOnChangeListener = function(key, listener) {
+		this.onChangeListeners[key] = listener;
+	};
+	
+	this.removeOnChangeListener = function(key) {
+		delete this.onChangeListeners[key];
 	};
 	
 	this.modifyAjaxData = function(dtAjaxData) {

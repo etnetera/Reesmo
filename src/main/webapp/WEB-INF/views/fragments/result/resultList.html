@@ -8,23 +8,15 @@
 				<script th:inline="javascript">
 					window['oTable_' + [[${id}]] + 'Table_filtersDef'] = [[${datatablesFiltersDef}]];
 				</script>
+				<script th:if="${datatablesFiltersState}" th:inline="javascript">
+					window['oTable_' + [[${id}]] + 'Table_filtersState'] = [[${datatablesFiltersState}]];
+				</script>
 				<script th:if="${project}" th:inline="javascript">
-					/*<![CDATA[*/
-					window['oTable_' + [[${id}]] + 'Table_viewsDef'] = {
-						activeView: '1',
-						views: [{
-							id: '1',
-							name: 'View 1'
-						}, {
-							id: '2',
-							name: 'View 2'
-						}]
-					};
-					/*]]>*/
+					window['oTable_' + [[${id}]] + 'Table_viewsDef'] = [[${datatablesViewsDef}]];
 				</script>
 			</div>
-			<div th:if="${project.isAllowedForUser(#authentication.principal, 'ADMIN')}" th:id="${id} + 'TableViewForm'" class="box-header with-border dt-view-form-box" style="display: none">
-				<form action="#" th:action="@{/project/results/{projectId}(projectId=${project.id})}" th:object="${viewCommand}" method="post">
+			<div th:if="${project?.isAllowedForUser(#authentication.principal, 'ADMIN')}" th:id="${id} + 'TableViewForm'" class="box-header with-border dt-view-form-box" style="display: none">
+				<form action="#" th:action="@{/project/results/{projectId}/view/create(projectId=${project.id})}" th:object="${viewCommand}" th:classappend="${#fields.hasAnyErrors()}? invalid" method="post">
 					<div class="box-header with-border">
 						<h3 class="box-title" th:text="#{page.viewedit.formtitle}">Information</h3>
 					</div>

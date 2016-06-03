@@ -18,6 +18,12 @@ public class TermListFilter extends ListFilter {
 	
 	protected Object term;
 
+	@Override
+	public String getType() {
+		return TYPE;
+	}
+
+	@Override
 	public FilterBuilder getFilterBuilder() {
 		return new BoolFilterBuilder().must(new TermFilterBuilder(field, term)).cache(true);
 	}
