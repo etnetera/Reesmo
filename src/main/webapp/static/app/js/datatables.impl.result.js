@@ -80,7 +80,7 @@ Reesmo.DataTablesViews = Class.extend(function(){
 	
 	this.views;
 	
-	this.activeView;
+	this.activeViewId;
 	
 	this.$control;
 	
@@ -88,19 +88,32 @@ Reesmo.DataTablesViews = Class.extend(function(){
 	
 	this.$formBox;
 	
+	this.$form;
+	
+	this.invalidForm;
+	
+	this.allowManage;
+	
 	this.constructor = function(tableId, projectId) {
 		this.tableId = tableId;
 		this.projectId = projectId;
 		var viewsDef = window['oTable_' + tableId + '_viewsDef'];
 		this.views = viewsDef.views;
-		this.activeView = viewsDef.activeView;
+		this.activeViewId = viewsDef.activeViewId;
 	};
 	
 	this.init = function() {
 		this.$formBox = $('#' + this.tableId + 'ViewForm');
+		this.allowManage = this.$formBox.length > 0;
+		if (this.allowManage) {
+			this.$form = this.$formBox.find('form');
+			this.invalidForm = this.$form.hasClass('invalid');
+		}
 		this.createControl();
 		this.placeControlInFilters();
 		this.bindEvents();
+		if (this.invalidForm)
+			this.$formBox.show();
 	};
 	
 	this.createControl = function() {
@@ -108,31 +121,58 @@ Reesmo.DataTablesViews = Class.extend(function(){
 		
 		this.$control = $('<div class="btn-group dt-views-container"/>');
 		this.$button = $('<button type="button" class="btn btn-default dropdown-toggle dt-views-trigger" data-toggle="dropdown"><i class="fa fa-eye"></i></button>');
+		if (this.activeViewId != null)
+			this.$button.addClass('btn-success');
 		this.$control.append(this.$button);
 		
 		var $dropdown = $('<ul class="dropdown-menu"/>');
+		if (this.views.length > 0) {
+			var $activeView = null;
+			
+			$.each(this.views, function(i, view){
+				var $li = $('<li/>'),
+					$a = $('<a/>');
+				$a.attr('href', Reesmo.baseUrl + 'project/results/' + that.projectId + '/view/' + view.id);
+				$a.append(view.name);
+				$li.append($a);
+				if (that.activeViewId != null && view.id == that.activeViewId) {
+					$li.addClass('active');
+					$activeView = $li;
+				} else {
+					$dropdown.append($li);
+				}
+			});
+			if ($activeView != null)
+				$dropdown.prepend($activeView);
+		} else {
+			this.$control.addClass('empty');
+		}
 		
-		$.each(this.views, function(i, view){
-			var $li = $('<li/>'),
-				$a = $('<a/>');
-			$a.attr('href', Reesmo.baseUrl + 'project/results/' + that.projectId + '/view/' + view.id);
-			$a.append(view.name);
-			$dropdown.append($li.append($a));
-		});
-		if (this.$formBox.length > 0)
-			$dropdown.append('<li><button class="btn btn-primary dt-view-create-trigger"><i class="fa fa-plus"></i> <span>New view from filters</span></button></li>');
+		if (this.activeViewId != null)
+			$dropdown.prepend('<li class="dt-view-changed-box" style="display: none"><span class="text-warning">' + Reesmo.i18n.get('views.control.changedFilters') + '</span></li>');
+		
+		if (this.allowManage) {
+			$dropdown.append('<li class="dt-view-update-trigger-box" style="display: none"><button class="btn btn-warning dt-view-update-trigger"><i class="fa fa-save"></i> <span>' + Reesmo.i18n.get('views.control.updateView') + '</span></button></li>');
+			$dropdown.append('<li class="dt-view-create-trigger-box"><button class="btn btn-primary dt-view-create-trigger"><i class="fa fa-plus"></i> <span>' + Reesmo.i18n.get('views.control.createView') + '</span></button></li>');
+		}
 		
 		this.$control.append($dropdown);
 	};
 	
 	this.placeControlInFilters = function() {
+		if (!this.allowManage)
+			return;
 		this.getFilters().$container.find('.dt-filters-trigger').after(this.$control);
 		this.$button.dropdown();
 	}
 	
 	this.bindEvents = function() {
 		var that = this;
-		if (this.$formBox.length > 0) {
+		
+		if (this.activeViewId != null)
+			this.getFilters().addOnChangeListener('activeViewChange', this.onFiltersChange);
+		
+		if (this.allowManage) {
 			this.$control.on('click', '.dt-view-create-trigger', function(e){
 				that.$formBox.show();
 				$(this).blur();
@@ -141,7 +181,7 @@ Reesmo.DataTablesViews = Class.extend(function(){
 				that.$formBox.hide();
 				e.preventDefault();
 			});
-			this.$formBox.find('form').submit(function(e){
+			this.$form.submit(function(e){
 				var filtersData = that.getFilters().modifyAjaxData({});
 				if (filtersData.filtersCnt == null || filtersData.filtersCnt < 1) {
 					alert(Reesmo.i18n.get('views.create.noFiltersSelected'));
@@ -155,6 +195,15 @@ Reesmo.DataTablesViews = Class.extend(function(){
 	
 	this.getFilters = function() {
 		return Reesmo.dataTables.filters.getFiltersFromId(this.tableId);
+	};
+	
+	this.onFiltersChange = function(filters) {
+		if (this.activeViewId != null) {
+			this.$button.removeClass('btn-success').addClass('btn-warning');
+			this.$control.find('.dt-view-changed-box').show();
+			if (this.allowManage)
+				this.$control.find('.dt-view-update-trigger-box').show();
+		}
 	};
 	
 });

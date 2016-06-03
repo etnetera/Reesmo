@@ -2,6 +2,7 @@ package cz.etnetera.reesmo.list.filter;
 
 import org.elasticsearch.index.query.FilterBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -26,6 +27,9 @@ abstract public class ListFilter {
 
 	protected String field;
 	
+	abstract public String getType();
+	
+	@JsonIgnore
 	abstract public FilterBuilder getFilterBuilder();
 
 	public String getField() {

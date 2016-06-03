@@ -20,6 +20,12 @@ public class DateRangeListFilter extends ListFilter {
 	
 	protected Long to;
 
+	@Override
+	public String getType() {
+		return TYPE;
+	}
+
+	@Override
 	public FilterBuilder getFilterBuilder() {
 		RangeFilterBuilder builder = new RangeFilterBuilder(field);
 		if (from != null)
