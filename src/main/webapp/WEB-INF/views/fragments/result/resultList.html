@@ -23,7 +23,7 @@
 					/*]]>*/
 				</script>
 			</div>
-			<div th:if="${project.isAllowedForUser(#authentication.principal, 'ADMIN')}" th:id="${id} + 'TableViewForm'" class="box-header with-border dt-view-form-box" style="display: none">
+			<div th:if="${project?.isAllowedForUser(#authentication.principal, 'ADMIN')}" th:id="${id} + 'TableViewForm'" class="box-header with-border dt-view-form-box" style="display: none">
 				<form action="#" th:action="@{/project/results/{projectId}(projectId=${project.id})}" th:object="${viewCommand}" method="post">
 					<div class="box-header with-border">
 						<h3 class="box-title" th:text="#{page.viewedit.formtitle}">Information</h3>

@@ -8,6 +8,7 @@ import cz.etnetera.reesmo.datatables.filter.FilteredDatatablesCriterias;
 import cz.etnetera.reesmo.http.ControllerModel;
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.datatables.result.ResultDT;
+import cz.etnetera.reesmo.model.form.view.ViewCommand;
 import cz.etnetera.reesmo.model.form.view.ViewCommandValidator;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
@@ -19,10 +20,12 @@ import cz.etnetera.reesmo.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -82,29 +85,50 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 
 	@RequestMapping(value = "/view/edit/{viewId}", method = RequestMethod.GET)
 	public String editView(@PathVariable String viewId, Model model) {
-		model.addAttribute("view", viewRepository.findOne(viewId));
+		View view = viewRepository.findOne(viewId);
+		Project project = projectRepository.findOne(view.getProjectId());
+		ViewCommand viewCommand = new ViewCommand();
+		viewCommand.fromView(view);
+
+		model.addAttribute("view", view);
+		model.addAttribute("viewCommand", viewCommand);
+		model.addAttribute("project", project);
 		return "page/view/viewEdit";
 	}
 
 	@RequestMapping(value = "/view/edit/{viewId}", method = RequestMethod.POST)
-	public String editView(@ModelAttribute View view) {
-		// TODO
-		return "page/view/viewEdit";
+	public String editView(@PathVariable String viewId, @Valid ViewCommand viewCommand,
+						   BindingResult bindingResult, Model model) {
+		View view = viewRepository.findOne(viewId);
+		ControllerModel.exists(view, View.class);
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("project", projectRepository.findOne(view.getProjectId()));
+			model.addAttribute("view", view);
+			return "page/view/viewEdit";
+		}
+		viewCommand.toView(view);
+		viewRepository.save(view);
+		return "redirect:/view/" + viewId;
 	}
-
 
 
 	@RequestMapping(value = "/view/delete/{viewId}", method = RequestMethod.GET)
 	public String deleteView(@PathVariable String viewId, Model model) {
-		model.addAttribute("view", viewRepository.findOne(viewId));
+		View view = viewRepository.findOne(viewId);
+		Project project = projectRepository.findOne(view.getProjectId());
+		model.addAttribute("view", view);
+		model.addAttribute("project", project);
 		return "page/view/viewDelete";
 	}
 
 	@RequestMapping(value = "/view/delete/{viewId}", method = RequestMethod.POST)
 	public String deleteView(@PathVariable String viewId) {
+		View view = viewRepository.findOne(viewId);
+		Project project = projectRepository.findOne(view.getProjectId());
+		//TODO if no monitors
 		viewRepository.delete(viewId);
-		//TODO delete monitors
-		return "page/view/viewDelete";
+		return "redirect:/views/" + project.getId();
+		// else delete monitors first
 	}
 
 

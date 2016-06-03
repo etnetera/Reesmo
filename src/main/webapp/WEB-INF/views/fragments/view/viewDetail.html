@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="details" class="col-md-6">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title" th:text="#{view.details}">Details</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div><b><span th:text="#{view.name}">Name</span>:</b> <span th:text="${view.name}">name</span></div>
+                    <div><b><span th:text="#{view.description}">Key</span>:</b> <span th:text="${view.description}">key</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

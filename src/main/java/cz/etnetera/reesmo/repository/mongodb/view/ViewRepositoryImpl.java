@@ -22,6 +22,10 @@ public class ViewRepositoryImpl implements ViewRepositoryCustom {
     @Autowired
     private MongoOperations mongoTemplate;
 
+    @Autowired
+    private ViewRepository viewRepository;
+
+
     @Override
     public DataSet<ViewDT> findViewsForProjectWithCriterias(DatatablesCriterias criterias, String projectId) {
         DataSet<View> views = findViewsWithDatatablesCriterias(criterias, projectId);
@@ -33,7 +37,7 @@ public class ViewRepositoryImpl implements ViewRepositoryCustom {
 
 
     private DataSet<View> findViewsWithDatatablesCriterias(DatatablesCriterias criterias, String projectId) {
-        Criteria allCrit = Criteria.where("_projectId").is(projectId);
+        Criteria allCrit = Criteria.where("projectId").is(projectId);
 
         Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 

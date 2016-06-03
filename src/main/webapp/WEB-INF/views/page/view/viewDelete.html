@@ -6,12 +6,15 @@
 </head>
 <body>
 <h1 layout:fragment="content-title"><i class="fa fa-cog"></i> <span th:text="${view.name}">Project</span> - <span th:text="#{page.viewdelete.title}">Delete</span> <small th:text="#{page.viewdelete.titledesc}">small title</small></h1>
-<ol layout:fragment="content-breadcrumb" th:with="project=${view.getProject()}">
+<ol layout:fragment="content-breadcrumb">
     <li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
     <span th:text="#{page.projects.title}">Projects</span></a></li>
     <li><a
             th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#"
             th:text="${project.name}">Project</a></li>
+    <li><a
+            th:href="@{/view/{viewId}(viewId=${view.id})}" href="#"
+            th:text="${view.name}">Delete</a></li>
     <li class="active"><a
             th:href="@{/view/delete/{viewId}(viewId=${view.id})}" href="#"
             th:text="#{page.viewdelete.title}">Delete</a></li>
