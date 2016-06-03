@@ -386,6 +386,10 @@ body.panes-maximized {
 	display: none;
 }
 
+.dt-filters .dt-filters-trigger {
+	margin-right: 5px;
+}
+
 .dt-filters .dt-filters-trigger-more i {
 	font-weight: bold;
 	margin-left: 8px;
@@ -399,7 +403,7 @@ body.panes-maximized {
 }
 
 .dt-filters .dt-views-container {
-	margin-left: 5px;
+	margin-right: 5px;
 }
 
 .dt-filters .dt-views-container li a {

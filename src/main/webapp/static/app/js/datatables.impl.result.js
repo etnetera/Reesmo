@@ -122,7 +122,7 @@ Reesmo.DataTablesViews = Class.extend(function(){
 		this.$control = $('<div class="btn-group dt-views-container"/>');
 		this.$button = $('<button type="button" class="btn btn-default dropdown-toggle dt-views-trigger" data-toggle="dropdown"><i class="fa fa-eye"></i></button>');
 		if (this.activeViewId != null)
-			this.$button.addClass('btn-success');
+			this.$button.removeClass('btn-default').addClass('btn-success');
 		this.$control.append(this.$button);
 		
 		var $dropdown = $('<ul class="dropdown-menu"/>');
@@ -133,7 +133,7 @@ Reesmo.DataTablesViews = Class.extend(function(){
 				var $li = $('<li/>'),
 					$a = $('<a/>');
 				$a.attr('href', Reesmo.baseUrl + 'project/results/' + that.projectId + '/view/' + view.id);
-				$a.append(view.name);
+				$a.append('<i class="fa fa-eye"></i> ' + view.name);
 				$li.append($a);
 				if (that.activeViewId != null && view.id == that.activeViewId) {
 					$li.addClass('active');
