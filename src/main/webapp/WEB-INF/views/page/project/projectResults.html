@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/project" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title th:text="#{page.projectresults.title} - ${project.name}">Results -
+<title th:unless="${view}" th:text="#{page.projectresults.title} - ${project.name}">Results -
+	Project - Projects</title>
+<title th:if="${view}" th:text="${view.name} + ' - ' + #{page.projectresults.title} + ' - ' + ${project.name}">View - Results -
 	Project - Projects</title>
 </head>
 <body>
-	<h1 layout:fragment="content-title"><i class="fa fa-check-square-o"></i> <span th:text="${project.name}">Project</span> - <span th:text="#{page.projectresults.title}">Results</span> <small th:text="#{page.projectresults.titledesc}">small title</small></h1>
+	<h1 th:unless="${view}" layout:fragment="content-title"><i class="fa fa-check-square-o"></i> <span th:text="${project.name}">Project</span> - <span th:text="#{page.projectresults.title}">Results</span> <small th:text="#{page.projectresults.titledesc}">small title</small></h1>
+	<h1 th:if="${view}" layout:fragment="content-title"><i class="fa fa-check-square-o"></i> <span th:text="${project.name}">Project</span> - <span th:text="#{page.projectresults.title}">Results</span> <small><i class="fa fa-eye"></i> <span th:text="${view.name}">small view title</span></small></h1>
 	<ol layout:fragment="content-breadcrumb">
 		<li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
 				<span th:text="#{page.projects.title}">Projects</span></a></li>

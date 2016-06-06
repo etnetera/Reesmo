@@ -4,6 +4,7 @@ import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.TermFilterBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import cz.etnetera.reesmo.list.filter.ListFilter;
@@ -23,6 +24,7 @@ public class TermListFilter extends ListFilter {
 		return TYPE;
 	}
 
+	@JsonIgnore
 	@Override
 	public FilterBuilder getFilterBuilder() {
 		return new BoolFilterBuilder().must(new TermFilterBuilder(field, term)).cache(true);

@@ -4,6 +4,7 @@ import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.RangeFilterBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import cz.etnetera.reesmo.list.filter.ListFilter;
@@ -25,6 +26,7 @@ public class DoubleRangeListFilter extends ListFilter {
 		return TYPE;
 	}
 
+	@JsonIgnore
 	@Override
 	public FilterBuilder getFilterBuilder() {
 		RangeFilterBuilder builder = new RangeFilterBuilder(field);

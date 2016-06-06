@@ -15,17 +15,19 @@
 					window['oTable_' + [[${id}]] + 'Table_viewsDef'] = [[${datatablesViewsDef}]];
 				</script>
 			</div>
-			<div th:if="${project?.isAllowedForUser(#authentication.principal, 'ADMIN')}" th:id="${id} + 'TableViewForm'" class="box-header with-border dt-view-form-box" style="display: none">
-				<form action="#" th:action="@{/project/results/{projectId}/view/create(projectId=${project.id})}" th:object="${viewCommand}" th:classappend="${#fields.hasAnyErrors()}? invalid" method="post">
-					<div class="box-header with-border">
-						<h3 class="box-title" th:text="#{page.viewedit.formtitle}">Information</h3>
-					</div>
-					<div th:replace="fragments/view/viewFormFields :: fields (noFooter=true)">Form</div>
-					<div class="box-footer">
-						<button th:replace="fragments/form/button :: submit">Submit</button>
-						<button class="btn btn-cancel" th:text="#{cancel}">Cancel</button>
-					</div>
-				</form>
+			<div th:if="${project?.isAllowedForUser(#authentication.principal, 'ADMIN')}" th:remove="tag">
+				<div th:id="${id} + 'TableViewCreateFormBox'" class="box-header with-border dt-view-create-form-box" style="display: none">
+					<form class="dt-view-create-form" action="#" th:action="@{/project/results/{projectId}/view/create(projectId=${project.id})}" th:object="${viewCommand}" th:classappend="${#fields.hasAnyErrors()}? invalid" method="post">
+						<div class="box-header with-border">
+							<h3 class="box-title" th:text="#{page.viewedit.formtitle}">Information</h3>
+						</div>
+						<div th:replace="fragments/view/viewFormFields :: fields (noFooter=true)">Form</div>
+						<div class="box-footer">
+							<button th:replace="fragments/form/button :: submit">Submit</button>
+							<button class="btn btn-cancel" th:text="#{cancel}">Cancel</button>
+						</div>
+					</form>
+				</div>
 			</div>
 			<div class="box-body">
 				<div class="dataTables_wrapper form-inline dt-bootstrap">
