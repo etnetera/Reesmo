@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<body>
+<div th:fragment="monitorList (url, showView)">
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="dataTables_wrapper form-inline dt-bootstrap">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="monitorsTable" dt:table="true" dt:url="${url}">
+                            <thead>
+                            <tr>
+                                <th dt:property="type" th:text="#{monitor.type}">Type</th>
+                                <th th:if="true" dt:property="viewIdDT" dt:renderFunction="Reesmo.monitorsTableRenderName" th:text="#{monitor.view}">ViewName</th>
+                                <th dt:property="enabled" th:text="#{monitor.enabled}">Enabled</th>
+                                <th dt:property="description" th:text="#{monitor.description}">Description</th>
+                            </tr>
+                            </thead>
+                        </table>
+                        <script th:inline="javascript">
+                            Reesmo.monitorsTableRenderName = function(viewIdDT, type, monitor) {
+                                return Reesmo.dataTables.renderLink('view/' + viewIdDT, monitor.viewName);
+                            };
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,10 +1,9 @@
 package cz.etnetera.reesmo.model.mongodb.monitoring;
 
-import org.joda.time.Interval;
-import org.springframework.data.annotation.Id;
-
 import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
 import cz.etnetera.reesmo.model.mongodb.view.View;
+import org.joda.time.Interval;
+import org.springframework.data.annotation.Id;
 
 abstract public class Monitoring extends MongoAuditedModel {
 
@@ -15,7 +14,7 @@ abstract public class Monitoring extends MongoAuditedModel {
 	
 	private boolean enabled;
 	
-	private String view;
+	private String viewId;
 
 	public String getId() {
 		return id;
@@ -41,16 +40,16 @@ abstract public class Monitoring extends MongoAuditedModel {
 		this.enabled = enabled;
 	}
 
-	public String getView() {
-		return view;
+	public String getViewId() {
+		return viewId;
 	}
 
-	public void setView(String view) {
-		this.view = view;
+	public void setViewId(String viewId) {
+		this.viewId = viewId;
 	}
 	
 	public void setView(View view) {
-		this.view = view.getId();
+		this.viewId = view.getId();
 	}
 	
 }

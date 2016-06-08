@@ -1,13 +1,12 @@
 package cz.etnetera.reesmo.model;
 
-import java.util.Date;
-
+import cz.etnetera.reesmo.user.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cz.etnetera.reesmo.user.UserManager;
+import java.util.Date;
 
 @Component
 public class ModelAuditor {

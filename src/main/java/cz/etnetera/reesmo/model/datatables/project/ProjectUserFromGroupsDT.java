@@ -1,15 +1,15 @@
 package cz.etnetera.reesmo.model.datatables.project;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.datatables.user.MemberDT;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.model.mongodb.user.User;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class ProjectUserFromGroupsDT extends MemberDT {
 	

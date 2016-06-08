@@ -1,7 +1,11 @@
 package cz.etnetera.reesmo.restapi;
 
-import java.io.IOException;
-
+import com.mongodb.gridfs.GridFSDBFile;
+import cz.etnetera.reesmo.model.elasticsearch.result.Result;
+import cz.etnetera.reesmo.model.elasticsearch.result.ResultAttachment;
+import cz.etnetera.reesmo.model.mongodb.user.Permission;
+import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
+import cz.etnetera.reesmo.user.UserManager;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,20 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mongodb.gridfs.GridFSDBFile;
-
-import cz.etnetera.reesmo.model.elasticsearch.result.Result;
-import cz.etnetera.reesmo.model.elasticsearch.result.ResultAttachment;
-import cz.etnetera.reesmo.model.mongodb.user.Permission;
-import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
-import cz.etnetera.reesmo.user.UserManager;
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/api")

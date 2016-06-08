@@ -1,15 +1,13 @@
 package cz.etnetera.reesmo.list.filter.impl;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import cz.etnetera.reesmo.list.filter.ListFilter;
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.TermsFilterBuilder;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
-import cz.etnetera.reesmo.list.filter.ListFilter;
+import java.util.List;
 
 /**
  * Terms filter representation.

@@ -1,7 +1,11 @@
 package cz.etnetera.reesmo.controller.user;
 
-import javax.validation.Valid;
-
+import cz.etnetera.reesmo.model.form.user.*;
+import cz.etnetera.reesmo.model.mongodb.user.ManualUser;
+import cz.etnetera.reesmo.model.mongodb.user.User;
+import cz.etnetera.reesmo.repository.mongodb.user.ManualUserRepository;
+import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
+import cz.etnetera.reesmo.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,18 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import cz.etnetera.reesmo.model.form.user.EmailCommandValidator;
-import cz.etnetera.reesmo.model.form.user.PasswordCommandValidator;
-import cz.etnetera.reesmo.model.form.user.UserChangePasswordCommand;
-import cz.etnetera.reesmo.model.form.user.UserChangePasswordCommandValidator;
-import cz.etnetera.reesmo.model.form.user.UserProfileCommand;
-import cz.etnetera.reesmo.model.form.user.UserProfileCommandValidator;
-import cz.etnetera.reesmo.model.form.user.UsernameCommandValidator;
-import cz.etnetera.reesmo.model.mongodb.user.ManualUser;
-import cz.etnetera.reesmo.model.mongodb.user.User;
-import cz.etnetera.reesmo.repository.mongodb.user.ManualUserRepository;
-import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
-import cz.etnetera.reesmo.user.UserManager;
+import javax.validation.Valid;
 
 @Controller
 public class UserProfileController {

@@ -1,11 +1,11 @@
 package cz.etnetera.reesmo.model.datatables.result;
 
-import java.util.Locale;
-
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.datatables.AuditedModelDT;
 import cz.etnetera.reesmo.model.elasticsearch.result.Result;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
+
+import java.util.Locale;
 
 public class ResultDT extends AuditedModelDT {
 

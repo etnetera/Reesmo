@@ -1,5 +1,7 @@
 package cz.etnetera.reesmo.configuration;
 
+import cz.etnetera.reesmo.Reesmo;
+import cz.etnetera.reesmo.elasticsearch.AuditedElasticsearchRepositoryFactoryBean;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -10,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
-
-import cz.etnetera.reesmo.Reesmo;
-import cz.etnetera.reesmo.elasticsearch.AuditedElasticsearchRepositoryFactoryBean;
 
 @Configuration
 @EnableElasticsearchRepositories(basePackages = Reesmo.PACKAGE + ".repository.elasticsearch", repositoryFactoryBeanClass = AuditedElasticsearchRepositoryFactoryBean.class)

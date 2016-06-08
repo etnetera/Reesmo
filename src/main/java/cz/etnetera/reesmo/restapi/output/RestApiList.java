@@ -1,8 +1,8 @@
 package cz.etnetera.reesmo.restapi.output;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public class RestApiList<T> {
 	

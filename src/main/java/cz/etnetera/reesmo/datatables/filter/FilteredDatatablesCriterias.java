@@ -1,20 +1,17 @@
 package cz.etnetera.reesmo.datatables.filter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.elasticsearch.index.query.AndFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilder;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dandelion.core.util.StringUtils;
 import com.github.dandelion.core.util.Validate;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-
 import cz.etnetera.reesmo.list.ListModifier;
 import cz.etnetera.reesmo.list.filter.ListFilter;
+import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FilteredDatatablesCriterias {
 

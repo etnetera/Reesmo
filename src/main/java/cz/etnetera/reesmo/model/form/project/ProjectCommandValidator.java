@@ -1,11 +1,10 @@
 package cz.etnetera.reesmo.model.form.project;
 
+import cz.etnetera.reesmo.model.mongodb.project.Project;
+import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import cz.etnetera.reesmo.model.mongodb.project.Project;
-import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 
 public class ProjectCommandValidator implements Validator {
 

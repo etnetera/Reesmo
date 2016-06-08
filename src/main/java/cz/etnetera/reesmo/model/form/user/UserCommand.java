@@ -1,19 +1,17 @@
 package cz.etnetera.reesmo.model.form.user;
 
-import java.util.List;
-
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import cz.etnetera.reesmo.model.mongodb.user.ApiUser;
+import cz.etnetera.reesmo.model.mongodb.user.ManualUser;
+import cz.etnetera.reesmo.model.mongodb.user.User;
+import cz.etnetera.reesmo.user.UserType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import cz.etnetera.reesmo.model.mongodb.user.ApiUser;
-import cz.etnetera.reesmo.model.mongodb.user.ManualUser;
-import cz.etnetera.reesmo.model.mongodb.user.User;
-import cz.etnetera.reesmo.user.UserType;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 public class UserCommand implements UsernameCommand, EmailCommand, PasswordCommand {
 

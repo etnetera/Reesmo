@@ -1,9 +1,9 @@
 package cz.etnetera.reesmo.datatables.filter;
 
+import cz.etnetera.reesmo.list.filter.ListFilter;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import cz.etnetera.reesmo.list.filter.ListFilter;
 
 public class DatatablesFiltersState {
 

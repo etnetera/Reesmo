@@ -1,12 +1,11 @@
 package cz.etnetera.reesmo.model.mongodb.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import cz.etnetera.reesmo.user.UserRole;
 import cz.etnetera.reesmo.user.UserType;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "user")
 public class ApiUser extends User {

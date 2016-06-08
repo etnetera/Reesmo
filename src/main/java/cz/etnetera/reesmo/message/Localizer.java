@@ -1,15 +1,14 @@
 package cz.etnetera.reesmo.message;
 
-import java.util.Locale;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Component;
-
 import cz.etnetera.reesmo.model.elasticsearch.result.TestSeverity;
 import cz.etnetera.reesmo.model.elasticsearch.result.TestStatus;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.user.UserType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
+
+import java.util.Locale;
 
 @Component
 public class Localizer {

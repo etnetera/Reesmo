@@ -1,16 +1,10 @@
 package cz.etnetera.reesmo.list.filter;
 
-import org.elasticsearch.index.query.FilterBuilder;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-import cz.etnetera.reesmo.list.filter.impl.DateRangeListFilter;
-import cz.etnetera.reesmo.list.filter.impl.DoubleRangeListFilter;
-import cz.etnetera.reesmo.list.filter.impl.PrefixListFilter;
-import cz.etnetera.reesmo.list.filter.impl.TermListFilter;
-import cz.etnetera.reesmo.list.filter.impl.TermsListFilter;
+import cz.etnetera.reesmo.list.filter.impl.*;
+import org.elasticsearch.index.query.FilterBuilder;
 
 /**
  * Filter representation.

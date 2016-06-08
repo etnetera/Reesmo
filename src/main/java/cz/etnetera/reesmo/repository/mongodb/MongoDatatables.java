@@ -1,15 +1,14 @@
 package cz.etnetera.reesmo.repository.mongodb;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.github.dandelion.core.util.StringUtils;
+import com.github.dandelion.datatables.core.ajax.ColumnDef.SortDirection;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.github.dandelion.core.util.StringUtils;
-import com.github.dandelion.datatables.core.ajax.ColumnDef.SortDirection;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MongoDatatables {
 

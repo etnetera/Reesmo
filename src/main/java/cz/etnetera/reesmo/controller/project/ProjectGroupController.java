@@ -1,7 +1,12 @@
 package cz.etnetera.reesmo.controller.project;
 
-import javax.validation.Valid;
-
+import cz.etnetera.reesmo.controller.MenuActivityController;
+import cz.etnetera.reesmo.http.ControllerModel;
+import cz.etnetera.reesmo.model.form.project.ProjectGroupCommand;
+import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
+import cz.etnetera.reesmo.model.mongodb.user.Permission;
+import cz.etnetera.reesmo.repository.mongodb.project.ProjectGroupRepository;
+import cz.etnetera.reesmo.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,13 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import cz.etnetera.reesmo.controller.MenuActivityController;
-import cz.etnetera.reesmo.http.ControllerModel;
-import cz.etnetera.reesmo.model.form.project.ProjectGroupCommand;
-import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
-import cz.etnetera.reesmo.model.mongodb.user.Permission;
-import cz.etnetera.reesmo.repository.mongodb.project.ProjectGroupRepository;
-import cz.etnetera.reesmo.user.UserManager;
+import javax.validation.Valid;
 
 @Controller
 public class ProjectGroupController implements MenuActivityController {

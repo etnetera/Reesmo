@@ -1,5 +1,8 @@
 package cz.etnetera.reesmo.configuration;
 
+import com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect;
+import com.github.dandelion.thymeleaf.dialect.DandelionDialect;
+import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,11 +19,6 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
-
-import com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect;
-import com.github.dandelion.thymeleaf.dialect.DandelionDialect;
-
-import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 /**
  * Configuration class holding all web related config. Serves as replacement

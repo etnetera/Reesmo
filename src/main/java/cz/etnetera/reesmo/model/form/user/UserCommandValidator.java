@@ -1,11 +1,10 @@
 package cz.etnetera.reesmo.model.form.user;
 
+import cz.etnetera.reesmo.model.mongodb.user.User;
+import cz.etnetera.reesmo.user.UserType;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import cz.etnetera.reesmo.model.mongodb.user.User;
-import cz.etnetera.reesmo.user.UserType;
 
 public class UserCommandValidator implements Validator {
 

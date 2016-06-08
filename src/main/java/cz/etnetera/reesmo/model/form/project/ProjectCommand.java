@@ -1,11 +1,10 @@
 package cz.etnetera.reesmo.model.form.project;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import cz.etnetera.reesmo.model.mongodb.project.Project;
 import org.hibernate.validator.constraints.NotBlank;
 
-import cz.etnetera.reesmo.model.mongodb.project.Project;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class ProjectCommand {
 

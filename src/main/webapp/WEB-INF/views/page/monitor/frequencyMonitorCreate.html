@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/project" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="#{page.createmonitor.frequency.title} - ${view.name}">Edit -
+        Project - Projects</title>
+</head>
+<body>
+<h1 layout:fragment="content-title"><i class="fa fa-cog"></i> <span th:text="${view.name}">Project</span> - <span th:text="#{page.createmonitor.frequency.title}">Edit</span></h1>
+<ol layout:fragment="content-breadcrumb">
+    <li><a th:href="@{/projects}" href="#"><i class="fa fa-cubes"></i>
+        <span th:text="#{page.projects.title}">Projects</span></a></li>
+    <li><a
+            th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#"
+            th:text="${project.name}">Project</a></li>
+    <li><a
+            th:href="@{/view/{viewId}(viewId=${view.id})}" href="#"
+            th:text="${view.name}">Edit</a></li>
+    <li class="active"><a
+            th:href="@{/view/{viewId}/monitor/frequency/create(viewId=${view.id})}" href="#"
+            th:text="#{page.createmonitor.frequency.title}">Edit</a></li>
+
+</ol>
+<div layout:fragment="content">
+    <div th:replace="fragments/monitor/monitorForm :: create(@{/view/{viewId}/monitor/frequency/create(viewId=${view.id})})">Form</div>
+
+</div>
+</body>
+</html>

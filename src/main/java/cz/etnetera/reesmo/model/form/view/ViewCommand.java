@@ -1,10 +1,9 @@
 package cz.etnetera.reesmo.model.form.view;
 
-import javax.validation.constraints.Size;
-
+import cz.etnetera.reesmo.model.mongodb.view.View;
 import org.hibernate.validator.constraints.NotBlank;
 
-import cz.etnetera.reesmo.model.mongodb.view.View;
+import javax.validation.constraints.Size;
 
 public class ViewCommand {
 

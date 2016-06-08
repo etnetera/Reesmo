@@ -1,12 +1,11 @@
 package cz.etnetera.reesmo.repository.mongodb.project;
 
-import java.util.List;
-
+import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
+import java.util.List;
 
 /**
  * Project group repository

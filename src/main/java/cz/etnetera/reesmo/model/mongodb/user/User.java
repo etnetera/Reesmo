@@ -1,22 +1,17 @@
 package cz.etnetera.reesmo.model.mongodb.user;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import cz.etnetera.reesmo.http.exception.ForbiddenException;
+import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
+import cz.etnetera.reesmo.user.IdentifiedUser;
+import cz.etnetera.reesmo.user.UserRole;
+import cz.etnetera.reesmo.user.UserType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import cz.etnetera.reesmo.http.exception.ForbiddenException;
-import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
-import cz.etnetera.reesmo.user.IdentifiedUser;
-import cz.etnetera.reesmo.user.UserRole;
-import cz.etnetera.reesmo.user.UserType;
+import java.util.*;
 
 abstract public class User extends MongoAuditedModel implements IdentifiedUser {
 

@@ -14,6 +14,7 @@ import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.model.mongodb.view.View;
 import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
+import cz.etnetera.reesmo.repository.mongodb.monitor.MonitorRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
 import cz.etnetera.reesmo.user.UserManager;
@@ -43,6 +44,9 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 
 	@Autowired
 	private ResultRepository resultRepository;
+
+	@Autowired
+	private MonitorRepository monitorRepository;
 
 	@Autowired
 	private Localizer localizer;

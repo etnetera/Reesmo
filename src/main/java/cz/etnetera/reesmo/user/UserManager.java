@@ -1,20 +1,19 @@
 package cz.etnetera.reesmo.user;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-
 import cz.etnetera.reesmo.http.exception.UnauthorizedException;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.model.mongodb.user.User;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectGroupRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class UserManager {

@@ -1,10 +1,9 @@
 package cz.etnetera.reesmo.user;
 
-import java.util.Collection;
-
+import cz.etnetera.reesmo.model.mongodb.user.User;
 import org.springframework.security.core.GrantedAuthority;
 
-import cz.etnetera.reesmo.model.mongodb.user.User;
+import java.util.Collection;
 
 public interface IdentifiedUser {
 	

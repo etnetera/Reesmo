@@ -1,10 +1,5 @@
 package cz.etnetera.reesmo.controller.result;
 
-import java.util.List;
-import java.util.Locale;
-
-import org.springframework.ui.Model;
-
 import cz.etnetera.reesmo.datatables.filter.DatatablesFiltersDefinition;
 import cz.etnetera.reesmo.datatables.filter.DatatablesFiltersState;
 import cz.etnetera.reesmo.datatables.filter.impl.DatatablesFilterDateRange;
@@ -17,6 +12,10 @@ import cz.etnetera.reesmo.model.elasticsearch.result.TestCategory;
 import cz.etnetera.reesmo.model.elasticsearch.result.TestSeverity;
 import cz.etnetera.reesmo.model.elasticsearch.result.TestStatus;
 import cz.etnetera.reesmo.model.elasticsearch.result.TestType;
+import org.springframework.ui.Model;
+
+import java.util.List;
+import java.util.Locale;
 
 public interface ResultFilteredController {
 
