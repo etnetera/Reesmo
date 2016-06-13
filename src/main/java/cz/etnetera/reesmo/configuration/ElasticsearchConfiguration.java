@@ -23,6 +23,9 @@ public class ElasticsearchConfiguration {
 	@Value("${elasticsearch.port}")
 	private int port;
 
+	@Value("${elasticsearch.indexname}")
+	private String indexName;
+
 	@Bean
 	public Client client() {
 		TransportClient client = new TransportClient();
@@ -34,6 +37,11 @@ public class ElasticsearchConfiguration {
 	@Bean
 	public ElasticsearchOperations elasticsearchTemplate() {
 		return new ElasticsearchTemplate(client());
+	}
+
+	@Bean
+	public String elasticsearchIndexName() {
+		return indexName;
 	}
 
 }

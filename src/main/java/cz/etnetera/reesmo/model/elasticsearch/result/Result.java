@@ -1,6 +1,5 @@
 package cz.etnetera.reesmo.model.elasticsearch.result;
 
-import cz.etnetera.reesmo.Reesmo;
 import cz.etnetera.reesmo.model.elasticsearch.ElasticAuditedModel;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Document(indexName = Reesmo.ELASTICSEARCH_INDEX, type = "result")
+@Document(indexName = "#{@elasticsearchIndexName}", type = "result")
 public class Result extends ElasticAuditedModel {
 	
 	@Id
