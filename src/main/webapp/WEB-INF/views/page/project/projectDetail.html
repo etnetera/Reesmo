@@ -16,14 +16,14 @@
 			th:href="@{/project/detail/{projectId}(projectId=${project.id})}" href="#"
 			th:text="#{page.projectdetail.title}">Detail</a></li>
 	</ol>
-	<div layout:fragment="content" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}">
+	<div layout:fragment="content" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}, isProjectOwner=${project.isAllowedForUser(#authentication.principal, 'OWNER')}">
 		<div class="row">
 			<div class="col-md-3">
 				<div class="box box-primary">
 					<div class="box-body box-profile">
 						<h3 class="profile-username text-center" th:text="${project.name}">Project</h3>
 						<a th:if="${isProjectAdmin}" th:href="@{/project/edit/{projectId}(projectId=${project.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
-						<a th:if="${project.isAllowedForUser(#authentication.principal, 'OWNER')}" th:href="@{/project/delete/{projectId}(projectId=${project.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+						<a th:if="${isProjectOwner}" th:href="@{/project/delete/{projectId}(projectId=${project.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
 					</div>
 				</div>
 			</div>

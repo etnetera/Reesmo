@@ -16,4 +16,5 @@ public interface ViewRepositoryCustom {
 	
     public DataSet<ViewDT> findViewsForProjectWithCriterias(DatatablesCriterias criterias, String projectId);
 
+    void deleteViewAndMonitors(String viewId);
 }

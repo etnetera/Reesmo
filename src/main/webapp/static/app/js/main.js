@@ -141,3 +141,5 @@ $.fn.addHiddenInput = function(key, value) {
     $input.val(value);
     $(this).append($input);
 };
+
+$('[data-toggle="tooltip"]').tooltip();

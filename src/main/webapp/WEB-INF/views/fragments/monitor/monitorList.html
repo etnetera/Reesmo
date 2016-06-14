@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
 <body>
-<div th:fragment="monitorList (url, showView)">
-    <div class="box box-primary">
+    <div th:fragment="monitorList (url, showView)" class="box" th:classappend="${showView}? 'box-primary'" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}">
+        <div th:unless="${showView}" class="box-header with-border">
+            <h3 class="box-title" th:text="#{page.monitors.title}">Projects</h3>
+        </div>
         <div class="box-body">
             <div class="dataTables_wrapper form-inline dt-bootstrap">
                 <div class="row">
                     <div class="col-sm-12">
-                        <table id="monitorsTable" dt:table="true" dt:url="${url}">
+                        <table id="monitorsTable" dt:table="true" dt:url="${url}" dt:filterable="false">
                             <thead>
                             <tr>
-                                <th dt:property="type" th:text="#{monitor.type}">Type</th>
-                                <th th:if="true" dt:property="viewIdDT" dt:renderFunction="Reesmo.monitorsTableRenderName" th:text="#{monitor.view}">ViewName</th>
+                                <th dt:visible="false" dt:sortable="false" dt:property="id" th:text="id">id</th>
+                                <th dt:searchable="false" dt:sortable="false" dt:property="description" dt:renderFunction="Reesmo.monitorsTableRenderName" th:text="#{monitor.description}">Description</th>
+                                <th dt:searchable="false" dt:sortable="false" dt:property="type" th:text="#{monitor.type}">Type</th>
+                                <th dt:searchable="false" dt:sortable="false" th:if="${showView}" dt:property="viewIdDT" dt:renderFunction="Reesmo.monitorsViewTableRenderName" th:text="#{monitor.view}">ViewName</th>
                                 <th dt:property="enabled" th:text="#{monitor.enabled}">Enabled</th>
-                                <th dt:property="description" th:text="#{monitor.description}">Description</th>
                             </tr>
                             </thead>
                         </table>
                         <script th:inline="javascript">
-                            Reesmo.monitorsTableRenderName = function(viewIdDT, type, monitor) {
+                            Reesmo.monitorsViewTableRenderName = function(viewIdDT, type, monitor) {
                                 return Reesmo.dataTables.renderLink('view/' + viewIdDT, monitor.viewName);
+                            };
+                            Reesmo.monitorsTableRenderName = function(description, type, monitor) {
+                                return Reesmo.dataTables.renderLink('monitor/' + monitor.id, description);
                             };
                         </script>
                     </div>
@@ -27,6 +33,5 @@
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>

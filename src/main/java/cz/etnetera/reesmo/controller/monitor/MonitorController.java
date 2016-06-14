@@ -1,14 +1,13 @@
 package cz.etnetera.reesmo.controller.monitor;
 
-import com.github.dandelion.datatables.core.ajax.DataSet;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
+import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.datatables.monitor.MonitorDT;
 import cz.etnetera.reesmo.model.form.monitor.MonitorCommand;
 import cz.etnetera.reesmo.model.form.monitor.MonitorCommandValidator;
 import cz.etnetera.reesmo.model.mongodb.monitoring.AnyMonitoring;
 import cz.etnetera.reesmo.model.mongodb.monitoring.FlatlineMonitoring;
 import cz.etnetera.reesmo.model.mongodb.monitoring.FrequencyMonitoring;
+import cz.etnetera.reesmo.model.mongodb.monitoring.Monitoring;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.view.View;
 import cz.etnetera.reesmo.repository.mongodb.monitor.MonitorRepository;
@@ -21,8 +20,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -38,17 +37,33 @@ public class MonitorController {
     @Autowired
     ViewRepository viewRepository;
 
+    @Autowired
+    Localizer localizer;
+
     @InitBinder(value = "monitorCommand")
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(new MonitorCommandValidator());
     }
 
 
+    @RequestMapping(value = "/monitor/{monitorId}", method = RequestMethod.GET)
+    public String monitorDetail(@PathVariable String monitorId, Model model, Locale locale) {
+        Monitoring monitor = monitorRepository.findOne(monitorId);
+        View view = viewRepository.findOne(monitor.getViewId());
+        Project project = projectRepository.findOne(view.getProjectId());
+        MonitorDT monitorDT = new MonitorDT(monitor, localizer, locale);
+        monitorDT.setViewName(view.getName());
+        model.addAttribute("project", project);
+        model.addAttribute("view", view);
+        model.addAttribute("monitorDT", monitorDT);
+        return "page/monitor/monitorDetail";
+    }
+
     @RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.GET)
     public String createFrequencyMonitorForm(@PathVariable String viewId, Model model) {
         View view = viewRepository.findOne(viewId);
         Project project = projectRepository.findOne(view.getProjectId());
-        model.addAttribute("monitorCommand", new MonitorCommand(TimeUnit.HOURS, 0, 0));
+        model.addAttribute("monitorCommand", new MonitorCommand(TimeUnit.HOURS, 0, 0, true));
         model.addAttribute("project", project);
         model.addAttribute("view", view);
         return "page/monitor/frequencyMonitorCreate";
@@ -66,7 +81,6 @@ public class MonitorController {
         FrequencyMonitoring frequencyMonitoring = new FrequencyMonitoring();
         monitorCommand.toMonitor(frequencyMonitoring);
         frequencyMonitoring.setViewId(viewId);
-        frequencyMonitoring.setEnabled(true);
         monitorRepository.save(frequencyMonitoring);
         return "redirect:/view/" + viewId;
     }
@@ -75,7 +89,7 @@ public class MonitorController {
     public String createFlatlineMonitorForm(@PathVariable String viewId, Model model) {
         View view = viewRepository.findOne(viewId);
         Project project = projectRepository.findOne(view.getProjectId());
-        model.addAttribute("monitorCommand", new MonitorCommand(TimeUnit.HOURS, 0, 0));
+        model.addAttribute("monitorCommand", new MonitorCommand(TimeUnit.HOURS, 0, 0, true));
         model.addAttribute("project", project);
         model.addAttribute("view", view);
         return "page/monitor/flatlineMonitorCreate";
@@ -93,7 +107,6 @@ public class MonitorController {
         FlatlineMonitoring flatlineMonitoring = new FlatlineMonitoring();
         monitorCommand.toMonitor(flatlineMonitoring);
         flatlineMonitoring.setViewId(viewId);
-        flatlineMonitoring.setEnabled(true);
         monitorRepository.save(flatlineMonitoring);
         return "redirect:/view/" + viewId;
     }
@@ -102,28 +115,60 @@ public class MonitorController {
     public String createAnyMonitorForm(@PathVariable String viewId, Model model) {
         View view = viewRepository.findOne(viewId);
         Project project = projectRepository.findOne(view.getProjectId());
+        model.addAttribute("monitorCommand", new MonitorCommand(TimeUnit.HOURS, 0, 0, true));
         model.addAttribute("project", project);
         model.addAttribute("view", view);
         return "page/monitor/anyMonitorCreate";
     }
 
     @RequestMapping(value = "/view/{viewId}/monitor/any/create", method = RequestMethod.POST)
-    public String createAnyMonitor(Model model, @PathVariable String viewId) {
+    public String createAnyMonitor(Model model, @PathVariable String viewId, @ModelAttribute MonitorCommand monitorCommand) {
         AnyMonitoring anyMonitoring = new AnyMonitoring();
         anyMonitoring.setViewId(viewId);
-        anyMonitoring.setEnabled(true);
+        anyMonitoring.setEnabled(monitorCommand.isEnabled());
         monitorRepository.save(anyMonitoring);
         return "redirect:/view/" + viewId;
     }
 
-
-    @RequestMapping(value = "/dt/monitors/{viewId}")
-    public @ResponseBody
-    DatatablesResponse<MonitorDT> findAllForDataTables(@PathVariable String viewId, HttpServletRequest request) {
-        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-        DataSet<MonitorDT> viewMonitors = monitorRepository.findViewMonitors(viewId);
-//        DataSet<ProjectDT> projects = projectRepository.findWithDatatablesCriterias(criterias, userManager.getAllowedProjectIds(perm));
-        return DatatablesResponse.build(viewMonitors, criterias);
+    @RequestMapping(value = "/monitor/delete/{monitorId}", method = RequestMethod.GET)
+    public String deleteMonitor(Model model, @PathVariable String monitorId) {
+        Monitoring monitor = monitorRepository.findOne(monitorId);
+        View view = viewRepository.findOne(monitor.getViewId());
+        Project project = projectRepository.findOne(view.getProjectId());
+        model.addAttribute("monitor", monitor);
+        model.addAttribute("monitorType", monitor.getClass().getSimpleName());
+        model.addAttribute("project", project);
+        model.addAttribute("view", view);
+        return "page/monitor/monitorDelete";
     }
+
+    @RequestMapping(value = "/monitor/delete/{monitorId}", method = RequestMethod.POST)
+    public String deleteMonitor(@PathVariable String monitorId) {
+        Monitoring monitor = monitorRepository.findOne(monitorId);
+        View view = viewRepository.findOne(monitor.getViewId());
+        monitorRepository.deleteMonitorAndNotifiers(monitorId);
+        return "redirect:/view/" + view.getId();
+    }
+
+    @RequestMapping(value = "/monitor/edit/{monitorId}", method = RequestMethod.GET)
+    public String editMonitor(Model model, @PathVariable String monitorId) {
+        Monitoring monitor = monitorRepository.findOne(monitorId);
+        View view = viewRepository.findOne(monitor.getViewId());
+        Project project = projectRepository.findOne(view.getProjectId());
+        MonitorCommand monitorCommand = new MonitorCommand(monitor);
+        model.addAttribute("monitorCommand", monitorCommand);
+        model.addAttribute("project", project);
+        model.addAttribute("view", view);
+        return "page/monitor/monitorEdit";
+    }
+
+    @RequestMapping(value = "/monitor/edit/{monitorId}", method = RequestMethod.POST)
+    public String editMonitor(@PathVariable String monitorId, @ModelAttribute MonitorCommand monitorCommand) {
+        Monitoring monitor = monitorRepository.findOne(monitorId);
+        monitorCommand.toMonitor(monitor);
+        monitorRepository.save(monitor);
+        return "redirect:/monitor/" + monitorId;
+    }
+
 
 }

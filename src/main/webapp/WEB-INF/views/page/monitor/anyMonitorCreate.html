@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html layout:decorator="layout/project" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title th:text="#{page.createmonitor.any.title} - ${view.name}">Edit -
+    <title th:text="#{page.monitorcreate.any.title} - ${view.name}">Edit -
         Project - Projects</title>
 </head>
 <body>
-<h1 layout:fragment="content-title"><i class="fa fa-cog"></i> <span th:text="${view.name}">Project</span> - <span th:text="#{page.createmonitor.any.title}">Edit</span></h1>
+<h1 layout:fragment="content-title"><i class="fa fa-cog"></i> <span th:text="${view.name}">Project</span> - <span th:text="#{page.monitorcreate.any.title}">Edit</span></h1>
 <ol layout:fragment="content-breadcrumb">
     <li><a th:href="@{/projects}" href="#"><i class="fa fa-cubes"></i>
         <span th:text="#{page.projects.title}">Projects</span></a></li>
@@ -17,14 +17,33 @@
             th:text="${view.name}">Edit</a></li>
     <li class="active"><a
             th:href="@{/view/{viewId}/monitor/any/create(viewId=${view.id})}" href="#"
-            th:text="#{page.createmonitor.any.title}">Edit</a></li>
+            th:text="#{page.monitorcreate.any.title}">Edit</a></li>
 
 </ol>
 <div layout:fragment="content">
-    <form action="#" th:action="@{/view/{viewId}/monitor/any/create(viewId=${view.id})}" method="post">
-        <div th:replace="fragments/form/button :: cancel"/>
-        <div th:replace="fragments/form/button :: submit"/>
-    </form>
+    <div class="col-xs-2">
+        <div class="box box-primary">
+                <form class="form-horizontal" action="#" th:action="@{/view/{viewId}/monitor/any/create(viewId=${view.id})}" th:object="${monitorCommand}" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label" th:for="${#ids.next('enabled')}" th:text="#{monitor.enabled}">Enabled</label>
+                            <div class="col-xs-9">
+                                <select class="form-control" th:field="*{enabled}">
+                                    <option th:value="true" th:text="#{true}">MINUTES</option>
+                                    <option th:value="false" th:text="#{false}">HOURS</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <div th:replace="fragments/form/button :: cancel"/>
+                            <div th:replace="fragments/form/button :: submit"/>
+                        </div>
+                  </div>
+                </form>
+
+        </div>
+    </div>
 </div>
 </body>
 </html>

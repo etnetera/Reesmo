@@ -70,7 +70,7 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 		project.checkUserPermission(userManager.requireUser(), Permission.BASIC);
 		model.addAttribute("view", view);
 		model.addAttribute("project", project);
-		return "page/view/view";
+		return "page/view/viewDetail";
 	}
 
 	@RequestMapping(value = "/dt/results/view/{viewId}")
@@ -82,7 +82,6 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 
 		FilteredDatatablesCriterias criterias = FilteredDatatablesCriterias.getFromRequest(request);
 		DataSet<ResultDT> results = resultRepository.findWithFilteredDatatablesCriterias(criterias, Arrays.asList(project.getId()), locale);
-		//TODO filter results to match certain view
 		return DatatablesResponse.build(results, criterias.getCriterias());
 	}
 
@@ -129,10 +128,9 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 	public String deleteView(@PathVariable String viewId) {
 		View view = viewRepository.findOne(viewId);
 		Project project = projectRepository.findOne(view.getProjectId());
-		//TODO if no monitors
-		viewRepository.delete(viewId);
+		viewRepository.deleteViewAndMonitors(viewId);
 		return "redirect:/views/" + project.getId();
-		// else delete monitors first
+
 	}
 
 

@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="create(url)" class="col-md-4">
+<div th:fragment="form(url)" class="col-xs-2">
     <div class="box box-primary">
-        <div class="box-body">
-
-            <form action="#" th:action="${url}" th:object="${monitorCommand}" method="post">
-
-                <div class="form-group" th:classappend="${#fields.hasErrors('numberOfOccurences')}? has-error">
-                    <label th:for="${#ids.next('numberOfOccurences')}" th:text="#{page.monitor.occurences}">Number of occurences</label>
+        <form action="#" th:action="${url}" th:object="${monitorCommand}" method="post">
+            <div class="box-body">
+                <div class="form-group" th:classappend="${#fields.hasErrors('numberOfOccurences')}? has-error" th:unless="${monitorCommand.type} == 'AnyMonitoring'">
+                    <label th:for="${#ids.next('numberOfOccurences')}" th:text="#{page.monitorcreate.occurences}">Number of occurences</label>
                     <input type="text" class="form-control" th:field="*{numberOfOccurences}"/>
                     <p th:replace="fragments/form/error :: errors (fieldName='numberOfOccurences')"/>
                 </div>
-
-                <label th:for="${#ids.next('numberOfTimeUnits')}" th:text="#{page.monitor.timeframe}">TimeFrame</label>
-                <div class="row">
-                    <div class="col-xs-6 form-group">
-                        <input type="text" class="form-control" th:field="*{numberOfTimeUnits}"/>
-                        <p th:replace="fragments/form/error :: errors (fieldName='numberOfTimeUnits')"/>
-                    </div>
-                    <div class="col-xs-6 form-group">
-                        <select class="form-control" th:field="*{timeUnit}">
-                            <option th:value="MINUTES" th:text="#{minutes}">MINUTES</option>
-                            <option th:value="HOURS" th:text="#{hours}">HOURS</option>
-                            <option th:value="DAYS" th:text="#{days}">DAYS</option>
-                        </select>
+                <div class="form-group" th:unless="${monitorCommand.type} == 'AnyMonitoring'">
+                    <label th:for="${#ids.next('numberOfTimeUnits')}" th:text="#{page.monitorcreate.timeframe}">TimeFrame</label>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" th:field="*{numberOfTimeUnits}"/>
+                            <p th:replace="fragments/form/error :: errors (fieldName='numberOfTimeUnits')"/>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control" th:field="*{timeUnit}">
+                                <option th:value="MINUTES" th:text="#{minutes}">MINUTES</option>
+                                <option th:value="HOURS" th:text="#{hours}">HOURS</option>
+                                <option th:value="DAYS" th:text="#{days}">DAYS</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="box-footer col-xs-12">
+                <div class="form-group">
+                    <label th:for="${#ids.next('enabled')}" th:text="#{monitor.enabled}">Enabled</label>
+
+                        <select class="form-control" th:field="*{enabled}">
+                            <option th:value="true" th:text="#{true}">MINUTES</option>
+                            <option th:value="false" th:text="#{false}">HOURS</option>
+                        </select>
+
+                </div>
+                <div class="box-footer">
                     <div th:replace="fragments/form/button :: cancel"/>
                     <div th:replace="fragments/form/button :: submit"/>
                 </div>
-
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </body>

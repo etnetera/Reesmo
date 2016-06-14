@@ -9,7 +9,9 @@ import cz.etnetera.reesmo.model.datatables.user.UserProjectDT;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
 import cz.etnetera.reesmo.model.mongodb.user.User;
+import cz.etnetera.reesmo.model.mongodb.view.View;
 import cz.etnetera.reesmo.repository.mongodb.MongoDatatables;
+import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -31,14 +33,18 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	
 	@Autowired
 	private ProjectRepository projectRepository;
-	
+
+	@Autowired
+	private ViewRepository viewRepository;
+
 	@Autowired
 	private Localizer localizer;
 
 	@Override
 	public void deleteProject(Project project) {
+		List<View> views = mongoTemplate.find(Query.query(Criteria.where("projectId").is(project.getId())), View.class, "view");
+		views.forEach(view -> viewRepository.deleteViewAndMonitors(view.getId()));
 		projectRepository.delete(project);
-		// TODO delete views
 	}
 	
 	@Override

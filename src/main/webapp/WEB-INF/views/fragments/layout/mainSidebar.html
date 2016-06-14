@@ -29,7 +29,7 @@
 						<li th:class="(${activeMenu} == 'projectActivity')? 'active'"><a href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.activity.title}">Activity</span> <small class="label pull-right bg-green">todo</small></a></li>
 						<li th:class="(${activeMenu} == 'projectResults')? 'active'"><a th:href="@{/project/results/{projectId}(projectId=${project.id})}" href="#"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
 						<li th:class="(${activeMenu} == 'projectViews')? 'active'"><a th:href="@{/views/{projectId}(projectId=${project.id})}" href="#"><i class="fa fa-eye"></i> <span th:text="#{page.views.title}">Views</span></a></li>
-						<li th:class="(${activeMenu} == 'projectMonitors')? 'active'"><a href="#"><i class="fa fa-bullhorn"></i> <span th:text="#{page.monitors.title}">Monitors</span> <small class="label pull-right bg-green">todo</small></a></li>
+						<li th:class="(${activeMenu} == 'projectMonitors')? 'active'"><a th:href="@{/project/monitors/{projectId}(projectId=${project.id})}" href="#"><i class="fa fa-bullhorn"></i> <span th:text="#{page.monitors.title}">Monitors</span></a></li>
 						<li th:class="(${activeMenu} == 'projectSettings')? 'active'"><a th:href="@{/project/detail/{projectId}(projectId=${project.id})}" href="#"><i class="fa fa-cog"></i> <span th:text="#{page.settings.title}">Settings</span></a></li>
 						<li><a th:href="@{/projects}" href="#"><i class="fa fa-arrow-left"></i> <span th:text="#{backto.projects}">Back to projects</span></a></li>
 					</ul>

@@ -1,9 +1,13 @@
 package cz.etnetera.reesmo.model.datatables.monitor;
 
+import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.mongodb.monitoring.Monitoring;
+
+import java.util.Locale;
 
 public class MonitorDT {
 
+    private String id;
 
     private String type;
 
@@ -15,11 +19,20 @@ public class MonitorDT {
 
     private String viewName;
 
-    public MonitorDT(Monitoring monitoring) {
+    public MonitorDT(Monitoring monitoring, Localizer localizer, Locale locale) {
+        this.id = monitoring.getId();
         this.type = monitoring.getClass().getSimpleName();
         this.viewIdDT = monitoring.getViewId();
         this.enabled = monitoring.isEnabled();
-        this.description = monitoring.toString();
+        this.description = localizer.localize(monitoring, locale);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getType() {

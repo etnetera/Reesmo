@@ -87,6 +87,11 @@ Reesmo.dataTables = {
 	renderLink: function(uri, name) {
 		return '<a href="' + Reesmo.baseUrl + uri + '">' + (name == null ? uri : name) + '</a>';
 	},
+
+	renderButtons: function(notifierId) {
+		return '<a href="' + Reesmo.baseUrl + 'notifier/' + notifierId + '/edit" class="btn-sm btn-primary"><b>Edit</b></a>  ' +
+		'<a href="' + Reesmo.baseUrl + 'notifier/' + notifierId + '/delete" class="btn-sm btn-danger"><b>Delete</b></a>';
+	},
 	
 	$getTableBody: function(rowEl, bodyEl) {
 		return bodyEl ? $(bodyEl) : $(rowEl).parents('tbody:first');

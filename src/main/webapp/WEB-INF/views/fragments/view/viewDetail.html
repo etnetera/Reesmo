@@ -10,7 +10,18 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div><b><span th:text="#{view.name}">Name</span>:</b> <span th:text="${view.name}">name</span></div>
-                    <div><b><span th:text="#{view.description}">Key</span>:</b> <span th:text="${view.description}">key</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${view.description?.length()} > 0" class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title" th:text="#{project.description}">Description</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div th:text="${view.description}" style="white-space: pre;"></div>
                 </div>
             </div>
         </div>

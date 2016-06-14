@@ -2,8 +2,11 @@ package cz.etnetera.reesmo.model.mongodb.monitoring;
 
 import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
 import cz.etnetera.reesmo.model.mongodb.view.View;
+import cz.etnetera.reesmo.notifier.Notifier;
 import org.joda.time.Interval;
 import org.springframework.data.annotation.Id;
+
+import java.util.List;
 
 abstract public class Monitoring extends MongoAuditedModel {
 
@@ -15,6 +18,16 @@ abstract public class Monitoring extends MongoAuditedModel {
 	private boolean enabled;
 	
 	private String viewId;
+
+	private List<Notifier> notifiers;
+
+	public List<Notifier> getNotifiers() {
+		return notifiers;
+	}
+
+	public void setNotifiers(List<Notifier> notifiers) {
+		this.notifiers = notifiers;
+	}
 
 	public String getId() {
 		return id;
