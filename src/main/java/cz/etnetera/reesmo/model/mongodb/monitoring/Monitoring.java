@@ -2,7 +2,7 @@ package cz.etnetera.reesmo.model.mongodb.monitoring;
 
 import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
 import cz.etnetera.reesmo.model.mongodb.view.View;
-import cz.etnetera.reesmo.notifier.Notifier2;
+import cz.etnetera.reesmo.notifier.Notifier;
 import org.joda.time.Interval;
 import org.springframework.data.annotation.Id;
 
@@ -19,13 +19,13 @@ abstract public class Monitoring extends MongoAuditedModel {
 	
 	private String viewId;
 
-	private List<Notifier2> notifiers;
+	private List<Notifier> notifiers;
 
-	public List<Notifier2> getNotifiers() {
+	public List<Notifier> getNotifiers() {
 		return notifiers;
 	}
 
-	public void setNotifiers(List<Notifier2> notifiers) {
+	public void setNotifiers(List<Notifier> notifiers) {
 		this.notifiers = notifiers;
 	}
 

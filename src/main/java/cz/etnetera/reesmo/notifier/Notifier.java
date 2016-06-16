@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public abstract class Notifier2 {
+public abstract class Notifier {
 
     @Id
     private String id;
