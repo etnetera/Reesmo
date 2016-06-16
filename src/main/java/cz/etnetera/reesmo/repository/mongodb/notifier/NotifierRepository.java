@@ -1,6 +1,6 @@
 package cz.etnetera.reesmo.repository.mongodb.notifier;
 
-import cz.etnetera.reesmo.notifier.Notifier;
+import cz.etnetera.reesmo.model.mongodb.notifier.Notifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

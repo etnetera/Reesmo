@@ -2,7 +2,7 @@ package cz.etnetera.reesmo.repository.mongodb.notifier;
 
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import cz.etnetera.reesmo.model.datatables.notifier.NotifierDT;
-import cz.etnetera.reesmo.notifier.Notifier;
+import cz.etnetera.reesmo.model.mongodb.notifier.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;

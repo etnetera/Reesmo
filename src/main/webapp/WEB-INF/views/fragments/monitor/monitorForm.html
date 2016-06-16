@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="form(url)" class="col-xs-2">
+<div th:fragment="form(url)" class="col-md-6">
     <div class="box box-primary">
         <form action="#" th:action="${url}" th:object="${monitorCommand}" method="post">
             <div class="box-body">
@@ -28,12 +28,10 @@
                 </div>
                 <div class="form-group">
                     <label th:for="${#ids.next('enabled')}" th:text="#{monitor.enabled}">Enabled</label>
-
-                        <select class="form-control" th:field="*{enabled}">
-                            <option th:value="true" th:text="#{true}">MINUTES</option>
-                            <option th:value="false" th:text="#{false}">HOURS</option>
-                        </select>
-
+                    <select class="form-control" th:field="*{enabled}">
+                        <option th:value="true" th:text="#{true}">MINUTES</option>
+                        <option th:value="false" th:text="#{false}">HOURS</option>
+                    </select>
                 </div>
                 <div class="box-footer">
                     <div th:replace="fragments/form/button :: cancel"/>

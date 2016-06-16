@@ -17,7 +17,8 @@ public class DashboardController implements MenuActivityController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String dashboard(Model model, Locale locale) {
-		return "page/dashboard";
+		//return "page/dashboard";
+		return "redirect:/results";
 	}
 	
 }

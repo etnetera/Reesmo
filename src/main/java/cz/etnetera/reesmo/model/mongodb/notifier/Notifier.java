@@ -1,10 +1,9 @@
-package cz.etnetera.reesmo.notifier;
+package cz.etnetera.reesmo.model.mongodb.notifier;
 
+import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
-public abstract class Notifier {
+public abstract class Notifier extends MongoAuditedModel {
 
     @Id
     private String id;

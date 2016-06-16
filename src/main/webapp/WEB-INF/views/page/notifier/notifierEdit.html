@@ -24,7 +24,9 @@
 
 </ol>
 <div layout:fragment="content">
-    <div th:replace="fragments/notifier/notifierForm :: form (@{/notifier/{notifierId}/edit(notifierId=${notifierCommand.id})})">Form</div>
+    <div class="row">
+        <div th:replace="fragments/notifier/notifierForm :: form (@{/notifier/{notifierId}/edit(notifierId=${notifierCommand.id})})">Form</div>
+    </div>
 </div>
 </body>
 </html>

@@ -1,8 +1,8 @@
 package cz.etnetera.reesmo.model.datatables.notifier;
 
-import cz.etnetera.reesmo.notifier.EmailNotifier;
-import cz.etnetera.reesmo.notifier.Notifier;
-import cz.etnetera.reesmo.notifier.URLNotifier;
+import cz.etnetera.reesmo.model.mongodb.notifier.EmailNotifier;
+import cz.etnetera.reesmo.model.mongodb.notifier.Notifier;
+import cz.etnetera.reesmo.model.mongodb.notifier.URLNotifier;
 
 import java.util.stream.Collectors;
 

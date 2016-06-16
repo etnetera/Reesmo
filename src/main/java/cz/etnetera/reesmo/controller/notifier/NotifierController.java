@@ -3,14 +3,15 @@ package cz.etnetera.reesmo.controller.notifier;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
+import cz.etnetera.reesmo.controller.MenuActivityController;
 import cz.etnetera.reesmo.model.datatables.notifier.NotifierDT;
 import cz.etnetera.reesmo.model.form.notifier.NotifierCommand;
 import cz.etnetera.reesmo.model.mongodb.monitoring.Monitoring;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.view.View;
-import cz.etnetera.reesmo.notifier.EmailNotifier;
-import cz.etnetera.reesmo.notifier.Notifier;
-import cz.etnetera.reesmo.notifier.URLNotifier;
+import cz.etnetera.reesmo.model.mongodb.notifier.EmailNotifier;
+import cz.etnetera.reesmo.model.mongodb.notifier.Notifier;
+import cz.etnetera.reesmo.model.mongodb.notifier.URLNotifier;
 import cz.etnetera.reesmo.repository.mongodb.monitor.MonitorRepository;
 import cz.etnetera.reesmo.repository.mongodb.notifier.NotifierRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
@@ -26,7 +27,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 
 @Controller
-public class NotifierController {
+public class NotifierController implements MenuActivityController {
 
     @Autowired
     private MonitorRepository monitorRepository;
@@ -39,6 +40,11 @@ public class NotifierController {
 
     @Autowired
     private NotifierRepository notifierRepository;
+
+    @Override
+    public String getActiveMenu() {
+        return "projectMonitors";
+    }
 
     @RequestMapping(value = "/monitor/{monitorId}/notifier/email/create", method = RequestMethod.GET)
     public String createEmailNotifier(@PathVariable String monitorId, Model model) {

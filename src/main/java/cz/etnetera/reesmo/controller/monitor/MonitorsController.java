@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 @Controller
-public class MonitorsController  implements MenuActivityController {
+public class MonitorsController implements MenuActivityController {
 
     @Autowired
     private MonitorRepository monitorRepository;
@@ -32,7 +32,6 @@ public class MonitorsController  implements MenuActivityController {
     public String getActiveMenu() {
         return "projectMonitors";
     }
-
 
     @RequestMapping(value = "/project/monitors/{projectId}", method = RequestMethod.GET)
     public String createAnyMonitorForm(@PathVariable String projectId, Model model) {

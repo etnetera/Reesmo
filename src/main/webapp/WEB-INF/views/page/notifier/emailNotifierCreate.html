@@ -24,7 +24,9 @@
 
 </ol>
 <div layout:fragment="content">
-    <div th:replace="fragments/notifier/notifierForm :: form (@{/monitor/{monitorId}/notifier/email/create(monitorId=${monitor.id})})">Form</div>
+    <div class="row">
+        <div th:replace="fragments/notifier/notifierForm :: form (@{/monitor/{monitorId}/notifier/email/create(monitorId=${monitor.id})})">Form</div>
+    </div>
 </div>
 </body>
 </html>

@@ -12,7 +12,7 @@
                     <div><b><span th:text="#{monitor.type}">Name</span>:</b> <span th:text="${monitorDT.type}">name</span></div>
                     <div><b><span th:text="#{monitor.enabled}">Key</span>:</b> <span th:text="${monitorDT.enabled}">key</span></div>
                     <div><b><span th:text="#{monitor.description}">Key</span>:</b> <span th:text="${monitorDT.description}">key</span></div>
-                    <div><b><span th:text="#{monitor.viewname}">Key</span>:</b> <span th:text="${monitorDT.viewName}">key</span></div>
+                    <div><b><span th:text="#{monitor.viewname}">Key</span>:</b> <a th:href="@{/view/{viewId}(viewId=${monitorDT.viewIdDT})}" th:text="${monitorDT.viewName}">key</a></div>
                 </div>
             </div>
         </div>

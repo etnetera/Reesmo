@@ -11,7 +11,6 @@
         <li><a th:href="@{/project/detail/{projectId}(projectId=${project.id})}" href="#"> <span th:text="${project.name}">Projects</span></a></li>
         <li><a th:href="@{/view/{viewId}(viewId=${view.id})}" href="#"><span th:text="${view.name}">Projects</span></a></li>
         <li class="active"><a th:href="@{/monitor/{monitorId}(monitorId=${monitorDT.id})}" href="#"><span th:text="#{page.monitordetail.title}">Projects</span></a></li>
-
     </ol>
     <div layout:fragment="content" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}, isProjectOwner=${project.isAllowedForUser(#authentication.principal, 'OWNER')}">
 
@@ -21,7 +20,7 @@
                     <div class="box-body box-profile">
                         <h3 class="profile-username text-center" th:text="#{page.monitordetail.title}">Project</h3>
                         <a th:if="${isProjectAdmin}" th:href="@{/monitor/edit/{monitorId}(monitorId=${monitorDT.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
-                        <a th:if="${isProjectOwner}" th:href="@{/monitor/delete/{monitorId}(monitorId=${monitorDT.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+                        <a th:if="${isProjectAdmin}" th:href="@{/monitor/delete/{monitorId}(monitorId=${monitorDT.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
                     </div>
                 </div>
             </div>
@@ -30,7 +29,7 @@
 
         <div th:replace="fragments/notifier/notifiersList :: notifiersList">Details</div>
 
-        <div class="row">
+        <div th:if="${isProjectAdmin}" class="row">
             <div class="col-sm-12">
                 <a th:href="@{/monitor/{monitorId}/notifier/url/create(monitorId=${monitorDT.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitordetail.createurlnotifier}">New project</span></a>
                 <a th:href="@{/monitor/{monitorId}/notifier/email/create(monitorId=${monitorDT.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitordetail.createemailnotifier}">New project</span></a>

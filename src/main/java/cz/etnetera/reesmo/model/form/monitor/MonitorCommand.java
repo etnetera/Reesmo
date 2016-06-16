@@ -6,7 +6,6 @@ import cz.etnetera.reesmo.model.mongodb.monitoring.Monitoring;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class MonitorCommand {
@@ -57,7 +56,6 @@ public class MonitorCommand {
             this.numberOfTimeUnits = ((FlatlineMonitoring)monitor).getNumberOfTimeUnits();
             this.numberOfOccurences = ((FlatlineMonitoring)monitor).getNumberOfOccurences();
         }
-
     }
 
     public String getId() {
@@ -115,16 +113,12 @@ public class MonitorCommand {
             frequencyMonitor.setTimeUnit(getTimeUnit());
             frequencyMonitor.setNumberOfTimeUnits(getNumberOfTimeUnits());
             frequencyMonitor.setNumberOfOccurences(getNumberOfOccurences());
-            frequencyMonitor.setNotifiers(new ArrayList<>());
         }
         if (monitor instanceof FlatlineMonitoring){
             FlatlineMonitoring flatlineMonitor = (FlatlineMonitoring) monitor;
             flatlineMonitor.setTimeUnit(getTimeUnit());
             flatlineMonitor.setNumberOfTimeUnits(getNumberOfTimeUnits());
             flatlineMonitor.setNumberOfOccurences(getNumberOfOccurences());
-            flatlineMonitor.setNotifiers(new ArrayList<>());
         }
-
-
     }
 }

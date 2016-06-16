@@ -6,7 +6,7 @@
 		<section class="sidebar">
 			<ul class="sidebar-menu">
 				<li class="header" th:text="#{sidebar.menu.title}">Menu</li>
-				<li th:class="(${activeMenu} == 'dashboard')? 'active'"><a th:href="@{/}" href="#"><i class="fa fa-home"></i> <span th:text="#{page.dashboard.title}">Dashboard</span> <small class="label pull-right bg-green">todo</small></a></li>
+				<li th:if="${FALSE}" th:class="(${activeMenu} == 'dashboard')? 'active'"><a th:href="@{/}" href="#"><i class="fa fa-home"></i> <span th:text="#{page.dashboard.title}">Dashboard</span> <small class="label pull-right bg-green">todo</small></a></li>
 				<li th:class="(${activeMenu} == 'results')? 'active'"><a th:href="@{/results}" href="#"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
 				<li th:class="(${activeMenu} == 'projects')? 'active'"><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
 				<li th:class="(${activeMenu} == 'projectGroups')? 'active'"><a th:href="@{/project-groups}" href="#"><i class="fa fa-cubes"></i> <span th:text="#{page.projectgroups.title}">Project groups</span></a></li>
@@ -19,14 +19,14 @@
 		<section class="sidebar">
 			<ul class="sidebar-menu">
 				<li class="header" th:text="#{sidebar.menu.title}">Menu</li>
-				<li><a th:href="@{/}" href="#"><i class="fa fa-home"></i> <span th:text="#{page.dashboard.title}">Dashboard</span> <small class="label pull-right bg-green">todo</small></a></li>
+				<li th:if="${FALSE}"><a th:href="@{/}" href="#"><i class="fa fa-home"></i> <span th:text="#{page.dashboard.title}">Dashboard</span> <small class="label pull-right bg-green">todo</small></a></li>
 				<li><a th:href="@{/results}" href="#"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
 				<li class="treeview active">
 					<a th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#">
 						<i class="fa fa-cube"></i> <span th:text="${project.name}">Project</span><i class="fa fa-angle-left pull-right"></i>
 					</a>
 					<ul class="treeview-menu">
-						<li th:class="(${activeMenu} == 'projectActivity')? 'active'"><a href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.activity.title}">Activity</span> <small class="label pull-right bg-green">todo</small></a></li>
+						<li th:if="${FALSE}" th:class="(${activeMenu} == 'projectActivity')? 'active'"><a href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.activity.title}">Activity</span> <small class="label pull-right bg-green">todo</small></a></li>
 						<li th:class="(${activeMenu} == 'projectResults')? 'active'"><a th:href="@{/project/results/{projectId}(projectId=${project.id})}" href="#"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
 						<li th:class="(${activeMenu} == 'projectViews')? 'active'"><a th:href="@{/views/{projectId}(projectId=${project.id})}" href="#"><i class="fa fa-eye"></i> <span th:text="#{page.views.title}">Views</span></a></li>
 						<li th:class="(${activeMenu} == 'projectMonitors')? 'active'"><a th:href="@{/project/monitors/{projectId}(projectId=${project.id})}" href="#"><i class="fa fa-bullhorn"></i> <span th:text="#{page.monitors.title}">Monitors</span></a></li>
@@ -44,7 +44,7 @@
 		<section class="sidebar">
 			<ul class="sidebar-menu">
 				<li class="header" th:text="#{sidebar.menu.title}">Menu</li>
-				<li><a th:href="@{/}" href="#"><i class="fa fa-home"></i> <span th:text="#{page.dashboard.title}">Dashboard</span> <small class="label pull-right bg-green">todo</small></a></li>
+				<li th:if="${FALSE}"><a th:href="@{/}" href="#"><i class="fa fa-home"></i> <span th:text="#{page.dashboard.title}">Dashboard</span> <small class="label pull-right bg-green">todo</small></a></li>
 				<li><a th:href="@{/results}" href="#"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
 				<li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
 				<li class="treeview active">
@@ -52,7 +52,7 @@
 						<i class="fa fa-cubes"></i> <span th:text="${projectGroup.name}">Project group</span><i class="fa fa-angle-left pull-right"></i>
 					</a>
 					<ul class="treeview-menu">
-						<li th:class="(${activeMenu} == 'projectGroupActivity')? 'active'"><a href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.activity.title}">Activity</span> <small class="label pull-right bg-green">todo</small></a></li>
+						<li th:if="${FALSE}" th:class="(${activeMenu} == 'projectGroupActivity')? 'active'"><a href="#"><i class="fa fa-dashboard"></i> <span th:text="#{page.activity.title}">Activity</span> <small class="label pull-right bg-green">todo</small></a></li>
 						<li th:class="(${activeMenu} == 'projectGroupResults')? 'active'"><a th:href="@{/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"><i class="fa fa-check-square-o"></i> <span th:text="#{page.results.title}">Results</span></a></li>
 						<li th:class="(${activeMenu} == 'projectGroupSettings')? 'active'"><a th:href="@{/project-group/detail/{projectGroupId}(projectGroupId=${projectGroup.id})}" href="#"><i class="fa fa-cog"></i> <span th:text="#{page.settings.title}">Settings</span></a></li>
 						<li><a th:href="@{/project-groups}" href="#"><i class="fa fa-arrow-left"></i> <span th:text="#{backto.projectgroups}">Back to project groups</span></a></li>

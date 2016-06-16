@@ -1,5 +1,6 @@
 package cz.etnetera.reesmo.controller.monitor;
 
+import cz.etnetera.reesmo.controller.MenuActivityController;
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.datatables.monitor.MonitorDT;
 import cz.etnetera.reesmo.model.form.monitor.MonitorCommand;
@@ -25,7 +26,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @Controller
-public class MonitorController {
+public class MonitorController implements MenuActivityController {
 
 
     @Autowired
@@ -40,11 +41,15 @@ public class MonitorController {
     @Autowired
     Localizer localizer;
 
+    @Override
+    public String getActiveMenu() {
+        return "projectMonitors";
+    }
+
     @InitBinder(value = "monitorCommand")
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(new MonitorCommandValidator());
     }
-
 
     @RequestMapping(value = "/monitor/{monitorId}", method = RequestMethod.GET)
     public String monitorDetail(@PathVariable String monitorId, Model model, Locale locale) {

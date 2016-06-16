@@ -1,8 +1,11 @@
-package cz.etnetera.reesmo.notifier;
+package cz.etnetera.reesmo.model.mongodb.notifier;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-public class URLNotifier extends Notifier {
+@Document(collection = "notifier")
+public class EmailNotifier extends Notifier {
 
     private List<String> addresses;
 
