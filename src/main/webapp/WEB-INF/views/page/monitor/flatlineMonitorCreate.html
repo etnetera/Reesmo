@@ -21,7 +21,9 @@
 
 </ol>
 <div layout:fragment="content">
-    <div th:replace="fragments/monitor/monitorForm :: form(@{/view/{viewId}/monitor/flatline/create(viewId=${view.id})})">Form</div>
+    <div class="row">
+        <div th:replace="fragments/monitor/monitorForm :: form(@{/view/{viewId}/monitor/flatline/create(viewId=${view.id})})">Form</div>
+    </div>
 </div>
 </body>
 </html>

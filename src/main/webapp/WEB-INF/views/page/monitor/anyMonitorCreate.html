@@ -21,27 +21,29 @@
 
 </ol>
 <div layout:fragment="content">
-    <div class="col-xs-2">
-        <div class="box box-primary">
-                <form class="form-horizontal" action="#" th:action="@{/view/{viewId}/monitor/any/create(viewId=${view.id})}" th:object="${monitorCommand}" method="post">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label" th:for="${#ids.next('enabled')}" th:text="#{monitor.enabled}">Enabled</label>
-                            <div class="col-xs-9">
-                                <select class="form-control" th:field="*{enabled}">
-                                    <option th:value="true" th:text="#{true}">MINUTES</option>
-                                    <option th:value="false" th:text="#{false}">HOURS</option>
-                                </select>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                    <form class="form-horizontal" action="#" th:action="@{/view/{viewId}/monitor/any/create(viewId=${view.id})}" th:object="${monitorCommand}" method="post">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label" th:for="${#ids.next('enabled')}" th:text="#{monitor.enabled}">Enabled</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control" th:field="*{enabled}">
+                                        <option th:value="true" th:text="#{true}">MINUTES</option>
+                                        <option th:value="false" th:text="#{false}">HOURS</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="box-footer">
-                            <div th:replace="fragments/form/button :: cancel"/>
-                            <div th:replace="fragments/form/button :: submit"/>
-                        </div>
-                  </div>
-                </form>
+                            <div class="box-footer">
+                                <div th:replace="fragments/form/button :: cancel"/>
+                                <div th:replace="fragments/form/button :: submit"/>
+                            </div>
+                      </div>
+                    </form>
 
+            </div>
         </div>
     </div>
 </div>
