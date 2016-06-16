@@ -2,7 +2,7 @@ package cz.etnetera.reesmo.notifier;
 
 import java.util.List;
 
-public class URLNotifier extends Notifier{
+public class URLNotifier extends Notifier2 {
 
     private List<String> addresses;
 

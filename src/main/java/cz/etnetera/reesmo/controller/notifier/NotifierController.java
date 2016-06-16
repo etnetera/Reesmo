@@ -9,7 +9,7 @@ import cz.etnetera.reesmo.model.mongodb.monitoring.Monitoring;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.view.View;
 import cz.etnetera.reesmo.notifier.EmailNotifier;
-import cz.etnetera.reesmo.notifier.Notifier;
+import cz.etnetera.reesmo.notifier.Notifier2;
 import cz.etnetera.reesmo.notifier.URLNotifier;
 import cz.etnetera.reesmo.repository.mongodb.monitor.MonitorRepository;
 import cz.etnetera.reesmo.repository.mongodb.notifier.NotifierRepository;
@@ -106,7 +106,7 @@ public class NotifierController {
 
     @RequestMapping(value = "/notifier/{notifierId}/delete", method = RequestMethod.GET)
     public String deleteNotifier(@PathVariable String notifierId, Model model) {
-        Notifier notifier = notifierRepository.findOne(notifierId);
+        Notifier2 notifier = notifierRepository.findOne(notifierId);
         Monitoring monitor = monitorRepository.findOne(notifier.getMonitorId());
         View view = viewRepository.findOne(monitor.getViewId());
         Project project = projectRepository.findOne(view.getProjectId());
@@ -119,14 +119,14 @@ public class NotifierController {
 
     @RequestMapping(value = "/notifier/{notifierId}/delete", method = RequestMethod.POST)
     public String deleteNotifier(@PathVariable String notifierId) {
-        Notifier notifier = notifierRepository.findOne(notifierId);
+        Notifier2 notifier = notifierRepository.findOne(notifierId);
         notifierRepository.delete(notifierId);
         return "redirect:/monitor/" + notifier.getMonitorId();
     }
 
     @RequestMapping(value = "/notifier/{notifierId}/edit", method = RequestMethod.GET)
     public String editNotifier(@PathVariable String notifierId, Model model) {
-        Notifier notifier = notifierRepository.findOne(notifierId);
+        Notifier2 notifier = notifierRepository.findOne(notifierId);
         Monitoring monitor = monitorRepository.findOne(notifier.getMonitorId());
         View view = viewRepository.findOne(monitor.getViewId());
         Project project = projectRepository.findOne(view.getProjectId());
@@ -140,7 +140,7 @@ public class NotifierController {
 
     @RequestMapping(value = "/notifier/{notifierId}/edit", method = RequestMethod.POST)
     public String editNotifier(@PathVariable String notifierId, @ModelAttribute NotifierCommand notifierCommand) {
-        Notifier notifier = notifierRepository.findOne(notifierId);
+        Notifier2 notifier = notifierRepository.findOne(notifierId);
         notifierCommand.toNotifier(notifier);
         notifierRepository.save(notifier);
         return "redirect:/monitor/" + notifier.getMonitorId();

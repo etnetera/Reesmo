@@ -1,7 +1,7 @@
 package cz.etnetera.reesmo.model.datatables.notifier;
 
 import cz.etnetera.reesmo.notifier.EmailNotifier;
-import cz.etnetera.reesmo.notifier.Notifier;
+import cz.etnetera.reesmo.notifier.Notifier2;
 import cz.etnetera.reesmo.notifier.URLNotifier;
 
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ public class NotifierDT {
 
     private String monitorId;
 
-    public NotifierDT(Notifier notifier) {
+    public NotifierDT(Notifier2 notifier) {
         this.id = notifier.getId();
         this.enabled = notifier.isEnabled();
         this.type = notifier.getClass().getSimpleName();

@@ -1,7 +1,7 @@
 package cz.etnetera.reesmo.model.form.notifier;
 
 import cz.etnetera.reesmo.notifier.EmailNotifier;
-import cz.etnetera.reesmo.notifier.Notifier;
+import cz.etnetera.reesmo.notifier.Notifier2;
 import cz.etnetera.reesmo.notifier.URLNotifier;
 
 import java.util.Arrays;
@@ -15,7 +15,7 @@ public class NotifierCommand {
 
     private String addresses;
 
-    public NotifierCommand(Notifier notifier) {
+    public NotifierCommand(Notifier2 notifier) {
         this.id = notifier.getId();
         this.enabled = notifier.isEnabled();
         if (notifier instanceof EmailNotifier){
@@ -55,7 +55,7 @@ public class NotifierCommand {
         this.id = id;
     }
 
-    public void toNotifier(Notifier notifier) {
+    public void toNotifier(Notifier2 notifier) {
         notifier.setEnabled(isEnabled());
         if (notifier instanceof EmailNotifier){
             EmailNotifier emailNotifier = (EmailNotifier) notifier;
