@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div th:fragment="detail">
 		<pre th:if="${#strings.contains(attachment.contentType, 'html')}" class="no-prettyprint" th:text="${fileString}"></pre>

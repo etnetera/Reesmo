@@ -29,16 +29,14 @@
  */
 package com.github.dandelion.core.util.scanner;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-
+import com.github.dandelion.core.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.dandelion.core.util.StringUtils;
+import javax.servlet.ServletContext;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * <p>

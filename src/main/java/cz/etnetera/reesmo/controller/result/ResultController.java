@@ -1,11 +1,23 @@
 package cz.etnetera.reesmo.controller.result;
 
-import java.io.IOException;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import com.github.dandelion.datatables.core.ajax.DataSet;
+import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
+import com.mongodb.gridfs.GridFSDBFile;
+import cz.etnetera.reesmo.controller.MenuActivityController;
+import cz.etnetera.reesmo.controller.json.JsonResponse;
+import cz.etnetera.reesmo.datatables.filter.FilteredDatatablesCriterias;
+import cz.etnetera.reesmo.http.ControllerModel;
+import cz.etnetera.reesmo.http.exception.NotFoundException;
+import cz.etnetera.reesmo.message.Localizer;
+import cz.etnetera.reesmo.model.datatables.result.ResultDT;
+import cz.etnetera.reesmo.model.elasticsearch.result.Result;
+import cz.etnetera.reesmo.model.elasticsearch.result.ResultAttachment;
+import cz.etnetera.reesmo.model.form.result.ResultDeleteCommand;
+import cz.etnetera.reesmo.model.mongodb.project.Project;
+import cz.etnetera.reesmo.model.mongodb.user.Permission;
+import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
+import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
+import cz.etnetera.reesmo.user.UserManager;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,25 +36,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
-import com.github.dandelion.datatables.core.ajax.DataSet;
-import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
-import com.mongodb.gridfs.GridFSDBFile;
-
-import cz.etnetera.reesmo.controller.MenuActivityController;
-import cz.etnetera.reesmo.controller.json.JsonResponse;
-import cz.etnetera.reesmo.datatables.filter.FilteredDatatablesCriterias;
-import cz.etnetera.reesmo.http.ControllerModel;
-import cz.etnetera.reesmo.http.exception.NotFoundException;
-import cz.etnetera.reesmo.message.Localizer;
-import cz.etnetera.reesmo.model.datatables.result.ResultDT;
-import cz.etnetera.reesmo.model.elasticsearch.result.Result;
-import cz.etnetera.reesmo.model.elasticsearch.result.ResultAttachment;
-import cz.etnetera.reesmo.model.form.result.ResultDeleteCommand;
-import cz.etnetera.reesmo.model.mongodb.project.Project;
-import cz.etnetera.reesmo.model.mongodb.user.Permission;
-import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
-import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
-import cz.etnetera.reesmo.user.UserManager;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Locale;
 
 @Controller
 public class ResultController implements MenuActivityController, ResultFilteredController {

@@ -1,12 +1,11 @@
 package cz.etnetera.reesmo.model.elasticsearch;
 
-import java.util.Date;
-
+import cz.etnetera.reesmo.model.AuditedModel;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import cz.etnetera.reesmo.model.AuditedModel;
+import java.util.Date;
 
 abstract public class ElasticAuditedModel implements AuditedModel {
 		

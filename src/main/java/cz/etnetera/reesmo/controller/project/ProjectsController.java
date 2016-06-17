@@ -1,26 +1,8 @@
 package cz.etnetera.reesmo.controller.project;
 
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
-
 import cz.etnetera.reesmo.controller.MenuActivityController;
 import cz.etnetera.reesmo.model.datatables.project.ProjectDT;
 import cz.etnetera.reesmo.model.form.project.ProjectCommand;
@@ -29,6 +11,16 @@ import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.user.UserManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class ProjectsController implements MenuActivityController {

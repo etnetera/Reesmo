@@ -1,11 +1,11 @@
 package cz.etnetera.reesmo.restapi.output;
 
+import org.springframework.context.MessageSource;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import org.springframework.context.MessageSource;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public class RestApiValidationError {
 	

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/project" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="#{page.monitoredit.title} - ${monitorCommand.type}">Delete -
+        Project - Projects</title>
+</head>
+<body>
+<h1 layout:fragment="content-title"><i class="fa fa-cog"></i> <span th:text="${monitorCommand.type}">Project</span> - <span th:text="${view.name}">Delete</span> - <span th:text="#{page.monitoredit.title}">Delete</span> <small th:text="#{page.monitoredit.titledesc}">small title</small></h1>
+<ol layout:fragment="content-breadcrumb">
+    <li><a th:href="@{/projects}" href="#"><i class="fa fa-cube"></i>
+        <span th:text="#{page.projects.title}">Projects</span></a></li>
+    <li><a
+            th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#"
+            th:text="${project.name}">Project</a></li>
+    <li><a
+            th:href="@{/view/{viewId}(viewId=${view.id})}" href="#"
+            th:text="${view.name}">View name</a></li>
+    <li><a
+            th:href="@{/monitor/{monitorId}(monitorId=${monitorCommand.id})}" href="#"
+            th:text="${monitorCommand.type}">Delete</a></li>
+    <li class="active"><a
+            th:href="@{/monitor/edit/{monitorId}(monitorId=${monitorCommand.id})}" href="#"
+            th:text="#{page.monitoredit.title}">Delete</a></li>
+
+</ol>
+<div layout:fragment="content">
+    <div class="row">
+        <div th:replace="fragments/monitor/monitorForm :: form (@{/monitor/edit/{monitorId}(monitorId=${monitorCommand.id})})">Edit form</div>
+    </div>
+</div>
+</body>
+</html>

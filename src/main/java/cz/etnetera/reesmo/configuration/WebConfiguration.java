@@ -1,5 +1,9 @@
 package cz.etnetera.reesmo.configuration;
 
+import com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect;
+import com.github.dandelion.thymeleaf.dialect.DandelionDialect;
+import nz.net.ultraq.thymeleaf.LayoutDialect;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,11 +21,6 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
-import com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect;
-import com.github.dandelion.thymeleaf.dialect.DandelionDialect;
-
-import nz.net.ultraq.thymeleaf.LayoutDialect;
-
 /**
  * Configuration class holding all web related config. Serves as replacement
  * for @EnableWebMvc.
@@ -34,6 +33,9 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 	 * 100MB
 	 */
 	public static final long FILE_SIZE_LIMIT = 104857600l;
+
+	@Value("${thymeleaf.cacheable}")
+	private boolean thymeleafCacheable;
 
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -78,7 +80,7 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 		resolver.setSuffix(".html");
 		resolver.setTemplateMode("HTML5");
 		resolver.setCharacterEncoding("UTF-8");
-		resolver.setCacheable(true);
+		resolver.setCacheable(thymeleafCacheable);
 		return resolver;
 	}
 

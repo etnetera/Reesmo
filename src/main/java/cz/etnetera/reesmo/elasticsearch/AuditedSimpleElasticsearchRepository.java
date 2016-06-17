@@ -1,14 +1,13 @@
 package cz.etnetera.reesmo.elasticsearch;
 
-import java.util.List;
-
+import cz.etnetera.reesmo.model.ModelAuditor;
+import cz.etnetera.reesmo.model.elasticsearch.ElasticAuditedModel;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchEntityInformation;
 import org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository;
 import org.springframework.util.Assert;
 
-import cz.etnetera.reesmo.model.ModelAuditor;
-import cz.etnetera.reesmo.model.elasticsearch.ElasticAuditedModel;
+import java.util.List;
 
 public class AuditedSimpleElasticsearchRepository<T> extends SimpleElasticsearchRepository<T> {
 	

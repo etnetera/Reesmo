@@ -1,10 +1,9 @@
 package cz.etnetera.reesmo.model.form.user;
 
-import javax.validation.constraints.Size;
-
+import cz.etnetera.reesmo.model.mongodb.user.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import cz.etnetera.reesmo.model.mongodb.user.User;
+import javax.validation.constraints.Size;
 
 public class UserChangePasswordCommand implements PasswordCommand {
 	

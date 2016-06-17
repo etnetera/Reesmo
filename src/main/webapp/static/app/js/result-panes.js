@@ -1,7 +1,5 @@
 Reesmo.ResultListPanes = Reesmo.Panes.extend(function(){
 	
-	this.resultId;
-	
 	this.dtSettings;
 	
 	this.dtJson;

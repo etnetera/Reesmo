@@ -1,24 +1,7 @@
 package cz.etnetera.reesmo.repository.mongodb.user;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-
 import cz.etnetera.reesmo.common.ObjectWrapper;
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.datatables.project.ProjectGroupUserDT;
@@ -32,6 +15,15 @@ import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.model.mongodb.user.User;
 import cz.etnetera.reesmo.repository.mongodb.MongoDatatables;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectGroupRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.annotation.PostConstruct;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * User repository custom method implementation

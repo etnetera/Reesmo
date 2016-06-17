@@ -29,23 +29,6 @@
  */
 package com.github.dandelion.datatables.thymeleaf.processor.el;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.context.IWebContext;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.NestableNode;
-import org.thymeleaf.processor.IElementNameProcessorMatcher;
-import org.thymeleaf.processor.ProcessorResult;
-
 import com.github.dandelion.core.asset.generator.js.jquery.JQueryContent;
 import com.github.dandelion.core.asset.generator.js.jquery.JQueryJsContentGenerator;
 import com.github.dandelion.core.html.AbstractHtmlTag;
@@ -71,6 +54,21 @@ import com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect;
 import com.github.dandelion.datatables.thymeleaf.processor.AbstractElProcessor;
 import com.github.dandelion.datatables.thymeleaf.processor.config.ConfType;
 import com.github.dandelion.datatables.thymeleaf.util.RequestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.thymeleaf.Arguments;
+import org.thymeleaf.context.IWebContext;
+import org.thymeleaf.dom.Element;
+import org.thymeleaf.dom.NestableNode;
+import org.thymeleaf.processor.IElementNameProcessorMatcher;
+import org.thymeleaf.processor.ProcessorResult;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>

@@ -1,12 +1,12 @@
 package cz.etnetera.reesmo.model.elasticsearch.result;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class ResultValidator implements Validator {
 

@@ -1,12 +1,11 @@
 package cz.etnetera.reesmo.user;
 
+import cz.etnetera.reesmo.model.mongodb.user.User;
+import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import cz.etnetera.reesmo.model.mongodb.user.User;
-import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
 
 public class AppUserRepository implements UserDetailsService {
 

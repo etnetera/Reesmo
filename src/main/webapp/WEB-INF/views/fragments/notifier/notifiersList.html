@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<body>
+<div th:fragment="notifiersList" class="box" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}">
+    <div class="box-header with-border">
+        <h3 class="box-title" th:text="#{page.monitordetail.notifiers.title}">Projects</h3>
+    </div>
+    <div class="box-body">
+        <div class="dataTables_wrapper form-inline dt-bootstrap">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="notifiersTable" dt:table="true" dt:url="@{/dt/monitor/notifiers/{monitorId}(monitorId=${monitorDT.id})}" dt:filterable="false">
+                        <thead>
+                        <tr>
+                            <th dt:visible="false" dt:sortable="false">id</th>
+                            <th dt:searchable="false" dt:sortable="false" dt:property="type" th:text="#{notifier.type}">Type</th>
+                            <th dt:searchable="false" dt:sortable="false" dt:property="enabled" th:text="#{notifier.enabled}">Enabled</th>
+                            <th dt:searchable="false" dt:sortable="false" dt:property="addresses" th:text="#{notifier.addresses}">Addresses</th>
+                            <th dt:searchable="false" dt:sortable="false" dt:property="id" dt:renderFunction="Reesmo.notifierTableRenderButtons"></th>
+                        </tr>
+                        </thead>
+                        <script th:inline="javascript">
+                            Reesmo.notifierTableRenderButtons = function(id, type, notifier) {
+                                return '<a href="' + Reesmo.baseUrl + 'notifier/' + id + '/edit" class="btn-sm btn-primary"><b>Edit</b></a>  ' +
+                                        '<a href="' + Reesmo.baseUrl + 'notifier/' + id + '/delete" class="btn-sm btn-danger"><b>Delete</b></a>';
+                            };
+                        </script>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

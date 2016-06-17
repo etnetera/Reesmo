@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="form (url)" class="col-md-6">
+    <div class="box box-primary">
+        <form action="#" th:action="${url}" th:object="${notifierCommand}" method="post">
+            <div class="box-body">
+
+                <div class="form-group">
+                    <label th:for="${#ids.next('enabled')}" th:text="#{monitor.enabled}">Enabled</label>
+                    <select class="form-control" th:field="*{enabled}">
+                        <option th:value="true" th:text="#{true}">Yes</option>
+                        <option th:value="false" th:text="#{false}">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('addresses')}? has-error">
+                    <label th:for="${#ids.next('addresses')}" th:text="#{page.notifiercreate.addresses}">Number of occurences</label>
+                      <i class="fa fa-question-circle" data-toggle="tooltip" th:title="#{page.notifiercreate.tooltip}"></i>
+                    <textarea rows="5" type="text" class="form-control" th:field="*{addresses}"/>
+                    <p th:replace="fragments/form/error :: errors (fieldName='addresses')"/>
+                </div>
+
+
+                <div class="box-footer">
+                    <div th:replace="fragments/form/button :: cancel"/>
+                    <div th:replace="fragments/form/button :: submit"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

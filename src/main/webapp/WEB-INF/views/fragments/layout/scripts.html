@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<script th:fragment="first" th:inline="javascript">
 		var Reesmo = {
@@ -18,7 +18,11 @@
 					'moreThan': [[#{moreThan}]],
 					'lessThan': [[#{lessThan}]],
 					'dt.filters.showMore': [[#{dt.filters.showMore}]],
-					'dt.filters.showLess': [[#{dt.filters.showLess}]]
+					'dt.filters.showLess': [[#{dt.filters.showLess}]],
+					'views.control.noFiltersSelected': [[#{views.control.noFiltersSelected}]],
+					'views.control.changedFilters': [[#{views.control.changedFilters}]],
+					'views.control.updateView': [[#{views.control.updateView}]],
+					'views.control.createView': [[#{views.control.createView}]]
 				}
 			}
 		};

@@ -1,43 +1,9 @@
 package cz.etnetera.reesmo.repository.elasticsearch.result;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.index.query.BoolFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.TermsFilterBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
-import org.springframework.util.Assert;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
-
 import cz.etnetera.reesmo.datatables.filter.FilteredDatatablesCriterias;
 import cz.etnetera.reesmo.list.PageableListModifier;
 import cz.etnetera.reesmo.message.Localizer;
@@ -53,6 +19,29 @@ import cz.etnetera.reesmo.repository.elasticsearch.ElasticsearchDatatables;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.repository.mongodb.resultchange.ResultChangeRepository;
 import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
+import org.apache.commons.lang.StringUtils;
+import org.elasticsearch.index.query.BoolFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.TermsFilterBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.net.URLConnection;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Result repository custom method implementation
@@ -249,6 +238,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 				.map(r -> new ResultDT(r, foundProjects.get(r.getProjectId()), localizer, locale))
 				.collect(Collectors.toList()), results.getTotalRecords(), results.getTotalDisplayRecords());
 	}
+
 
 	private DataSet<Result> findResultsWithDatatablesCriterias(DatatablesCriterias criterias,
 			Collection<String> projectIds) {

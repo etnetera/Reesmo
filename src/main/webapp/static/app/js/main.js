@@ -111,3 +111,35 @@ Reesmo.ajax = function(options, successCallback, errorCallback) {
 
 	return false;
 };
+
+$.fn.addHiddenInputData = function(data) {          
+    var keys = {};          
+    var addData = function(data, prefix) {          
+        for (var key in data) {
+            var value = data[key];
+            if (!prefix) {
+              var nprefix = key;                                            
+            } else {
+              var nprefix = prefix + '[' + key + ']';
+            }
+            if (typeof(value) == 'object') {                                    
+                addData(value, nprefix);
+                continue;
+            }
+            keys[nprefix] = value;
+        }          
+    }          
+    addData(data);          
+    var $form = $(this);      
+    for(var k in keys) {
+        $form.addHiddenInput(k, keys[k]);
+    }
+};
+
+$.fn.addHiddenInput = function(key, value) {      
+    var $input = $('<input type="hidden" name="' + key + '" />');
+    $input.val(value);
+    $(this).append($input);
+};
+
+$('[data-toggle="tooltip"]').tooltip();

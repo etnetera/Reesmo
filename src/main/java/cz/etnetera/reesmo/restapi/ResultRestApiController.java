@@ -1,16 +1,5 @@
 package cz.etnetera.reesmo.restapi;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import cz.etnetera.reesmo.list.PageableListModifier;
 import cz.etnetera.reesmo.model.elasticsearch.result.Result;
 import cz.etnetera.reesmo.model.elasticsearch.result.ResultValidator;
@@ -20,6 +9,11 @@ import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.restapi.output.RestApiList;
 import cz.etnetera.reesmo.user.UserManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api", produces = "application/json")

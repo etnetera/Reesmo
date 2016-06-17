@@ -1,10 +1,9 @@
 package cz.etnetera.reesmo.model.mongodb.user;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import cz.etnetera.reesmo.user.UserRole;
 import cz.etnetera.reesmo.user.UserType;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Classic user registered over UI.

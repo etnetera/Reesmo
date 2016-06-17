@@ -1,13 +1,12 @@
 package cz.etnetera.reesmo.repository.elasticsearch;
 
+import com.github.dandelion.datatables.core.ajax.ColumnDef.SortDirection;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-
-import com.github.dandelion.datatables.core.ajax.ColumnDef.SortDirection;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 
 public class ElasticsearchDatatables {
 

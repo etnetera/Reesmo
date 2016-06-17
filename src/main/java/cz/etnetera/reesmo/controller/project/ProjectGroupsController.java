@@ -1,8 +1,15 @@
 package cz.etnetera.reesmo.controller.project;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import com.github.dandelion.datatables.core.ajax.DataSet;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
+import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
+import cz.etnetera.reesmo.controller.MenuActivityController;
+import cz.etnetera.reesmo.model.datatables.project.ProjectGroupDT;
+import cz.etnetera.reesmo.model.form.project.ProjectGroupCommand;
+import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
+import cz.etnetera.reesmo.model.mongodb.user.Permission;
+import cz.etnetera.reesmo.repository.mongodb.project.ProjectGroupRepository;
+import cz.etnetera.reesmo.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,17 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.dandelion.datatables.core.ajax.DataSet;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
-
-import cz.etnetera.reesmo.controller.MenuActivityController;
-import cz.etnetera.reesmo.model.datatables.project.ProjectGroupDT;
-import cz.etnetera.reesmo.model.form.project.ProjectGroupCommand;
-import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
-import cz.etnetera.reesmo.model.mongodb.user.Permission;
-import cz.etnetera.reesmo.repository.mongodb.project.ProjectGroupRepository;
-import cz.etnetera.reesmo.user.UserManager;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 public class ProjectGroupsController implements MenuActivityController {

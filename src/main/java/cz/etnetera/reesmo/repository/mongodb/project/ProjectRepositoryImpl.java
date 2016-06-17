@@ -1,19 +1,7 @@
 package cz.etnetera.reesmo.repository.mongodb.project;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.datatables.project.ProjectDT;
 import cz.etnetera.reesmo.model.datatables.project.ProjectGroupProjectDT;
@@ -21,7 +9,19 @@ import cz.etnetera.reesmo.model.datatables.user.UserProjectDT;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
 import cz.etnetera.reesmo.model.mongodb.user.User;
+import cz.etnetera.reesmo.model.mongodb.view.View;
 import cz.etnetera.reesmo.repository.mongodb.MongoDatatables;
+import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * Project repository custom method implementation
@@ -32,8 +32,21 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	private MongoOperations mongoTemplate;
 	
 	@Autowired
+	private ProjectRepository projectRepository;
+
+	@Autowired
+	private ViewRepository viewRepository;
+
+	@Autowired
 	private Localizer localizer;
 
+	@Override
+	public void deleteProject(Project project) {
+		List<View> views = mongoTemplate.find(Query.query(Criteria.where("projectId").is(project.getId())), View.class, "view");
+		views.forEach(view -> viewRepository.deleteViewAndMonitors(view.getId()));
+		projectRepository.delete(project);
+	}
+	
 	@Override
 	public Project findOneByKey(String key) {
 		return mongoTemplate.findOne(Query.query(Criteria.where("key").is(key)), Project.class);

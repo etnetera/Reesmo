@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/project" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="#{page.notifieredit.title}">Edit -
+        Project - Projects</title>
+</head>
+<body>
+<h1 layout:fragment="content-title"><i class="fa fa-bell"></i> <span th:text="#{page.notifieredit.title}">Create</span></h1>
+<ol layout:fragment="content-breadcrumb">
+    <li><a th:href="@{/projects}" href="#"><i class="fa fa-bell"></i>
+        <span th:text="#{page.projects.title}">Projects</span></a></li>
+    <li><a
+            th:href="@{/project/home/{projectId}(projectId=${project.id})}" href="#"
+            th:text="${project.name}">Project</a></li>
+    <li><a
+            th:href="@{/view/{viewId}(viewId=${view.id})}" href="#"
+            th:text="${view.name}">Edit</a></li>
+    <li><a
+            th:href="@{/monitor/{monitorId}(monitorId=${monitor.id})}" href="#"
+            th:text="#{page.monitordetail.title}">Monitor</a></li>
+    <li class="active"><a
+            th:href="@{/notifier/{notifierId}/edit(notifierId=${notifierCommand.id})}" href="#"
+            th:text="#{page.notifieredit.title}">Edit</a></li>
+
+</ol>
+<div layout:fragment="content">
+    <div class="row">
+        <div th:replace="fragments/notifier/notifierForm :: form (@{/notifier/{notifierId}/edit(notifierId=${notifierCommand.id})})">Form</div>
+    </div>
+</div>
+</body>
+</html>

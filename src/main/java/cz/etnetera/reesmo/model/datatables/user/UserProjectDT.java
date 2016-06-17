@@ -1,11 +1,11 @@
 package cz.etnetera.reesmo.model.datatables.user;
 
-import java.util.Locale;
-
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.model.mongodb.user.User;
+
+import java.util.Locale;
 
 public class UserProjectDT {
 	
