@@ -1,14 +1,9 @@
 package cz.etnetera.reesmo.model.mongodb;
 
-import java.util.Date;
-
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
-
 import cz.etnetera.reesmo.model.AuditedModel;
+import org.springframework.data.annotation.*;
+
+import java.util.Date;
 
 abstract public class MongoAuditedModel implements AuditedModel {
 	

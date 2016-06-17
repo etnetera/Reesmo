@@ -1,9 +1,9 @@
 package cz.etnetera.reesmo.datatables.filter.impl;
 
-import java.util.Locale;
-
 import cz.etnetera.reesmo.datatables.filter.DatatablesFilter;
 import cz.etnetera.reesmo.message.Localizer;
+
+import java.util.Locale;
 
 public class DatatablesFilterDateRange extends DatatablesFilter {
 

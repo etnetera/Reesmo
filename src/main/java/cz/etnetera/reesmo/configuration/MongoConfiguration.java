@@ -1,5 +1,9 @@
 package cz.etnetera.reesmo.configuration;
 
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import cz.etnetera.reesmo.Reesmo;
+import cz.etnetera.reesmo.user.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,12 +14,6 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
-
-import cz.etnetera.reesmo.Reesmo;
-import cz.etnetera.reesmo.user.UserManager;
 
 @Configuration
 @EnableMongoRepositories(basePackages = Reesmo.PACKAGE + ".repository.mongodb")
@@ -58,7 +56,9 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 		return new AuditorAware<String>() {
 			@Override
 			public String getCurrentAuditor() {
-				return UserManager.getInstance().getUserId();
+				UserManager userManager = UserManager.getInstance();
+				// user manager can be null on application start
+				return userManager == null ? null : userManager.getUserId();
 			}
 		};
 	}

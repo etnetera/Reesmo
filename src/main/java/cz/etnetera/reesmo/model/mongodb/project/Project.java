@@ -1,16 +1,15 @@
 package cz.etnetera.reesmo.model.mongodb.project;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import cz.etnetera.reesmo.http.exception.ForbiddenException;
 import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.user.IdentifiedUser;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Document
 public class Project extends MongoAuditedModel {

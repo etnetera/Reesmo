@@ -1,12 +1,11 @@
 package cz.etnetera.reesmo.list.filter.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import cz.etnetera.reesmo.list.filter.ListFilter;
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.RangeFilterBuilder;
-
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
-import cz.etnetera.reesmo.list.filter.ListFilter;
 
 /**
  * Double range filter representation.
@@ -20,6 +19,13 @@ public class DoubleRangeListFilter extends ListFilter {
 	
 	protected Double to;
 
+	@Override
+	public String getType() {
+		return TYPE;
+	}
+
+	@JsonIgnore
+	@Override
 	public FilterBuilder getFilterBuilder() {
 		RangeFilterBuilder builder = new RangeFilterBuilder(field);
 		if (from != null)

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="details" class="col-md-6">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title" th:text="#{monitor.details}">Details</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div><b><span th:text="#{monitor.type}">Name</span>:</b> <span th:text="${monitorDT.type}">name</span></div>
+                    <div><b><span th:text="#{monitor.enabled}">Key</span>:</b> <span th:text="${monitorDT.enabled}">key</span></div>
+                    <div><b><span th:text="#{monitor.description}">Key</span>:</b> <span th:text="${monitorDT.description}">key</span></div>
+                    <div><b><span th:text="#{monitor.viewname}">Key</span>:</b> <a th:href="@{/view/{viewId}(viewId=${monitorDT.viewIdDT})}" th:text="${monitorDT.viewName}">key</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

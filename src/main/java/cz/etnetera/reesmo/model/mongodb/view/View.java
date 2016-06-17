@@ -1,14 +1,13 @@
 package cz.etnetera.reesmo.model.mongodb.view;
 
-import java.util.List;
-
+import cz.etnetera.reesmo.list.ListModifier;
+import cz.etnetera.reesmo.model.elasticsearch.result.Result;
+import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
 import org.joda.time.Interval;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import cz.etnetera.reesmo.list.ListModifier;
-import cz.etnetera.reesmo.model.elasticsearch.result.Result;
-import cz.etnetera.reesmo.model.mongodb.MongoAuditedModel;
+import java.util.List;
 
 /**
  * Describes stored view representing list modifier.
@@ -80,5 +79,6 @@ public class View extends MongoAuditedModel {
 		// interval only
 		return null;
 	}
+
 
 }

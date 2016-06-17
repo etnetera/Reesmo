@@ -1,10 +1,7 @@
 package cz.etnetera.reesmo.repository.mongodb.user;
 
-import java.util.Locale;
-
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-
 import cz.etnetera.reesmo.model.datatables.project.ProjectGroupUserDT;
 import cz.etnetera.reesmo.model.datatables.project.ProjectUserDT;
 import cz.etnetera.reesmo.model.datatables.project.ProjectUserFromGroupsDT;
@@ -12,6 +9,8 @@ import cz.etnetera.reesmo.model.datatables.user.UserDT;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
 import cz.etnetera.reesmo.model.mongodb.user.User;
+
+import java.util.Locale;
 
 /**
  * User repository custom methods

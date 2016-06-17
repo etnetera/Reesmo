@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<title layout:title-pattern="$CONTENT_TITLE - $DECORATOR_TITLE" th:text="#{app.name}"></title>
 	<script th:replace="fragments/layout/head :: head"></script>
@@ -20,7 +20,6 @@
 
 		<div th:replace="fragments/layout/mainFooter :: footer">Main footer</div>
 		<div th:replace="fragments/layout/controlSidebar :: sidebar">Control sidebar</div>
-
 	</div>
 	<div th:replace="fragments/layout/scripts :: last"></div>
 </body>

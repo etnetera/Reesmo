@@ -1,8 +1,8 @@
 package cz.etnetera.reesmo.model.form.result;
 
-import java.util.List;
-
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.List;
 
 public class ResultDeleteCommand {
 	

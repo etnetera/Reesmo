@@ -1,19 +1,18 @@
 package cz.etnetera.reesmo.user;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import cz.etnetera.reesmo.configuration.Initializer;
 import cz.etnetera.reesmo.http.exception.UnauthorizedException;
 import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import cz.etnetera.reesmo.model.mongodb.user.User;
 import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Collection;
+import java.util.List;
 
 public class AppUser implements UserDetails, IdentifiedUser {
 	

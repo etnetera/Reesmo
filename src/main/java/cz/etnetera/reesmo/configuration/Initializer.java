@@ -1,9 +1,8 @@
 package cz.etnetera.reesmo.configuration;
 
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
-
+import com.github.dandelion.core.web.DandelionFilter;
+import com.github.dandelion.core.web.DandelionServlet;
+import cz.etnetera.reesmo.Reesmo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -13,10 +12,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 
-import com.github.dandelion.core.web.DandelionFilter;
-import com.github.dandelion.core.web.DandelionServlet;
-
-import cz.etnetera.reesmo.Reesmo;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
 
 /**
  * Initializes whole webapp and configuration.

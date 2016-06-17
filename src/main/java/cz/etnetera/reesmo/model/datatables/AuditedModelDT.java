@@ -1,8 +1,8 @@
 package cz.etnetera.reesmo.model.datatables;
 
-import java.util.Date;
-
 import cz.etnetera.reesmo.model.AuditedModel;
+
+import java.util.Date;
 
 abstract public class AuditedModelDT {
 	

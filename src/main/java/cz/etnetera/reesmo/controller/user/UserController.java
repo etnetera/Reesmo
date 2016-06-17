@@ -1,38 +1,13 @@
 package cz.etnetera.reesmo.controller.user;
 
-import java.util.Locale;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
-
 import cz.etnetera.reesmo.controller.MenuActivityController;
 import cz.etnetera.reesmo.http.ControllerModel;
 import cz.etnetera.reesmo.http.exception.ForbiddenException;
 import cz.etnetera.reesmo.model.datatables.user.UserDT;
-import cz.etnetera.reesmo.model.form.user.EmailCommandValidator;
-import cz.etnetera.reesmo.model.form.user.PasswordCommandValidator;
-import cz.etnetera.reesmo.model.form.user.UserChangePasswordCommand;
-import cz.etnetera.reesmo.model.form.user.UserChangePasswordCommandValidator;
-import cz.etnetera.reesmo.model.form.user.UserCommand;
-import cz.etnetera.reesmo.model.form.user.UserCommandValidator;
-import cz.etnetera.reesmo.model.form.user.UsernameCommandValidator;
+import cz.etnetera.reesmo.model.form.user.*;
 import cz.etnetera.reesmo.model.mongodb.user.ApiUser;
 import cz.etnetera.reesmo.model.mongodb.user.ManualUser;
 import cz.etnetera.reesmo.model.mongodb.user.User;
@@ -41,6 +16,18 @@ import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
 import cz.etnetera.reesmo.user.UserManager;
 import cz.etnetera.reesmo.user.UserRole;
 import cz.etnetera.reesmo.user.UserType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Locale;
+import java.util.Optional;
 
 @Controller
 public class UserController implements MenuActivityController {

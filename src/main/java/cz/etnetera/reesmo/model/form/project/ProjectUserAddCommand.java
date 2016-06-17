@@ -1,10 +1,9 @@
 package cz.etnetera.reesmo.model.form.project;
 
-import java.util.List;
-
+import cz.etnetera.reesmo.model.mongodb.user.Permission;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import cz.etnetera.reesmo.model.mongodb.user.Permission;
+import java.util.List;
 
 public class ProjectUserAddCommand {
 

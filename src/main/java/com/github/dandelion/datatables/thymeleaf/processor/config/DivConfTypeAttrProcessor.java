@@ -29,24 +29,6 @@
  */
 package com.github.dandelion.datatables.thymeleaf.processor.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.thymeleaf.Arguments;
-import org.thymeleaf.context.IWebContext;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.IAttributeNameProcessorMatcher;
-import org.thymeleaf.processor.ProcessorResult;
-import org.thymeleaf.processor.attr.AbstractAttrProcessor;
-
 import com.github.dandelion.core.DandelionException;
 import com.github.dandelion.core.asset.generator.js.jquery.JQueryContentPlaceholder;
 import com.github.dandelion.core.option.Option;
@@ -68,6 +50,16 @@ import com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect;
 import com.github.dandelion.datatables.thymeleaf.processor.el.DivExtraHtmlFinalizerElProcessor;
 import com.github.dandelion.datatables.thymeleaf.util.AttributeUtils;
 import com.github.dandelion.datatables.thymeleaf.util.RequestUtils;
+import org.thymeleaf.Arguments;
+import org.thymeleaf.context.IWebContext;
+import org.thymeleaf.dom.Element;
+import org.thymeleaf.processor.IAttributeNameProcessorMatcher;
+import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.processor.attr.AbstractAttrProcessor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * <p>

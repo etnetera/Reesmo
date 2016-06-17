@@ -1,12 +1,12 @@
 package cz.etnetera.reesmo.datatables.filter.impl;
 
+import cz.etnetera.reesmo.datatables.filter.DatatablesFilter;
+import cz.etnetera.reesmo.message.Localizer;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import cz.etnetera.reesmo.datatables.filter.DatatablesFilter;
-import cz.etnetera.reesmo.message.Localizer;
 
 public class DatatablesFilterSelect extends DatatablesFilter {
 

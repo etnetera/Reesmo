@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="layout/projectGroup">
+<html layout:decorator="layout/projectGroup" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <title th:text="#{page.projectgroupresults.title} - ${projectGroup.name}">Results -
 	Project group - Project groups</title>
@@ -18,7 +18,7 @@
 	</ol>
 	<div layout:fragment="content">
 		<div th:id="'projectGroupResultsBox' + ${projectGroup.id} + '-panes-title'" class="results-box-panes-title"><i class="fa fa-check-square-o"></i> <span th:text="${projectGroup.name}">Project group</span> - <span th:text="#{page.projectgroupresults.title}">Results</span> <small th:text="#{page.projectgroupresults.titledesc}">small title</small></div>
-		<div th:replace="fragments/result/resultList :: box ('projectGroupResultsBox' + ${projectGroup.id}, @{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}, true, ${projectGroup.isAllowedForUser(#authentication.principal, 'ADMIN')})">Results</div>
+		<div th:replace="fragments/result/resultList :: box ('projectGroupResultsBox' + ${projectGroup.id}, @{/dt/project-group/results/{projectGroupId}(projectGroupId=${projectGroup.id})}, null, ${projectGroup.isAllowedForUser(#authentication.principal, 'ADMIN')})">Results</div>
 	</div>
 </body>
 </html>

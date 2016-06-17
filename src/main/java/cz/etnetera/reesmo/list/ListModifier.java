@@ -1,13 +1,12 @@
 package cz.etnetera.reesmo.list;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import cz.etnetera.reesmo.list.filter.ListFilter;
 import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
-import cz.etnetera.reesmo.list.filter.ListFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Holds data for list modification.

@@ -1,20 +1,14 @@
 package cz.etnetera.reesmo.model.elasticsearch.result;
 
+import cz.etnetera.reesmo.model.elasticsearch.ElasticAuditedModel;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldIndex;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-
-import cz.etnetera.reesmo.Reesmo;
-import cz.etnetera.reesmo.model.elasticsearch.ElasticAuditedModel;
-
-@Document(indexName = Reesmo.ELASTICSEARCH_INDEX, type = "result")
+@Document(indexName = "#{@elasticsearchIndexName}", type = "result")
 public class Result extends ElasticAuditedModel {
 	
 	@Id

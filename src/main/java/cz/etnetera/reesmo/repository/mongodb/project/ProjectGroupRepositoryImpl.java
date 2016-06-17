@@ -1,19 +1,17 @@
 package cz.etnetera.reesmo.repository.mongodb.project;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.github.dandelion.datatables.core.ajax.DataSet;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
+import cz.etnetera.reesmo.model.datatables.project.ProjectGroupDT;
+import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
+import cz.etnetera.reesmo.repository.mongodb.MongoDatatables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.github.dandelion.datatables.core.ajax.DataSet;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-
-import cz.etnetera.reesmo.model.datatables.project.ProjectGroupDT;
-import cz.etnetera.reesmo.model.mongodb.project.ProjectGroup;
-import cz.etnetera.reesmo.repository.mongodb.MongoDatatables;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Project group repository custom method implementation

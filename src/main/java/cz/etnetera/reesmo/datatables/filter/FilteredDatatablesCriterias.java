@@ -1,20 +1,17 @@
 package cz.etnetera.reesmo.datatables.filter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.elasticsearch.index.query.AndFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilder;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dandelion.core.util.StringUtils;
 import com.github.dandelion.core.util.Validate;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-
 import cz.etnetera.reesmo.list.ListModifier;
 import cz.etnetera.reesmo.list.filter.ListFilter;
+import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FilteredDatatablesCriterias {
 
@@ -50,23 +47,21 @@ public class FilteredDatatablesCriterias {
 	public AndFilterBuilder getFilterBuilder(FilterBuilder... withFilterBuilders) {
 		return modifier.getFilterBuilder(withFilterBuilders);
 	}
-
+	
 	/**
-	 * <p>
-	 * Map all request parameters into a wrapper POJO that eases SQL querying.
-	 * </p>
+	 * Load list filters from request.
 	 * 
 	 * @param request
-	 *            The request sent by Datatables containing all parameters.
-	 * @return a wrapper POJO.
+	 *            The request sent containing list filters.
+	 * @return list of filters.
 	 */
-	public static FilteredDatatablesCriterias getFromRequest(HttpServletRequest request) throws Exception {
+	public static List<ListFilter> getFiltersFromRequest(HttpServletRequest request) throws Exception {
 		Validate.notNull(request, "The HTTP request cannot be null");
 
 		String paramFiltersCnt = request.getParameter("filtersCnt");
 		Integer filtersCnt = StringUtils.isNotBlank(paramFiltersCnt) ? Integer.parseInt(paramFiltersCnt) : 0;
 		
-		if (filtersCnt < 1) return new FilteredDatatablesCriterias(DatatablesCriterias.getFromRequest(request), null);
+		if (filtersCnt < 1) return null;
 		boolean error = false;
 		List<ListFilter> filters = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -80,7 +75,20 @@ public class FilteredDatatablesCriterias {
 			filters.add(mapper.readValue(filterStr, ListFilter.class));
 		}
 		
-		return new FilteredDatatablesCriterias(DatatablesCriterias.getFromRequest(request), error ? null : filters);
+		return error ? null : filters;
+	}
+
+	/**
+	 * <p>
+	 * Map all request parameters into a wrapper POJO that eases SQL querying.
+	 * </p>
+	 * 
+	 * @param request
+	 *            The request sent by Datatables containing all parameters.
+	 * @return a wrapper POJO.
+	 */
+	public static FilteredDatatablesCriterias getFromRequest(HttpServletRequest request) throws Exception {
+		return new FilteredDatatablesCriterias(DatatablesCriterias.getFromRequest(request), getFiltersFromRequest(request));
 	}
 
 }

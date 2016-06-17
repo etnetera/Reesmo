@@ -1,12 +1,11 @@
 package cz.etnetera.reesmo.model.form.user;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import cz.etnetera.reesmo.model.mongodb.user.ManualUser;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import cz.etnetera.reesmo.model.mongodb.user.ManualUser;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class UserProfileCommand implements UsernameCommand, EmailCommand {
 

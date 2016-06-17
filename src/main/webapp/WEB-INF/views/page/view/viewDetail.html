@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html layout:decorator="layout/project" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="#{page.projectview.title} - ${view.name}">Results -
+        Project - Projects</title>
+</head>
+<body>
+<h1 layout:fragment="content-title"><i class="fa fa-eye"></i> <span th:text="${view.name}">Project</span> - <span th:text="#{page.projectview.title}">Results</span> <small th:text="#{page.projectview.titledesc}">small title</small></h1>
+<ol layout:fragment="content-breadcrumb">
+    <li><a th:href="@{/projects}" href="#"><i class="fa fa-eye"></i> <span th:text="#{page.projects.title}">Projects</span></a></li>
+    <li><a th:href="@{/project/detail/{projectId}(projectId=${project.id})}" href="#"> <span th:text="${project.name}">Projects</span></a></li>
+    <li class="active"><a th:href="@{/project/view/{viewId}(viewId=${view.id})}" href="#"><span th:text="${view.name}">Projects</span></a></li>
+
+</ol>
+<div layout:fragment="content" th:with="isProjectAdmin=${project.isAllowedForUser(#authentication.principal, 'ADMIN')}, isProjectOwner=${project.isAllowedForUser(#authentication.principal, 'OWNER')}">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <h3 class="profile-username text-center" th:text="${view.name}">Project</h3>
+                    <a th:if="${isProjectAdmin}" th:href="@{/view/edit/{viewId}(viewId=${view.id})}" href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+                    <a th:if="${isProjectOwner}" th:href="@{/view/delete/{viewId}(viewId=${view.id})}" href="#" class="btn btn-danger btn-block"><b>Delete</b></a>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/view/viewDetail :: details">Details</div>
+        <div th:replace="fragments/model/audit :: history (model=${view})">History</div>
+    </div>
+    <div th:replace="fragments/monitor/monitorList :: monitorList (@{/dt/monitors/view/{viewId}(viewId=${view.id})}, false)">History</div>
+    <div class="row">
+        <div class="col-sm-12">
+            <a th:href="@{/view/{viewId}/monitor/frequency/create(viewId=${view.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitors.createfrequency}">New project</span></a>
+            <a th:href="@{/view/{viewId}/monitor/flatline/create(viewId=${view.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitors.createflatline}">New project</span></a>
+            <a th:href="@{/view/{viewId}/monitor/any/create(viewId=${view.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitors.createany}">New project</span></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>>

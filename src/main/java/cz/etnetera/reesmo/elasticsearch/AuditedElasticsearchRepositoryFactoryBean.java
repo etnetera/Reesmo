@@ -1,12 +1,12 @@
 package cz.etnetera.reesmo.elasticsearch;
 
-import java.io.Serializable;
-
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.util.Assert;
+
+import java.io.Serializable;
 
 public class AuditedElasticsearchRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
 		extends RepositoryFactoryBeanSupport<T, S, ID> {
