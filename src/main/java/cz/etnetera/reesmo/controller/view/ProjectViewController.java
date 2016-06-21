@@ -71,7 +71,7 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 	DatatablesResponse<ResultDT> findAllviewResultsForDataTables(@PathVariable String viewId, HttpServletRequest request, Locale locale) throws Exception {
 		View view = viewRepository.findOne(viewId);
 		ControllerModel.exists(view, View.class);
-		Project project = projectRepository.findOne(view.getId());
+		Project project = projectRepository.findOne(view.getProjectId());
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.BASIC);
 		FilteredDatatablesCriterias criterias = FilteredDatatablesCriterias.getFromRequest(request);
@@ -83,7 +83,7 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 	public String editView(@PathVariable String viewId, Model model) {
 		View view = viewRepository.findOne(viewId);
 		ControllerModel.exists(view, View.class);
-		Project project = projectRepository.findOne(view.getId());
+		Project project = projectRepository.findOne(view.getProjectId());
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.ADMIN);
 		ViewCommand viewCommand = new ViewCommand();
@@ -100,7 +100,7 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 						   BindingResult bindingResult, Model model) {
 		View view = viewRepository.findOne(viewId);
 		ControllerModel.exists(view, View.class);
-		Project project = projectRepository.findOne(view.getId());
+		Project project = projectRepository.findOne(view.getProjectId());
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.ADMIN);
 		if (bindingResult.hasErrors()) {
@@ -117,7 +117,7 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 	public String deleteView(@PathVariable String viewId, Model model) {
 		View view = viewRepository.findOne(viewId);
 		ControllerModel.exists(view, View.class);
-		Project project = projectRepository.findOne(view.getId());
+		Project project = projectRepository.findOne(view.getProjectId());
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.ADMIN);
 		model.addAttribute("view", view);
@@ -129,7 +129,7 @@ public class ProjectViewController implements MenuActivityController, ResultFilt
 	public String deleteView(@PathVariable String viewId) {
 		View view = viewRepository.findOne(viewId);
 		ControllerModel.exists(view, View.class);
-		Project project = projectRepository.findOne(view.getId());
+		Project project = projectRepository.findOne(view.getProjectId());
 		ControllerModel.exists(project, Project.class);
 		project.checkUserPermission(userManager.requireUser(), Permission.ADMIN);
 		viewRepository.deleteViewAndMonitors(viewId);
