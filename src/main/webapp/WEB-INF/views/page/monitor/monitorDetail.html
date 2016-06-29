@@ -32,7 +32,7 @@
         <div th:if="${isProjectAdmin}" class="row">
             <div class="col-sm-12">
                 <a th:href="@{/monitor/{monitorId}/notifier/url/create(monitorId=${monitorDT.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitordetail.createurlnotifier}">New project</span></a>
-                <a th:href="@{/monitor/{monitorId}/notifier/email/create(monitorId=${monitorDT.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitordetail.createemailnotifier}">New project</span></a>
+                <a th:if="false" th:href="@{/monitor/{monitorId}/notifier/email/create(monitorId=${monitorDT.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitordetail.createemailnotifier}">New project</span></a>
             </div>
         </div>
     </div>

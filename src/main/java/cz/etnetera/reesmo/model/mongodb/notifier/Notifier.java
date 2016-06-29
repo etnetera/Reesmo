@@ -36,6 +36,4 @@ public abstract class Notifier extends MongoAuditedModel {
         this.enabled = enabled;
     }
 
-    public abstract void notifyEveryone();
-
 }

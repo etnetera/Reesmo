@@ -30,7 +30,7 @@ import java.util.Locale;
 
 @Controller
 public class ProjectViewController implements MenuActivityController, ResultFilteredController {
-	
+
 	@Autowired
     private UserManager userManager;
 	

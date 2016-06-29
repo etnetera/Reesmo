@@ -73,7 +73,7 @@ public class MonitorController implements MenuActivityController {
         return "page/monitor/monitorDetail";
     }
 
-    @RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.GET)
+    //@RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.GET)
     public String createFrequencyMonitorForm(@PathVariable String viewId, Model model) {
         View view = viewRepository.findOne(viewId);
         ControllerModel.exists(view, View.class);
@@ -86,7 +86,7 @@ public class MonitorController implements MenuActivityController {
         return "page/monitor/frequencyMonitorCreate";
     }
 
-    @RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.POST)
+    //@RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.POST)
     public String createFrequencyMonitor(Model model, @PathVariable String viewId, @Valid @ModelAttribute MonitorCommand monitorCommand, BindingResult result) {
         View view = viewRepository.findOne(viewId);
         ControllerModel.exists(view, View.class);
@@ -106,7 +106,7 @@ public class MonitorController implements MenuActivityController {
         return "redirect:/view/" + viewId;
     }
 
-    @RequestMapping(value = "/view/{viewId}/monitor/flatline/create", method = RequestMethod.GET)
+    //@RequestMapping(value = "/view/{viewId}/monitor/flatline/create", method = RequestMethod.GET)
     public String createFlatlineMonitorForm(@PathVariable String viewId, Model model) {
         View view = viewRepository.findOne(viewId);
         ControllerModel.exists(view, View.class);
@@ -119,7 +119,7 @@ public class MonitorController implements MenuActivityController {
         return "page/monitor/flatlineMonitorCreate";
     }
 
-    @RequestMapping(value = "/view/{viewId}/monitor/flatline/create", method = RequestMethod.POST)
+    //@RequestMapping(value = "/view/{viewId}/monitor/flatline/create", method = RequestMethod.POST)
     public String createFlatlineMonitor(Model model, @PathVariable String viewId, @Valid @ModelAttribute MonitorCommand monitorCommand, BindingResult result) {
         View view = viewRepository.findOne(viewId);
         ControllerModel.exists(view, View.class);

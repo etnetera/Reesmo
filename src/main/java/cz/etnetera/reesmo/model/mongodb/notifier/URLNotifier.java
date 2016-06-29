@@ -17,8 +17,4 @@ public class URLNotifier extends Notifier {
         this.addresses = addresses;
     }
 
-    @Override
-    public void notifyEveryone() {
-
-    }
 }

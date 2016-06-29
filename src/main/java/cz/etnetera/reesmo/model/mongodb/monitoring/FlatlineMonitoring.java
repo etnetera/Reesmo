@@ -41,4 +41,5 @@ public class FlatlineMonitoring extends Monitoring {
     public String toString() {
         return "Hass less than " + numberOfOccurences + " results in " + numberOfOccurences + " " + timeUnit;
     }
+
 }

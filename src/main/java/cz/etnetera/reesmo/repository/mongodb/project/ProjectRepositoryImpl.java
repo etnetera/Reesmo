@@ -62,7 +62,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 		DataSet<Project> projects = findProjectsWithDatatablesCriterias(criterias, projectIds);
 
 		return new DataSet<ProjectDT>(
-				projects.getRows().stream().map(p -> new ProjectDT(p)).collect(Collectors.toList()),
+				projects.getRows().stream().map(ProjectDT::new).collect(Collectors.toList()),
 				projects.getTotalRecords(), projects.getTotalDisplayRecords());
 	}
 
@@ -86,7 +86,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	}
 	
 	private DataSet<Project> findProjectsWithDatatablesCriterias(DatatablesCriterias criterias, Collection<String> projectIds) {
-		Criteria allCrit = null;
+		Criteria allCrit;
 		if (projectIds == null) {
 			allCrit = Criteria.where("_id").exists(true);
 		} else if (projectIds.isEmpty()) {
@@ -97,8 +97,8 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 
 		Criteria crit = MongoDatatables.getCriteria(criterias, allCrit);
 
-		Long count = mongoTemplate.count(Query.query(allCrit), User.class);
-		Long countFiltered = mongoTemplate.count(Query.query(crit), User.class);
+		Long count = mongoTemplate.count(Query.query(allCrit), Project.class);
+		Long countFiltered = mongoTemplate.count(Query.query(crit), Project.class);
 		
 		Query query = Query.query(crit);
 		MongoDatatables.sortQuery(query, criterias);

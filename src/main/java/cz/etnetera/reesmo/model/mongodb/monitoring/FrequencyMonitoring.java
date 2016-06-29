@@ -41,4 +41,5 @@ public class FrequencyMonitoring extends Monitoring {
     public String toString() {
         return "Has more than " + numberOfOccurences + " results in " + numberOfOccurences  + " " +  timeUnit;
     }
+
 }

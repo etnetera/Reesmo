@@ -23,6 +23,8 @@ public interface ResultRepositoryCustom {
 	public Page<Result> findByModifier(PageableListModifier modifier, List<String> projectIds);
 	
 	public Page<Result> findByViewAndModifier(String viewId, PageableListModifier modifier);
+
+	public boolean isResultInView(String viewId, String resultId);
 	
 	/**
 	 * Overrides default delete method, so attachments from GridFS

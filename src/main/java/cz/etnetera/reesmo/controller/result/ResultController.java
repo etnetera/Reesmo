@@ -46,6 +46,8 @@ public class ResultController implements MenuActivityController, ResultFilteredC
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultController.class);
 
+	public static final String RESULT_HOME_URI = "/result/home/{resultId}";
+
 	@Autowired
 	private UserManager userManager;
 
@@ -77,7 +79,7 @@ public class ResultController implements MenuActivityController, ResultFilteredC
 		return DatatablesResponse.build(results, criterias.getCriterias());
 	}
 
-	@RequestMapping(value = "/result/home/{resultId}", method = RequestMethod.GET)
+	@RequestMapping(value = RESULT_HOME_URI, method = RequestMethod.GET)
 	public String resultHome(@PathVariable String resultId) {
 		return "redirect:/result/detail/" + resultId;
 	}

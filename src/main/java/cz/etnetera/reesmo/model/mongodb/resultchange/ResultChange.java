@@ -19,7 +19,7 @@ public class ResultChange extends MongoAuditedModel {
 
 	private String resultId;
 
-	private ResultChangeAction action;
+	private String projectId;
 
 	public String getId() {
 		return id;
@@ -37,12 +37,20 @@ public class ResultChange extends MongoAuditedModel {
 		this.resultId = resultId;
 	}
 
-	public ResultChangeAction getAction() {
-		return action;
+	public String getProjectId() {
+		return projectId;
 	}
 
-	public void setAction(ResultChangeAction action) {
-		this.action = action;
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 
+	@Override
+	public String toString() {
+		return "ResultChange{" +
+				"id='" + id + '\'' +
+				", resultId='" + resultId + '\'' +
+				", projectId='" + projectId + '\'' +
+				'}';
+	}
 }

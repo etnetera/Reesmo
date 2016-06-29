@@ -7,11 +7,11 @@ import cz.etnetera.reesmo.controller.MenuActivityController;
 import cz.etnetera.reesmo.model.datatables.notifier.NotifierDT;
 import cz.etnetera.reesmo.model.form.notifier.NotifierCommand;
 import cz.etnetera.reesmo.model.mongodb.monitoring.Monitoring;
-import cz.etnetera.reesmo.model.mongodb.project.Project;
-import cz.etnetera.reesmo.model.mongodb.view.View;
 import cz.etnetera.reesmo.model.mongodb.notifier.EmailNotifier;
 import cz.etnetera.reesmo.model.mongodb.notifier.Notifier;
 import cz.etnetera.reesmo.model.mongodb.notifier.URLNotifier;
+import cz.etnetera.reesmo.model.mongodb.project.Project;
+import cz.etnetera.reesmo.model.mongodb.view.View;
 import cz.etnetera.reesmo.repository.mongodb.monitor.MonitorRepository;
 import cz.etnetera.reesmo.repository.mongodb.notifier.NotifierRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @Controller
 public class NotifierController implements MenuActivityController {
@@ -46,7 +45,7 @@ public class NotifierController implements MenuActivityController {
         return "projectMonitors";
     }
 
-    @RequestMapping(value = "/monitor/{monitorId}/notifier/email/create", method = RequestMethod.GET)
+    //@RequestMapping(value = "/monitor/{monitorId}/notifier/email/create", method = RequestMethod.GET)
     public String createEmailNotifier(@PathVariable String monitorId, Model model) {
         Monitoring monitor = monitorRepository.findOne(monitorId);
         View view = viewRepository.findOne(monitor.getViewId());
@@ -59,7 +58,7 @@ public class NotifierController implements MenuActivityController {
         return "page/notifier/emailNotifierCreate";
     }
 
-    @RequestMapping(value = "/monitor/{monitorId}/notifier/email/create", method = RequestMethod.POST)
+    //@RequestMapping(value = "/monitor/{monitorId}/notifier/email/create", method = RequestMethod.POST)
     public String createEmailNotifier(Model model, @PathVariable String monitorId, @Valid @ModelAttribute NotifierCommand notifierCommand, BindingResult result) {
         Monitoring monitor = monitorRepository.findOne(monitorId);
         if (result.hasErrors()){
@@ -152,21 +151,12 @@ public class NotifierController implements MenuActivityController {
         return "redirect:/monitor/" + notifier.getMonitorId();
     }
 
-
-
     @RequestMapping(value = "/dt/monitor/notifiers/{monitorId}")
     public @ResponseBody
     DatatablesResponse<NotifierDT> findAllNotifiersForMonitor(@PathVariable String monitorId, HttpServletRequest request) throws Exception {
-        DataSet<NotifierDT> notifiers = notifierRepository.findDSByMonitor(monitorId);
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-        if (notifiers == null){
-            notifiers = new DataSet<>(new ArrayList<>(), 0L, 0L);
-            return DatatablesResponse.build(notifiers, criterias);
-        }
+        DataSet<NotifierDT> notifiers = notifierRepository.findWithDatatablesCriterias(criterias, monitorId);
         return DatatablesResponse.build(notifiers, criterias);
     }
-
-
-
 
 }

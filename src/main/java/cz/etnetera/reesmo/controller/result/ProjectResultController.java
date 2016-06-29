@@ -38,6 +38,8 @@ import java.util.Locale;
 @Controller
 public class ProjectResultController implements MenuActivityController, ResultFilteredController {
 
+	public static final String VIEW_RESULTS_URI = "/project/results/{projectId}/view/{viewId}";
+
 	@Autowired
 	private UserManager userManager;
 
@@ -78,7 +80,7 @@ public class ProjectResultController implements MenuActivityController, ResultFi
 		return "page/project/projectResults";
 	}
 
-	@RequestMapping(value = "/project/results/{projectId}/view/{viewId}", method = RequestMethod.GET)
+	@RequestMapping(value = VIEW_RESULTS_URI, method = RequestMethod.GET)
 	public String results(@PathVariable String projectId, @PathVariable String viewId, Model model, Locale locale) {
 		Project project = projectRepository.findOne(projectId);
 		ControllerModel.exists(project, Project.class);

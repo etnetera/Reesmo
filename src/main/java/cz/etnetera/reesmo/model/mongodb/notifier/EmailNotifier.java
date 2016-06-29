@@ -17,8 +17,4 @@ public class EmailNotifier extends Notifier {
         this.addresses = addresses;
     }
 
-    @Override
-    public void notifyEveryone() {
-
-    }
 }

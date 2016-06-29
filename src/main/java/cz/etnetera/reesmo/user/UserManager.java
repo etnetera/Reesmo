@@ -9,16 +9,12 @@ import cz.etnetera.reesmo.repository.mongodb.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
 public class UserManager {
-
-	private static UserManager instance;
 	
 	@Autowired
 	private ProjectRepository projectRepository;
@@ -28,14 +24,6 @@ public class UserManager {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-	private UserManager() {
-		instance = this;
-	}
-	
-	public static UserManager getInstance() {
-		return instance;
-	}
 
 	public List<String> getAllowedProjectIds(Permission permission) {
 		return requireAppUser().getAllowedProjectsIds(permission);

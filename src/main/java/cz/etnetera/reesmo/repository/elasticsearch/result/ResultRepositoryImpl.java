@@ -13,7 +13,6 @@ import cz.etnetera.reesmo.model.elasticsearch.result.Result;
 import cz.etnetera.reesmo.model.elasticsearch.result.ResultAttachment;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
 import cz.etnetera.reesmo.model.mongodb.resultchange.ResultChange;
-import cz.etnetera.reesmo.model.mongodb.resultchange.ResultChangeAction;
 import cz.etnetera.reesmo.model.mongodb.view.View;
 import cz.etnetera.reesmo.repository.elasticsearch.ElasticsearchDatatables;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
@@ -22,6 +21,7 @@ import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.TermFilterBuilder;
 import org.elasticsearch.index.query.TermsFilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -110,6 +110,15 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		return findByModifier(modifier, Arrays.asList(view.getProjectId()));
 	}
 
+	@Override
+	public boolean isResultInView(String viewId, String resultId) {
+		View view = viewRepository.findOne(viewId);
+		PageableListModifier modifier = new PageableListModifier().join(view.getModifier());
+		return template.count(createSearchBuilderFromModifier(modifier, modifier.getFilterBuilder(
+				new BoolFilterBuilder().must(new TermFilterBuilder("projectId", view.getProjectId())).cache(true),
+				new BoolFilterBuilder().must(new TermFilterBuilder("_id", resultId)).cache(true))).build(), Result.class) == 1;
+	}
+
 	private NativeSearchQueryBuilder createSearchBuilderFromModifier(PageableListModifier modifier) {
 		return createSearchBuilderFromModifier(modifier, null);
 	}
@@ -128,12 +137,6 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		Assert.notNull(result, "Cannot delete 'null' result.");
 		List<ResultAttachment> attachments = result.getAttachments();
 		resultRepository.delete(result);
-
-		ResultChange change = new ResultChange();
-		change.setResultId(result.getId());
-		change.setAction(ResultChangeAction.DELETE);
-		resultChangeRepository.save(change);
-
 		attachments.forEach(a -> gridFsTemplate.delete(Query.query(Criteria.where("_id").is(a.getId()))));
 	}
 
@@ -147,10 +150,12 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		boolean isNew = result.getId() == null;
 		result = resultRepository.save(result);
 
-		ResultChange change = new ResultChange();
-		change.setResultId(result.getId());
-		change.setAction(isNew ? ResultChangeAction.CREATE : ResultChangeAction.UPDATE);
-		resultChangeRepository.save(change);
+		if (isNew) {
+			ResultChange change = new ResultChange();
+			change.setResultId(result.getId());
+			change.setProjectId(result.getProjectId());
+			resultChangeRepository.save(change);
+		}
 
 		return result;
 	}

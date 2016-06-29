@@ -9,5 +9,5 @@ public class AnyMonitoring extends Monitoring {
     public String toString() {
         return "Every matching result";
     }
-	
+
 }

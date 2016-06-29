@@ -1,6 +1,7 @@
 package cz.etnetera.reesmo.configuration;
 
 import cz.etnetera.reesmo.user.AppUserRepository;
+import cz.etnetera.reesmo.user.UserManager;
 import cz.etnetera.reesmo.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AdviceMode;
@@ -61,6 +62,11 @@ public class SecurityConfiguration {
 	@Bean
 	public AppUserRepository appUserRepository() {
 		return new AppUserRepository();
+	}
+
+	@Bean
+	public UserManager userManager() {
+		return new UserManager();
 	}
 
 }

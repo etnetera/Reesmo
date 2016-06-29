@@ -6,6 +6,7 @@ import cz.etnetera.reesmo.Reesmo;
 import cz.etnetera.reesmo.user.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,12 +55,16 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 	@Bean
 	public AuditorAware<String> auditorProvider() {
 		return new AuditorAware<String>() {
+
+			@Autowired
+			private UserManager userManager;
+
 			@Override
 			public String getCurrentAuditor() {
-				UserManager userManager = UserManager.getInstance();
 				// user manager can be null on application start
 				return userManager == null ? null : userManager.getUserId();
 			}
+
 		};
 	}
 
