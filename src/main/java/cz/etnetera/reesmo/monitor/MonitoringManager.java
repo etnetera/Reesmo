@@ -58,7 +58,7 @@ public class MonitoringManager {
 
     public void notifyMonitoring(MonitoringService monitoringService, Monitoring monitoring, Result result) {
         View view = viewRepository.findOne(monitoring.getViewId());
-        MonitoringNotification notification = new MonitoringNotification(monitoring, view.getName() + " " + monitoring.toString(), result);
+        MonitoringNotification notification = new MonitoringNotification(monitoring, view.getName() + " " + monitoring.toString(), view, result);
         notifierRepository.findAllByMonitoring(monitoring.getId())
                 .stream()
                 .filter(Notifier::isEnabled)

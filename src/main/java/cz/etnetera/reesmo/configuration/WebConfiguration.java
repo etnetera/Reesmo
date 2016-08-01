@@ -59,6 +59,7 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 		resolver.setTemplateEngine(templateEngine());
 		resolver.setContentType("text/html;charset=UTF-8");
 		resolver.setCharacterEncoding("UTF-8");
+		resolver.setCache(thymeleafCacheable);
 		return resolver;
 	}
 
