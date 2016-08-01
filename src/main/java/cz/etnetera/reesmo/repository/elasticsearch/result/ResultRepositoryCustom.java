@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,4 +90,6 @@ public interface ResultRepositoryCustom {
 	
 	public DataSet<ResultDT> findWithFilteredDatatablesCriterias(FilteredDatatablesCriterias criterias, List<String> projectIds, Locale locale);
 
+
+	public List<Result> findAllByProjectAndDate(String projectId, Date date);
 }

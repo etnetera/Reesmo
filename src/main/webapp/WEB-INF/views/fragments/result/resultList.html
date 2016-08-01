@@ -61,6 +61,12 @@
 					<i class="fa fa-trash"></i>
 				</label>
 				<button type="button" class="btn btn-danger btn-delete-results" th:text="#{results.delete}" th:attr="data-confirm-text=#{results.delete.confirm}">Delete selected results</button>
+				<div th:if="${project != null}">
+					<form action="#" th:action="@{/project/results/delete/{projectId}(projectId=${project.id})}" th:object="${dateCommand}" method="post">
+						<input type="date" th:field="*{date}" th:max="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}"/>
+						<button id="btn-remove-results" type="submit" class="btn btn-danger" th:text="#{results.delete.old}">Remove old projects</button>
+					</form>
+				</div>
 			</div>
 			<div class="expand-overlay"></div>
 		</div>

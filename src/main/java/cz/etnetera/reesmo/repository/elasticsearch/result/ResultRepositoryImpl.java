@@ -19,13 +19,11 @@ import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.repository.mongodb.resultchange.ResultChangeRepository;
 import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
 import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.index.query.BoolFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.TermFilterBuilder;
-import org.elasticsearch.index.query.TermsFilterBuilder;
+import org.elasticsearch.index.query.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -140,6 +138,8 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		attachments.forEach(a -> gridFsTemplate.delete(Query.query(Criteria.where("_id").is(a.getId()))));
 	}
 
+
+
 	@Override
 	public Result saveResult(Result result, List<ResultAttachment> attachments) {
 		result.setAttachments(attachments == null ? new ArrayList<>() : attachments);
@@ -242,6 +242,16 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 		return new DataSet<ResultDT>(results.getRows().stream()
 				.map(r -> new ResultDT(r, foundProjects.get(r.getProjectId()), localizer, locale))
 				.collect(Collectors.toList()), results.getTotalRecords(), results.getTotalDisplayRecords());
+	}
+
+	@Override
+	public List<Result> findAllByProjectAndDate(String projectId, Date date) {
+		FilterBuilder filterBuilder = new BoolFilterBuilder().must(new TermsFilterBuilder("projectId", projectId))
+				.must(new RangeFilterBuilder("startedAt").lte(date.toInstant().toEpochMilli()));
+		NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder().withTypes("result");
+		queryBuilder.withPageable(new PageRequest(0, Integer.MAX_VALUE));
+		queryBuilder.withFilter(filterBuilder);
+		return template.queryForList(queryBuilder.build(), Result.class);
 	}
 
 

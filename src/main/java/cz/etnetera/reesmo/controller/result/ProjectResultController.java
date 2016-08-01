@@ -13,6 +13,8 @@ import cz.etnetera.reesmo.list.ListModifier;
 import cz.etnetera.reesmo.list.filter.ListFilter;
 import cz.etnetera.reesmo.message.Localizer;
 import cz.etnetera.reesmo.model.datatables.result.ResultDT;
+import cz.etnetera.reesmo.model.elasticsearch.result.Result;
+import cz.etnetera.reesmo.model.form.result.DateCommand;
 import cz.etnetera.reesmo.model.form.view.ViewCommand;
 import cz.etnetera.reesmo.model.form.view.ViewCommandValidator;
 import cz.etnetera.reesmo.model.mongodb.project.Project;
@@ -22,6 +24,8 @@ import cz.etnetera.reesmo.repository.elasticsearch.result.ResultRepository;
 import cz.etnetera.reesmo.repository.mongodb.project.ProjectRepository;
 import cz.etnetera.reesmo.repository.mongodb.view.ViewRepository;
 import cz.etnetera.reesmo.user.UserManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +41,8 @@ import java.util.Locale;
 
 @Controller
 public class ProjectResultController implements MenuActivityController, ResultFilteredController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectResultController.class);
 
 	public static final String VIEW_RESULTS_URI = "/project/results/{projectId}/view/{viewId}";
 
@@ -77,8 +83,22 @@ public class ProjectResultController implements MenuActivityController, ResultFi
 			ViewCommand viewCommand = new ViewCommand();
 			model.addAttribute("viewCommand", viewCommand);
 		}
+		model.addAttribute("dateCommand", new DateCommand());
 		return "page/project/projectResults";
 	}
+
+	@RequestMapping(value = "/project/results/delete/{projectId}", method = RequestMethod.POST)
+	public String resultsDeleteByDate(@PathVariable String projectId, @ModelAttribute DateCommand dateCommand) {
+		if (dateCommand.getDate() != null){
+			List<Result> oldResultsForProject = resultRepository.findAllByProjectAndDate(projectId, dateCommand.getDate());
+			oldResultsForProject.forEach(result -> resultRepository.deleteResult(result));
+			Project project = projectRepository.findOne(projectId);
+			LOGGER.info("Deleted " + oldResultsForProject.size() + " results older than " + dateCommand.getDate() + " for project " + project.getName());
+			// TODO vypsat počet smazaných položek
+		}
+		return "redirect:/project/results/" + projectId;
+	}
+
 
 	@RequestMapping(value = VIEW_RESULTS_URI, method = RequestMethod.GET)
 	public String results(@PathVariable String projectId, @PathVariable String viewId, Model model, Locale locale) {
