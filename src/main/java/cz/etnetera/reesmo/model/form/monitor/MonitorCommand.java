@@ -22,22 +22,22 @@ public class MonitorCommand {
 
     @Min(value = 1, message = "Number must be bigger than 0")
     @Digits(integer=5,fraction=0,message = "Must be a whole number of maximum 99999")
-    private int numberOfOccurences;
+    private int hits;
 
     private boolean enabled;
 
-    public MonitorCommand(String type, TimeUnit timeUnit, int numberOfTimeUnits, boolean enabled, int numberOfOccurences) {
+    public MonitorCommand(String type, TimeUnit timeUnit, int numberOfTimeUnits, boolean enabled, int hits) {
         this.type = type;
         this.timeUnit = timeUnit;
         this.numberOfTimeUnits = numberOfTimeUnits;
         this.enabled = enabled;
-        this.numberOfOccurences = numberOfOccurences;
+        this.hits = hits;
     }
 
-    public MonitorCommand(TimeUnit timeUnit, int numberOfTimeUnits, int numberOfOccurences, boolean enabled) {
+    public MonitorCommand(TimeUnit timeUnit, int numberOfTimeUnits, int hits, boolean enabled) {
         this.timeUnit = timeUnit;
         this.numberOfTimeUnits = numberOfTimeUnits;
-        this.numberOfOccurences = numberOfOccurences;
+        this.hits = hits;
         this.enabled = enabled;
     }
 
@@ -50,11 +50,11 @@ public class MonitorCommand {
         this.enabled = monitor.isEnabled();
         if (monitor instanceof FrequencyMonitoring) {
             this.numberOfTimeUnits = ((FrequencyMonitoring)monitor).getNumberOfTimeUnits();
-            this.numberOfOccurences = ((FrequencyMonitoring)monitor).getNumberOfOccurences();
+            this.hits = ((FrequencyMonitoring)monitor).getHits();
         }
         if (monitor instanceof FlatlineMonitoring) {
             this.numberOfTimeUnits = ((FlatlineMonitoring)monitor).getNumberOfTimeUnits();
-            this.numberOfOccurences = ((FlatlineMonitoring)monitor).getNumberOfOccurences();
+            this.hits = ((FlatlineMonitoring)monitor).getNumberOfOccurences();
         }
     }
 
@@ -98,12 +98,12 @@ public class MonitorCommand {
         this.numberOfTimeUnits = numberOfTimeUnits;
     }
 
-    public int getNumberOfOccurences() {
-        return numberOfOccurences;
+    public int getHits() {
+        return hits;
     }
 
-    public void setNumberOfOccurences(int numberOfOccurences) {
-        this.numberOfOccurences = numberOfOccurences;
+    public void setHits(int hits) {
+        this.hits = hits;
     }
 
     public void toMonitor(Monitoring monitor) {
@@ -112,13 +112,13 @@ public class MonitorCommand {
             FrequencyMonitoring frequencyMonitor = (FrequencyMonitoring) monitor;
             frequencyMonitor.setTimeUnit(getTimeUnit());
             frequencyMonitor.setNumberOfTimeUnits(getNumberOfTimeUnits());
-            frequencyMonitor.setNumberOfOccurences(getNumberOfOccurences());
+            frequencyMonitor.setHits(getHits());
         }
         if (monitor instanceof FlatlineMonitoring){
             FlatlineMonitoring flatlineMonitor = (FlatlineMonitoring) monitor;
             flatlineMonitor.setTimeUnit(getTimeUnit());
             flatlineMonitor.setNumberOfTimeUnits(getNumberOfTimeUnits());
-            flatlineMonitor.setNumberOfOccurences(getNumberOfOccurences());
+            flatlineMonitor.setNumberOfOccurences(getHits());
         }
     }
 }

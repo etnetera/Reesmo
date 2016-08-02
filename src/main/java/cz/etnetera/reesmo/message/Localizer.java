@@ -59,7 +59,7 @@ public class Localizer {
 		if (monitoring instanceof FrequencyMonitoring){
 			FrequencyMonitoring monitor = (FrequencyMonitoring) monitoring;
 			String description = messageSource.getMessage("monitor.frequencydescription", null, locale)
-					.replace("rr", String.valueOf(monitor.getNumberOfOccurences()))
+					.replace("rr", String.valueOf(monitor.getHits()))
 					.replace("tt", String.valueOf(monitor.getNumberOfTimeUnits()))
 					.replace("tu", messageSource.getMessage(monitor.getTimeUnit().toString().toLowerCase(), null, locale));
 			return description;

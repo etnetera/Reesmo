@@ -25,6 +25,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -73,7 +74,7 @@ public class MonitorController implements MenuActivityController {
         return "page/monitor/monitorDetail";
     }
 
-    //@RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.GET)
     public String createFrequencyMonitorForm(@PathVariable String viewId, Model model) {
         View view = viewRepository.findOne(viewId);
         ControllerModel.exists(view, View.class);
@@ -86,7 +87,7 @@ public class MonitorController implements MenuActivityController {
         return "page/monitor/frequencyMonitorCreate";
     }
 
-    //@RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/view/{viewId}/monitor/frequency/create", method = RequestMethod.POST)
     public String createFrequencyMonitor(Model model, @PathVariable String viewId, @Valid @ModelAttribute MonitorCommand monitorCommand, BindingResult result) {
         View view = viewRepository.findOne(viewId);
         ControllerModel.exists(view, View.class);
@@ -102,6 +103,7 @@ public class MonitorController implements MenuActivityController {
         monitorCommand.toMonitor(frequencyMonitoring);
         frequencyMonitoring.setViewId(viewId);
         frequencyMonitoring.setProjectId(project.getId());
+        frequencyMonitoring.setFrom(new Date());
         monitorRepository.save(frequencyMonitoring);
         return "redirect:/view/" + viewId;
     }

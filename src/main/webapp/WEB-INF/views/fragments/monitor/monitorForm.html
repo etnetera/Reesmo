@@ -5,10 +5,10 @@
     <div class="box box-primary">
         <form action="#" th:action="${url}" th:object="${monitorCommand}" method="post">
             <div class="box-body">
-                <div class="form-group" th:classappend="${#fields.hasErrors('numberOfOccurences')}? has-error" th:unless="${monitorCommand.type} == 'AnyMonitoring'">
-                    <label th:for="${#ids.next('numberOfOccurences')}" th:text="#{page.monitorcreate.occurences}">Number of occurences</label>
-                    <input type="text" class="form-control" th:field="*{numberOfOccurences}"/>
-                    <p th:replace="fragments/form/error :: errors (fieldName='numberOfOccurences')"/>
+                <div class="form-group" th:classappend="${#fields.hasErrors('hits')}? has-error" th:unless="${monitorCommand.type} == 'AnyMonitoring'">
+                    <label th:for="${#ids.next('hits')}" th:text="#{page.monitorcreate.occurences}">Number of occurences</label>
+                    <input type="text" class="form-control" th:field="*{hits}"/>
+                    <p th:replace="fragments/form/error :: errors (fieldName='hits')"/>
                 </div>
                 <div class="form-group" th:unless="${monitorCommand.type} == 'AnyMonitoring'">
                     <label th:for="${#ids.next('numberOfTimeUnits')}" th:text="#{page.monitorcreate.timeframe}">TimeFrame</label>

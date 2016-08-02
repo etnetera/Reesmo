@@ -30,7 +30,7 @@
     <div th:replace="fragments/monitor/monitorList :: monitorList (@{/dt/monitors/view/{viewId}(viewId=${view.id})}, false)">History</div>
     <div class="row">
         <div class="col-sm-12">
-            <a th:if="false" th:href="@{/view/{viewId}/monitor/frequency/create(viewId=${view.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitors.createfrequency}">New project</span></a>
+            <a th:href="@{/view/{viewId}/monitor/frequency/create(viewId=${view.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitors.createfrequency}">New project</span></a>
             <a th:if="false" th:href="@{/view/{viewId}/monitor/flatline/create(viewId=${view.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitors.createflatline}">New project</span></a>
             <a th:href="@{/view/{viewId}/monitor/any/create(viewId=${view.id})}" href="#" class="btn btn-primary margin-bottom"><i class="fa fa-plus"></i> <span th:text="#{page.monitors.createany}">New project</span></a>
         </div>

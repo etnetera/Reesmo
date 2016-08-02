@@ -246,7 +246,7 @@ public class ResultRepositoryImpl implements ResultRepositoryCustom {
 
 	@Override
 	public List<Result> findAllByProjectAndDate(String projectId, Date date) {
-		FilterBuilder filterBuilder = new BoolFilterBuilder().must(new TermsFilterBuilder("projectId", projectId))
+		FilterBuilder filterBuilder = new BoolFilterBuilder().must(new TermsFilterBuilder("projectId", projectId).cache(true))
 				.must(new RangeFilterBuilder("startedAt").lte(date.toInstant().toEpochMilli()));
 		NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder().withTypes("result");
 		queryBuilder.withPageable(new PageRequest(0, Integer.MAX_VALUE));
