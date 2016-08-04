@@ -4,11 +4,43 @@
 
 	<groupId>cz.etnetera</groupId>
 	<artifactId>reesmo</artifactId>
-	<version>0.2.5-cra-balt</version>
+	<version>0.2.4</version>
 	<packaging>war</packaging>
 
 	<name>Reesmo</name>
-	<description>Application for storing test results with monitoring functions</description>
+	<description>Reesmo is web application for storing test results with monitoring functions.</description>
+	<url>https://github.com/etnetera/reesmo</url>
+	<inceptionYear>2016</inceptionYear>
+	<organization>
+		<name>Etnetera a.s.</name>
+		<url>http://www.etnetera.cz/</url>
+	</organization>
+	<developers>
+		<developer>
+			<name>Zdenek Kalina</name>
+			<email>zdenek.kalina@etnetera.cz</email>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+				<role>tester</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Petr Benes</name>
+			<email>petr.benes@etnetera.cz</email>
+			<roles>
+				<role>developer</role>
+				<role>tester</role>
+			</roles>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -209,13 +241,6 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.2</version>
-		</dependency>
-
-		<!-- SNMP Trap V2 notifications -->
-		<dependency>
-			<groupId>org.snmp4j</groupId>
-			<artifactId>snmp4j</artifactId>
-			<version>2.5.0</version>
 		</dependency>
 	</dependencies>
 
